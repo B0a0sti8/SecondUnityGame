@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 842519091285452324}
   - component: {fileID: 4053567546700693606}
   - component: {fileID: 8990294324721779828}
-  - component: {fileID: 8277922475662482984}
-  - component: {fileID: 4845117443789102994}
+  - component: {fileID: 6374831578466400083}
+  - component: {fileID: 8298066226304571921}
   m_Layer: 0
-  m_Name: BaseToken
+  m_Name: BaseTokenSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8277922475662482984
+--- !u!114 &6374831578466400083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8643527965463590853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 923014a7afc5cca458d94716af1a0394, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8298066226304571921
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,15 +133,3 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4845117443789102994
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8643527965463590853}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ca6d8d2b3723684c848fe65a6b3fd22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

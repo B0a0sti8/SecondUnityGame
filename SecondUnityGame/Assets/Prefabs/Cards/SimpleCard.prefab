@@ -58,14 +58,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.053469293, b: 0.21698111, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -7132172409892320828, guid: ace7dafc3a7ac0d47806e8b811bbc7fe, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -646,6 +646,7 @@ GameObject:
   - component: {fileID: 112481393720431157}
   - component: {fileID: 7518530934199227510}
   - component: {fileID: 824866662217008116}
+  - component: {fileID: 4907516593289225348}
   m_Layer: 5
   m_Name: SimpleCard
   m_TagString: Untagged
@@ -735,6 +736,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 975829d3f98a4c4488b92eff9892988d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!225 &4907516593289225348
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6940576492133116372}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7866862124958106321
 GameObject:
   m_ObjectHideFlags: 0
