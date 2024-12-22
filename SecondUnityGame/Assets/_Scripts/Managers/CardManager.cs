@@ -13,6 +13,11 @@ public class CardManager : MonoBehaviour
 
     public static CardManager instance;
 
+    public Sprite militaryUnitTypeSprite;
+    public Sprite buildingUnitTypeSprite;
+    public Sprite buildingTypeSprite;
+    public Sprite specialTypeSprite;
+
     private void Awake()
     {
         instance = this;

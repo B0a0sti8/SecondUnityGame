@@ -2381,6 +2381,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2020314173}
+  - component: {fileID: 2020314174}
   m_Layer: 0
   m_Name: CardManager
   m_TagString: Untagged
@@ -2403,6 +2404,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 856689314}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2020314174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2020314172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b203d389a48a8f40a0ec4df51e1aae9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  militaryUnitTypeSprite: {fileID: 3700915101788899469, guid: 643c49b89cf9f22409f523664a69e91c, type: 3}
+  buildingUnitTypeSprite: {fileID: 6034975053513212626, guid: 09ad891f47058b9439e8af2b1568d645, type: 3}
+  buildingTypeSprite: {fileID: -4328897322714555828, guid: 51a9137d47d12e244bc0fcbe2d7e463e, type: 3}
+  specialTypeSprite: {fileID: 8494857361488865779, guid: bc1b440e6b516e44f9cbf3a9715f8cc1, type: 3}
 --- !u!1 &2136929115
 GameObject:
   m_ObjectHideFlags: 0
