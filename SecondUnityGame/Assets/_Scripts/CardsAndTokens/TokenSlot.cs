@@ -2,45 +2,56 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class TokenSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDropHandler
+public class TokenSlot : MonoBehaviour
 {
-    bool hasToken;
+    public bool hasToken;
+    GameObject mouseOverMarker;
+    GameObject myToken;
 
-    public void OnDrop(PointerEventData eventData)
+    protected enum AreaType
     {
-        Transform myCard = MouseGrabManager.instance.myGrabbedItem.transform;
-        if (myCard == null) return;
-        if (hasToken) return;
-
-
-        GetComponent<Image>().sprite = myCard.Find("Content").Find("Picture").GetComponent<Image>().sprite;
-        MouseGrabManager.instance.myGrabbedItem = null;
-        GameObject.Destroy(myCard.gameObject);
+        water,
+        grassLight,
+        grassDark,
+        sand,
+        forest
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        Color mycolor = GetComponent<Image>().color;
-        Color newColor = mycolor;
-        newColor.a = 1f;
-        GetComponent<Image>().color = newColor;
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        Color mycolor = GetComponent<Image>().color;
-        Color newColor = mycolor;
-        newColor.a = 0.2f;
-        GetComponent<Image>().color = newColor;
-    }
+    protected AreaType myAreaType = AreaType.water;
 
     void Awake()
     {
-        Color mycolor = GetComponent<Image>().color;
-        Color newColor = mycolor;
-        newColor.a = 0.2f;
-        GetComponent<Image>().color = newColor;
-
         hasToken = false;
+        mouseOverMarker = transform.Find("MouseOverMarker").gameObject;
+        myToken = transform.Find("Token").gameObject;
+
+        mouseOverMarker.SetActive(false);
+        myToken.SetActive(false);
+    }
+
+    private void OnMouseEnter()
+    {
+        mouseOverMarker.SetActive(true);
+    }
+
+    private void OnMouseExit()
+    {
+        mouseOverMarker.SetActive(false);
+    }
+
+    public void SetToken(GameObject myNewToken)
+    {
+        //if (MouseGrabManager.instance.myGrabbedItem == null) return;
+        //Transform myCard = MouseGrabManager.instance.myGrabbedItem.transform;
+        //if (myCard == null) return;
+        //if (hasToken) return;
+
+        myToken.GetComponent<Image>().sprite = myNewToken.transform.Find("Content").Find("Picture").GetComponent<Image>().sprite;
+
+
+        myToken.SetActive(true);
+
+        MouseGrabManager.instance.RemoveGrabbedItem();
+        hasToken = true;
     }
 }

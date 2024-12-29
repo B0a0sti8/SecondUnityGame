@@ -69,6 +69,6 @@ public class MainCardScript : MonoBehaviour
         myDescriptionField.text = cardDescription;
         myLifeText.text = currentCardLife.ToString() + " / " + maxCardLife.ToString();
         myEnergyText.text = currentCardEnergy.ToString() + " / " + maxCardEnergy.ToString();
-        myCardImage.sprite = cardPicture;
+        //myCardImage.sprite = cardPicture;
     }
 }

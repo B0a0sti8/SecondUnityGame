@@ -13,9 +13,9 @@ public class TilemapGenerator : MonoBehaviour
     private void Start()
     {
         tileArray = new int[xMax, yMax];
-        waterTile = transform.parent.Find("Squares").Find("WaterSquare").gameObject;
-        grassLightTile = transform.parent.Find("Squares").Find("GrassLightSquare").gameObject;
-        grassDarkTile = transform.parent.Find("Squares").Find("GrassDarkSquare").gameObject;
+        waterTile = transform.parent.Find("TokenSlots").Find("TokenSlot_Water").gameObject;
+        grassLightTile = transform.parent.Find("TokenSlots").Find("TokenSlot_GrassLight").gameObject;
+        grassDarkTile = transform.parent.Find("TokenSlots").Find("TokenSlot_GrassDark").gameObject;
 
         GenerateTilemap();
     }
