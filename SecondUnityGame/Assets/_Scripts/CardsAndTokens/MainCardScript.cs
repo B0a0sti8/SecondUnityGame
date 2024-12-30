@@ -4,33 +4,34 @@ using UnityEngine.UI;
 
 public class MainCardScript : MonoBehaviour
 {
-    protected string cardName;
-    protected Sprite cardPicture;
+    public CardPrefabScriptable myCardScriptable;
 
-    protected enum CardType
-    {
-        MilitaryUnit,
-        BuildingUnit,
-        Building,
-        Special
-    }
+    string cardName;
+    Sprite cardPicture;
+    public Sprite tokenPicture;
+    Sprite typePicture;
 
-    protected CardType myCardType = CardType.MilitaryUnit;
 
-    protected string cardDescription;
+    string myCardType = "Military Unit";
 
-    protected float maxCardLife;
-    protected float currentCardLife;
+    string cardDescription;
 
-    protected float maxCardEnergy;
-    protected float currentCardEnergy;
+    float maxCardLife;
+    float currentCardLife;
 
-    protected Image myCardImage;
-    protected Image myCardTypeImage;
-    protected TextMeshProUGUI myTitleField;
-    protected TextMeshProUGUI myDescriptionField;
-    protected TextMeshProUGUI myLifeText;
-    protected TextMeshProUGUI myEnergyText;
+    float maxCardEnergy;
+    float currentCardEnergy;
+
+    float woodCost;
+    float stoneCost;
+    float manaCost;
+
+    Image myCardImage;
+    Image myCardTypeImage;
+    TextMeshProUGUI myTitleField;
+    TextMeshProUGUI myDescriptionField;
+    TextMeshProUGUI myLifeText;
+    TextMeshProUGUI myEnergyText;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -42,33 +43,38 @@ public class MainCardScript : MonoBehaviour
         myLifeText = transform.Find("Content").Find("Life").GetComponent<TextMeshProUGUI>();
         myEnergyText = transform.Find("Content").Find("Energy").GetComponent<TextMeshProUGUI>();
 
+        LoadDataFromScriptableObject();
         UpdateCardUI();
     }
 
-    protected virtual void UpdateCardUI()
+    void UpdateCardUI()
     {
-        switch (myCardType)
-        {
-            case CardType.MilitaryUnit:
-                myCardTypeImage.sprite = CardManager.instance.militaryUnitTypeSprite;
-                break;
-            case CardType.BuildingUnit:
-                myCardTypeImage.sprite = CardManager.instance.buildingUnitTypeSprite;
-                break;
-            case CardType.Building:
-                myCardTypeImage.sprite = CardManager.instance.buildingTypeSprite;
-                break;
-            case CardType.Special:
-                myCardTypeImage.sprite = CardManager.instance.specialTypeSprite;
-                break;
-            default:
-                break;
-        }
-
         myTitleField.text = cardName;
         myDescriptionField.text = cardDescription;
         myLifeText.text = currentCardLife.ToString() + " / " + maxCardLife.ToString();
         myEnergyText.text = currentCardEnergy.ToString() + " / " + maxCardEnergy.ToString();
-        //myCardImage.sprite = cardPicture;
+
+        myCardTypeImage.sprite = typePicture;
+        myCardImage.sprite = cardPicture;
+    }
+
+    void LoadDataFromScriptableObject()
+    {
+        cardName = myCardScriptable.cardName;
+        cardDescription = myCardScriptable.description;
+        myCardType = myCardScriptable.unitTypeString;
+
+        cardPicture = myCardScriptable.cardSprite;
+        tokenPicture = myCardScriptable.tokenSprite;
+        typePicture = myCardScriptable.unitTypeSprite;
+
+        maxCardLife = myCardScriptable.maxLife;
+        currentCardLife = maxCardLife;
+        maxCardEnergy = myCardScriptable.maxEnergy;
+        currentCardEnergy = maxCardEnergy;
+
+        woodCost = myCardScriptable.woodCost;
+        stoneCost = myCardScriptable.stoneCost;
+        manaCost = myCardScriptable.manaCost;
     }
 }

@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class CardManager : MonoBehaviour
 {
+    Dictionary<string, GameObject> allCardsInTheGame;
+
     Dictionary<int, GameObject> usedCards;
 
     Dictionary<int, GameObject> cardDeck1;
@@ -21,6 +23,8 @@ public class CardManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        allCardsInTheGame = new Dictionary<string, GameObject>();
+
     }
 
 

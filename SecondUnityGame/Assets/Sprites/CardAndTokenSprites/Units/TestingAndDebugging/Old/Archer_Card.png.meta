@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 09ad891f47058b9439e8af2b1568d645
+guid: ace7dafc3a7ac0d47806e8b811bbc7fe
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6034975053513212626
-    second: HammerSymbol_0
+      213: -7132172409892320828
+    second: Archer_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: HammerSymbol_0
+      name: Archer_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 256
-        height: 256
+        width: 612
+        height: 410
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2d2cff426d980c350800000000000000
-      internalID: 6034975053513212626
+      spriteID: 4c9c6872bfe650d90800000000000000
+      internalID: -7132172409892320828
       vertices: []
       indices: 
       edges: []
@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Archer_0: -7132172409892320828
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

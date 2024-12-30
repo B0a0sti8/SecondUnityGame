@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 643c49b89cf9f22409f523664a69e91c
+guid: bc1b440e6b516e44f9cbf3a9715f8cc1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3700915101788899469
-    second: SwordSymbol_0
+      213: 8494857361488865779
+    second: StarSymbol1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SwordSymbol_0
+      name: StarSymbol1_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d8881024daa4c5330800000000000000
-      internalID: 3700915101788899469
+      spriteID: 3f9e72933cbc3e570800000000000000
+      internalID: 8494857361488865779
       vertices: []
       indices: 
       edges: []
@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      StarSymbol1_0: 8494857361488865779
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -30,7 +30,7 @@ public class MouseGrabManager : MonoBehaviour
         RaycastHit2D rayHit = Physics2D.Raycast((Vector2)myWorldposition, new Vector3(0, 0, 1));
         if (rayHit)
         {
-            if (!rayHit.transform.GetComponent<TokenSlot>().hasToken)
+            if (rayHit.transform.GetComponent<TokenSlot>().hasToken == false)
             {
                 rayHit.transform.GetComponent<TokenSlot>().SetToken(myGrabbedItem);
             }

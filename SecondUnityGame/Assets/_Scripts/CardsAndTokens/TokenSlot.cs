@@ -46,9 +46,7 @@ public class TokenSlot : MonoBehaviour
         //if (myCard == null) return;
         //if (hasToken) return;
 
-        myToken.GetComponent<Image>().sprite = myNewToken.transform.Find("Content").Find("Picture").GetComponent<Image>().sprite;
-
-
+        myToken.GetComponent<SpriteRenderer>().sprite = myNewToken.GetComponent<MainCardScript>().tokenPicture;
         myToken.SetActive(true);
 
         MouseGrabManager.instance.RemoveGrabbedItem();
