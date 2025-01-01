@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4c33c3f42acaade478cea59376b93331, type: 3}
-  m_Name: Archer
+  m_Name: Soldier
   m_EditorClassIdentifier: 
-  cardName: Archer
-  description: Shoot them, before they come close.
+  cardName: Soldier
+  description: Defending the gate.
   unitTypeString: Military Unit
-  woodCost: 2
-  stoneCost: 0
+  woodCost: 3
+  stoneCost: 1
   manaCost: 2
-  cardSprite: {fileID: -739385909, guid: eae6625275eecc347b17ef0324ba6874, type: 3}
-  tokenSprite: {fileID: -739385909, guid: cdd3d7cb81987f14f801a63dc5fcae63, type: 3}
+  cardSprite: {fileID: 1472101351656793931, guid: 5c3c1af9f68f65140a34690c1d007009, type: 3}
+  tokenSprite: {fileID: 1472101351656793931, guid: 6b57ef184d8bb2343b9eb40634b9bdeb, type: 3}
   unitTypeSprite: {fileID: 3700915101788899469, guid: 643c49b89cf9f22409f523664a69e91c, type: 3}
   maxEnergy: 10
-  maxLife: 10
-  attackValue: 3
+  maxLife: 15
+  attackValue: 2
