@@ -41,13 +41,10 @@ public class CameraMovement : MonoBehaviour
     {
         if (Input.mouseScrollDelta.y != 0)
         {
-            Debug.Log(Input.mouseScrollDelta.y);
-
             if (Input.mouseScrollDelta.y > 0) targetFieldOfView += -1;
             if (Input.mouseScrollDelta.y < 0) targetFieldOfView += 1;
 
             targetFieldOfView = Mathf.Clamp(targetFieldOfView, foVmin, foVmax);
-            Debug.Log(targetFieldOfView);
 
             cinemachineCamera.Lens.OrthographicSize = targetFieldOfView;
         }
