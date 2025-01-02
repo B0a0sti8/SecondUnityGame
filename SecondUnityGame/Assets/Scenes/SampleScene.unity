@@ -2526,6 +2526,11 @@ MonoBehaviour:
   threeGrassLightOneSandLeft_tile: {fileID: 21300000, guid: 4fb7f9e55d48bc94b81f859f9c9f2b6f, type: 2}
   threeSandOneGrassLightRight_tile: {fileID: 21300000, guid: 06d5ef2740b71c040a71824dabbac883, type: 2}
   threeSandOneGrassLightLeft_tile: {fileID: 21300000, guid: f88001bac1bd4f74f9c460d4da12122d, type: 2}
+  lightGrassBottomdarkGrassTop1_tile: {fileID: 21300000, guid: 2a25dcef12104e249bf5e9bd5b8d6f88, type: 2}
+  threeLightGrassOneDarkGrassRight_tile: {fileID: 21300000, guid: 3a7bb6e0390cfe342b375c4d21c9be3f, type: 2}
+  threeLightGrassOneDarkGrassLeft_tile: {fileID: 21300000, guid: fd11719fb64ba9742a195fba0ec9cfa3, type: 2}
+  threeDarkGrassOneLightGrassLeft_tile: {fileID: 21300000, guid: 87b70b962e941144eb24959cc359d628, type: 2}
+  threeDarkGrassOneLightGrassRight_tile: {fileID: 21300000, guid: a77775a04d567d94890737e5bbadcaca, type: 2}
   tokenSlot: {fileID: 0}
   generationVector: {x: 30, y: 30, z: 0}
 --- !u!1 &1932745376

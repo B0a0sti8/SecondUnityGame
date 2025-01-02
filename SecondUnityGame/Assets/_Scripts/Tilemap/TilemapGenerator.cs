@@ -29,9 +29,16 @@ public class TilemapGenerator : MonoBehaviour
     int[,] tileArray;       // Bedeutung des Arrays: 0 = Wasser, 1 = Sand, 2 = dünnes Gras, 3 = dickes Gras
     GameObject[,] tokenSlotReferenceArray;
 
+
+
     [SerializeField] Sprite waterTile, grassLightTile, grassDarkTile, sandTile;
+    [SerializeField] Sprite hallow;
+
+    [Header("BaseTiles")]
+
     [SerializeField] Sprite waterBottomSandTop1_tile, waterBottomSandTop2_tile, threeSandOneWaterRight_tile, threeSandOneWaterLeft_tile, threeWaterOneSandRight_tile, threeWaterOneSandLeft_tile;
     [SerializeField] Sprite sandBottomLightGrassTop1_tile, sandBottomLightGrassTop2_tile, sandBottomLightGrassTop3_tile, threeGrassLightOneSandRight_tile, threeGrassLightOneSandLeft_tile, threeSandOneGrassLightRight_tile, threeSandOneGrassLightLeft_tile;
+    [SerializeField] Sprite lightGrassBottomdarkGrassTop1_tile, threeLightGrassOneDarkGrassRight_tile, threeLightGrassOneDarkGrassLeft_tile, threeDarkGrassOneLightGrassLeft_tile, threeDarkGrassOneLightGrassRight_tile;
     [SerializeField] GameObject tokenSlot;
     [SerializeField] Vector3 generationVector;
 
@@ -56,6 +63,7 @@ public class TilemapGenerator : MonoBehaviour
 
         FillWaterSandBorder();
         FillSandGrassLightBorder();
+        FillLightGrassDarkGrassBorder();
     }
 
     void ResetArraysAndDeleteTiles()
@@ -102,6 +110,40 @@ public class TilemapGenerator : MonoBehaviour
                 break;
         }
 
+    }
+
+    public void PaintLightGrassToDarkGrassTile(Vector3 position, int type)
+    {
+        switch (type)
+        {
+            case 301:    
+                GameObject tSlot301 = Instantiate(tokenSlot, position, Quaternion.identity, transform.parent.Find("Grid"));
+                tSlot301.GetComponent<SpriteRenderer>().sprite = lightGrassBottomdarkGrassTop1_tile;
+                tokenSlotReferenceArray[(int)Mathf.Round(position.x), (int)Mathf.Round(position.y)] = tSlot301;
+                break;
+            case 302:    
+                GameObject tSlot302 = Instantiate(tokenSlot, position, Quaternion.identity, transform.parent.Find("Grid"));
+                tSlot302.GetComponent<SpriteRenderer>().sprite = threeDarkGrassOneLightGrassRight_tile;
+                tokenSlotReferenceArray[(int)Mathf.Round(position.x), (int)Mathf.Round(position.y)] = tSlot302;
+                break;
+            case 303:    
+                GameObject tSlot303 = Instantiate(tokenSlot, position, Quaternion.identity, transform.parent.Find("Grid"));
+                tSlot303.GetComponent<SpriteRenderer>().sprite = threeDarkGrassOneLightGrassLeft_tile;
+                tokenSlotReferenceArray[(int)Mathf.Round(position.x), (int)Mathf.Round(position.y)] = tSlot303;
+                break;
+            case 304:  
+                GameObject tSlot304 = Instantiate(tokenSlot, position, Quaternion.identity, transform.parent.Find("Grid"));
+                tSlot304.GetComponent<SpriteRenderer>().sprite = threeLightGrassOneDarkGrassRight_tile;
+                tokenSlotReferenceArray[(int)Mathf.Round(position.x), (int)Mathf.Round(position.y)] = tSlot304;
+                break;
+            case 305:    
+                GameObject tSlot305 = Instantiate(tokenSlot, position, Quaternion.identity, transform.parent.Find("Grid"));
+                tSlot305.GetComponent<SpriteRenderer>().sprite = threeLightGrassOneDarkGrassLeft_tile;
+                tokenSlotReferenceArray[(int)Mathf.Round(position.x), (int)Mathf.Round(position.y)] = tSlot305;
+                break;
+            default:
+                break;
+        }
     }
 
     public void PaintSandToLightGrassTile(Vector3 position, int type)
@@ -194,7 +236,9 @@ public class TilemapGenerator : MonoBehaviour
         // No Function just fix offset and height as starting value
         int[] modifiedValues = new int[xMax];
 
-        int modifierNumber = 2;
+        int modifierNumber = 2 ;
+
+        modifierNumber = Random.Range(0, 7);
 
         switch (modifierNumber)
         {
@@ -212,7 +256,7 @@ public class TilemapGenerator : MonoBehaviour
                 break;
             case 4:
                 // Parabolisch abnehmend
-                for (int i = 0; i < modifiedValues.Length; i++) modifiedValues[i] = (int)Mathf.Round(10 - Mathf.Pow(i * Mathf.Sqrt(10) / xMax, 2));
+                for (int i = 0; i < modifiedValues.Length; i++) modifiedValues[i] = (int)Mathf.Round(0 + Mathf.Pow((i - xMax) * Mathf.Sqrt(10) / xMax, 2));
                 break;
             case 5:
                 // Parabolisch mittig zu seiten hin zunehmend
@@ -673,6 +717,11 @@ public class TilemapGenerator : MonoBehaviour
                             PaintSandToLightGrassTile(new Vector3(xValue, yValue), 201);
                             tileArray[xValue, yValue] = 201;
                         }
+                        else if(Random.Range(0, 10) > 1)
+                        {
+                            PaintSandToLightGrassTile(new Vector3(xValue, yValue), 203);
+                            tileArray[xValue, yValue] = 203;
+                        }
                         else
                         {
                             PaintSandToLightGrassTile(new Vector3(xValue, yValue), 202);
@@ -728,5 +777,136 @@ public class TilemapGenerator : MonoBehaviour
                 }
             }
         }
+    }
+
+    void FillLightGrassDarkGrassBorder()
+    {
+        // Funktion sehr ähnlich wie FillWaterSandBorder, die Kommentare hier sind nur copy und paste und zählen nicht. Schaue die andere Funktion an für die Doku :)
+        for (int xValue = 0; xValue < xMax; xValue++)
+        {
+            for (int yValue = 0; yValue < yMax; yValue++)
+            {
+                if (tileArray[xValue, yValue] == 0) // Alle Tiles die noch nicht belegt sind
+                {
+                    if (tileArray[xValue, yValue + 1] == 400) // über dem Tile ist Sand
+                    {
+                        if ((xValue < xMax - 1 && tileArray[xValue + 1, yValue - 1] == 0) && (xValue > 0 && tileArray[xValue - 1, yValue - 1] == 0)) // Nicht am Rand und Links und rechts unter dem Tile ist leer.
+                        {
+                            PaintTile(new Vector3(xValue, yValue, 0), 400);
+                            tileArray[xValue, yValue] = 400;
+
+                        }
+                        else if (xValue == xMax - 1 && tileArray[xValue - 1, yValue - 1] == 0) // Am Rechten Rand, Links unten ist leer
+                        {
+                            PaintTile(new Vector3(xValue, yValue, 0), 400);
+                            tileArray[xValue, yValue] = 400;
+                        }
+                        else if (xValue == 0 && tileArray[xValue + 1, yValue - 1] == 0) // Am linken Rand, rechts unten ist leer
+                        {
+                            PaintTile(new Vector3(xValue, yValue, 0), 400);
+                            tileArray[xValue, yValue] = 400;
+                        }
+                    }
+                }
+            }
+        }
+
+        //Andersrum noch mit wasser auffüllen
+        for (int xValue = 0; xValue < xMax; xValue++)
+        {
+            for (int yValue = 0; yValue < yMax; yValue++)
+            {
+                if (tileArray[xValue, yValue] == 0) // Tile ist noch leer
+                {
+                    if (tileArray[xValue, yValue - 1] == 300) // Unter dem Tile ist Wasser
+                    {
+                        if ((xValue < xMax - 1 && tileArray[xValue + 1, yValue + 1] == 0) && (xValue > 0 && tileArray[xValue - 1, yValue + 1] == 0) && tileArray[xValue, yValue + 1] == 0) // Links und rechts unter dem Tile ist leer.
+                        {
+                            PaintTile(new Vector3(xValue, yValue, 0), 300);
+                            tileArray[xValue, yValue] = 300;
+
+                        }
+                        else if (xValue == xMax - 1 && tileArray[xValue - 1, yValue + 1] == 0 && tileArray[xValue, yValue + 1] == 0) // Am Rechten Rand, Links oben ist leer
+                        {
+                            PaintTile(new Vector3(xValue, yValue, 0), 300);
+                            tileArray[xValue, yValue] = 300;
+                        }
+                        else if (xValue == 0 && tileArray[xValue + 1, yValue + 1] == 0 && tileArray[xValue, yValue + 1] == 0) // Am linken Rand, rechts oben ist leer
+                        {
+                            PaintTile(new Vector3(xValue, yValue, 0), 300);
+                            tileArray[xValue, yValue] = 300;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        // Als nächstes werden die einfachen Übergange im lokal horizontalen Bereich gemacht.
+        for (int xValue = 0; xValue < xMax; xValue++)
+        {
+            for (int yValue = 0; yValue < yMax; yValue++)
+            {
+                if (tileArray[xValue, yValue] == 0)
+                {
+                    if (tileArray[xValue, yValue - 1] == 300 && tileArray[xValue, yValue + 1] == 400) // Alle Tiles die über einem Wasser-Tile und unter einem Sand-Tile liegen
+                    {
+                        PaintLightGrassToDarkGrassTile(new Vector3(xValue, yValue), 301);
+                        tileArray[xValue, yValue] = 301;
+                    }
+                }
+            }
+        }
+
+        for (int xValue = 0; xValue < xMax; xValue++)
+        {
+            for (int yValue = 0; yValue < yMax; yValue++)
+            {
+                if (tileArray[xValue, yValue] == 0)
+                {
+                    if (tileArray[xValue, yValue + 1] == 400)
+                    {
+                        if (xValue > 0 && tileArray[xValue - 1, yValue] == 400) // Alle Tiles die links von einem Sand-Tile liegen
+                        {
+                            PaintLightGrassToDarkGrassTile(new Vector3(xValue, yValue), 302);
+                            tileArray[xValue, yValue] = 302;
+                        }
+                        else if (xValue < xMax - 1 && tileArray[xValue + 1, yValue] == 400)
+                        {
+                            PaintLightGrassToDarkGrassTile(new Vector3(xValue, yValue), 303);
+                            tileArray[xValue, yValue] = 303;
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int xValue = 0; xValue < xMax; xValue++)
+        {
+            for (int yValue = 0; yValue < yMax; yValue++)
+            {
+                if (tileArray[xValue, yValue] == 0)
+                {
+                    if (tileArray[xValue, yValue - 1] == 300)
+                    {
+                        if (xValue > 0 && tileArray[xValue - 1, yValue] == 300) // Alle Tiles die links von einem Sand-Tile liegen
+                        {
+                            PaintLightGrassToDarkGrassTile(new Vector3(xValue, yValue), 304);
+                            tileArray[xValue, yValue] = 304;
+                        }
+                        else if (xValue < xMax - 1 && tileArray[xValue + 1, yValue] == 300)
+                        {
+                            PaintLightGrassToDarkGrassTile(new Vector3(xValue, yValue), 305);
+                            tileArray[xValue, yValue] = 305;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    void AddTrees()
+    {
+
     }
 }
