@@ -2548,7 +2548,7 @@ MonoBehaviour:
   tree7Sprite1: {fileID: -1088960206, guid: 519168a24a63cd340ba42ef5a89f9b92, type: 3}
   tree8Sprite0: {fileID: -1350261003, guid: 6d9c01fb6a447cc4e95c0bcdf30252e3, type: 3}
   tree8Sprite1: {fileID: -1015056390, guid: 6d9c01fb6a447cc4e95c0bcdf30252e3, type: 3}
-  bitStone0Sprite00: {fileID: 21300000, guid: 87da79185aa279f45954528bd0d01b7f, type: 2}
+  bigStone0Sprite00: {fileID: 21300000, guid: 87da79185aa279f45954528bd0d01b7f, type: 2}
   bigStone0Sprite10: {fileID: 21300000, guid: a5e292e015fb83f4fb554772b4de3fcb, type: 2}
   bigStone0Sprite01: {fileID: 21300000, guid: fc49fe926f7f1fb47ba4e4659430aaae, type: 2}
   bigStone0Sprite11: {fileID: 21300000, guid: a7df6d31de5383a44ab8fd3c14f0c1bd, type: 2}
@@ -2556,10 +2556,47 @@ MonoBehaviour:
   bigStone1Sprite10: {fileID: 21300000, guid: eeff6c417863cf74eaea32e30364da9e, type: 2}
   bigStone1Sprite01: {fileID: 21300000, guid: 4a088f907eac1724a87f02d6adc005df, type: 2}
   bigStone1Sprite11: {fileID: 21300000, guid: a9653dc18dbfbb3498048d5cdae08a54, type: 2}
+  mediumStone0Sprite0: {fileID: 21300000, guid: cdc210c05b96fc846a65097ae76fdd39, type: 2}
+  mediumStone0Sprite1: {fileID: 21300000, guid: 26b1657fad6a93646983df1f1a1fcfb6, type: 2}
+  mediumStone1Sprite0: {fileID: 21300000, guid: 68de20f35a3879f4bbed1c1e680875a2, type: 2}
+  mediumStone1Sprite1: {fileID: 21300000, guid: 9c03039d59de5f04db7abdce5d016775, type: 2}
+  mediumStone2Sprite0: {fileID: 21300000, guid: 07c8130732431224686decebd4db73d8, type: 2}
+  mediumStone2Sprite1: {fileID: 21300000, guid: 1ac2bd873baad944f967d7c9ebbca7f0, type: 2}
+  smallStone0Sprite: {fileID: 21300000, guid: 77842f06a1a860a4e93f6eeef062c504, type: 2}
+  smallStone1Sprite: {fileID: 21300000, guid: fded407eeae38c94eb9b3a591031ff5d, type: 2}
+  smallStone2Sprite: {fileID: 21300000, guid: 6b07989b4e6b46446bfb5cd46bce304c, type: 2}
+  smallStone3Sprite: {fileID: 21300000, guid: b325268e09372bc46a5561334248c3d4, type: 2}
+  smallStone4Sprite: {fileID: 21300000, guid: 8b19b563f6502ea4cb355bc67006c073, type: 2}
+  bigMushroom0Sprite00: {fileID: 21300000, guid: df53bdde9b7f8334cab4766da9076fa1, type: 2}
+  bigMushroom0Sprite01: {fileID: 21300000, guid: 77e875eaa63527a4f8c37a9895b72900, type: 2}
+  bigMushroom0Sprite10: {fileID: 21300000, guid: 79dfe5206c63e6c4fb50141b415df25e, type: 2}
+  bigMushroom0Sprite11: {fileID: 21300000, guid: 95b9da9832a50bc43b841c05f056f817, type: 2}
+  mediumHerb0Sprite0: {fileID: 21300000, guid: 9c3a8d8af1017484fab323fa430005a6, type: 2}
+  mediumHerb0Sprite1: {fileID: 21300000, guid: 2fc0e4046ac71544e8135c961e16c139, type: 2}
+  smallHerb0Sprite: {fileID: 21300000, guid: 7ef0ff36923e646408f25379ba756c21, type: 2}
+  smallHerb1Sprite: {fileID: 21300000, guid: b0900096a21cd0a46974fa41382dd62d, type: 2}
+  smallHerb2Sprite: {fileID: 21300000, guid: 0fc660a8e7e479d4f818eb94033b65cf, type: 2}
+  smallHerb3Sprite: {fileID: 21300000, guid: b1e03bd994e2d1f43b69e99bd0bdcdbe, type: 2}
+  smallHerb4Sprite: {fileID: 21300000, guid: d972aa7b8a3c6584bb1cc2652b7fc5a7, type: 2}
+  smallHerb5Sprite: {fileID: 21300000, guid: 33b77709de9b5d740af72fac9347e217, type: 2}
   crystal0Sprite0: {fileID: 21300000, guid: f8cbba94f732a1647bdd953d0e400d8e, type: 2}
   crystal0Sprite1: {fileID: 21300000, guid: aa2c96b58d97510409f98b103d90e34d, type: 2}
   crystal1Sprite0: {fileID: 21300000, guid: 9c624b1c7b1600543a0afc1f6efcd926, type: 2}
   crystal1Sprite1: {fileID: 21300000, guid: a5d40fce9d190ef488b9f2a8bb54bead, type: 2}
+  bigTreasure0Sprite00: {fileID: 21300000, guid: 0ee5778cd3e1bd847acb5bc512b3dc23, type: 2}
+  bigTreasure0Sprite01: {fileID: 21300000, guid: 2960f83ae8a40cf409c162f57f0e74ae, type: 2}
+  bigTreasure0Sprite10: {fileID: 21300000, guid: d2aa064ea14779344ad12edcca7e4305, type: 2}
+  bigTreasure0Sprite11: {fileID: 21300000, guid: 4db570cc733db7c459c8caff7e52d050, type: 2}
+  smallTreasure0Sprite: {fileID: 21300000, guid: d7bba7d0c1bcff5418decfbe26f40594, type: 2}
+  smallTreasure1Sprite: {fileID: 21300000, guid: c8f158d637b6ece40b1a23d3aa7971f1, type: 2}
+  mediumLoreStone0Sprite0: {fileID: 21300000, guid: 17fcac5ba1c83fd44b5b1fae2c6056fb, type: 2}
+  mediumLoreStone0Sprite1: {fileID: 21300000, guid: f8d33688d94b43e47bbe1b466ed932ca, type: 2}
+  mediumLoreStone1Sprite0: {fileID: 21300000, guid: bf4c93ae1b7a1514db516ef9ec2b8499, type: 2}
+  mediumLoreStone1Sprite1: {fileID: 21300000, guid: 65ca0cd8d8fe988439aa5d3a16e9b6b2, type: 2}
+  bigLoreStone0Sprite00: {fileID: 21300000, guid: ab7f12a9f95b95f4386d8083edcd227e, type: 2}
+  bigLoreStone0Sprite01: {fileID: 21300000, guid: 2fd6400d3aa789c4bb2589ccabd6cc75, type: 2}
+  bigLoreStone0Sprite10: {fileID: 21300000, guid: cfff524ee1efb224fb3915fee1fbf60b, type: 2}
+  bigLoreStone0Sprite11: {fileID: 21300000, guid: 2b9437134425fff4eac8e34f504f2d12, type: 2}
 --- !u!1 &1932745376
 GameObject:
   m_ObjectHideFlags: 0

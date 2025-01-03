@@ -42,16 +42,28 @@ public class TilemapGenerator : MonoBehaviour
 
 
     // Extras Tiles
+    // Trees
     [SerializeField]
     Sprite tree1Sprite0, tree1Sprite1, tree2Sprite0, tree2Sprite1, tree3Sprite0, tree3Sprite1, tree4Sprite0, tree4Sprite1, tree5Sprite0, tree5Sprite1,
         tree6Sprite0, tree6Sprite1, tree7Sprite0, tree7Sprite1, tree8Sprite0, tree8Sprite1;
 
-    [SerializeField] Sprite bitStone0Sprite00, bigStone0Sprite10, bigStone0Sprite01, bigStone0Sprite11, bitStone1Sprite00, bigStone1Sprite10, bigStone1Sprite01, bigStone1Sprite11;
+    // Stones
+    [SerializeField] Sprite bigStone0Sprite00, bigStone0Sprite10, bigStone0Sprite01, bigStone0Sprite11, bitStone1Sprite00, bigStone1Sprite10, bigStone1Sprite01, bigStone1Sprite11;
+    [SerializeField] Sprite mediumStone0Sprite0, mediumStone0Sprite1, mediumStone1Sprite0, mediumStone1Sprite1, mediumStone2Sprite0, mediumStone2Sprite1;
+    [SerializeField] Sprite smallStone0Sprite, smallStone1Sprite, smallStone2Sprite, smallStone3Sprite, smallStone4Sprite;
 
+    // Herbs and Mushrooms
+    [SerializeField] Sprite bigMushroom0Sprite00, bigMushroom0Sprite01, bigMushroom0Sprite10, bigMushroom0Sprite11;
+    [SerializeField] Sprite mediumHerb0Sprite0, mediumHerb0Sprite1;
+    [SerializeField] Sprite smallHerb0Sprite, smallHerb1Sprite, smallHerb2Sprite, smallHerb3Sprite, smallHerb4Sprite, smallHerb5Sprite;
+
+    // Crystals and Treasure
     [SerializeField] Sprite crystal0Sprite0, crystal0Sprite1, crystal1Sprite0, crystal1Sprite1;
+    [SerializeField] Sprite bigTreasure0Sprite00, bigTreasure0Sprite01, bigTreasure0Sprite10, bigTreasure0Sprite11;
+    [SerializeField] Sprite smallTreasure0Sprite, smallTreasure1Sprite;
 
-
-
+    [SerializeField] Sprite mediumLoreStone0Sprite0, mediumLoreStone0Sprite1, mediumLoreStone1Sprite0, mediumLoreStone1Sprite1;
+    [SerializeField] Sprite bigLoreStone0Sprite00, bigLoreStone0Sprite01, bigLoreStone0Sprite10, bigLoreStone0Sprite11;
 
     private void Start()
     {
@@ -65,18 +77,22 @@ public class TilemapGenerator : MonoBehaviour
 
     public void GenerateMap()
     {
+        // Bereitet die Karten-Erzeugung vor und löscht die alte Karte
         ResetArraysAndDeleteTiles();
         StructureOffsetsAndHeight();
 
-        GenerateRoughTilemap();
-        CreateRoughBorders();
-        RemoveArtefacts1();
+        GenerateRoughTilemap();        // Generiert die groben Flächen
+        CreateRoughBorders();          // Füllt die Zwischenräume zufallsbasiert auf
+        RemoveArtefacts1();            // Kompensiert mögliche Fehler 
 
+        // Glättet Grenzen zwischen den Gebieten
         FillWaterSandBorder();
         FillSandGrassLightBorder();
         FillLightGrassDarkGrassBorder();
 
-        // BaumAnzahl Chance, Gebiet (400 = dunkles Gras, 300 = helles Gras)
+        // Fügt der Karte Details hinzu
+        // BaumAnzahl, Chance, Gebiet (400 = dunkles Gras, 300 = helles Gras)
+        // Alle anderen Add funktionen sind gleich aufgebaut.
         AddTrees(80, 1000, 400);
         AddTrees(35, 300, 300);
 
@@ -84,9 +100,44 @@ public class TilemapGenerator : MonoBehaviour
         AddBigStones(3, 1000, 300);
         AddBigStones(2, 1000, 200);
 
+        AddMediumStonesHorizontal(4, 1000, 400);
+        AddMediumStonesHorizontal(2, 1000, 300);
+        AddMediumStonesHorizontal(1, 1000, 200);
+
+        AddMediumStonesVertical(5, 1000, 400);
+        AddMediumStonesVertical(3, 1000, 300);
+        AddMediumStonesVertical(2, 1000, 200);
+
+        AddSmallStonesToDarkGrass(10, 1000, 400);
+        AddSmallStones(10, 1000, 400);
+        AddSmallStones(6, 1000, 300);
+        AddSmallStones(3, 1000, 200);
+
+        AddBigMushrooms(10, 1000, 400);
+
+        AddMediumHerbsVertical(10, 1000, 400);
+        AddMediumHerbsVertical(6, 1000, 300);
+
+        AddSmallHerbs(10, 1000, 400);
+        AddSmallHerbs(6, 1000, 300);
+        AddSmallHerbs(3, 1000, 200);
+
         AddCrystals(10, 1000, 400);
         AddCrystals(3, 1000, 300);
-        AddCrystals(1, 1000, 200);
+        AddCrystals(2, 1000, 200);
+
+        AddMediumLoreStoneVertical(10, 1000, 400);
+        AddMediumLoreStoneVertical(2, 1000, 300);
+
+        AddBigLoreStones(4, 1000, 400);
+        AddBigLoreStones(2, 1000, 300);
+
+        AddBigTreasure(4, 1000, 400);
+        AddBigTreasure(2, 1000, 300);
+
+        AddSmallTreasure(8, 1000, 400);
+        AddSmallTreasure(3, 1000, 300);
+        AddSmallTreasure(1, 1000, 200);
     }
 
     void ResetArraysAndDeleteTiles()
@@ -1078,7 +1129,7 @@ public class TilemapGenerator : MonoBehaviour
                                         extrasArray[xValue + 1, yValue] = 201;
                                         extrasArray[xValue, yValue + 1] = 201;
                                         extrasArray[xValue + 1, yValue + 1] = 201;
-                                        tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bitStone0Sprite00;
+                                        tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigStone0Sprite00;
                                         tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
                                         tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigStone0Sprite01;
                                         tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
@@ -1121,6 +1172,312 @@ public class TilemapGenerator : MonoBehaviour
         AddBigStones(newCount, chanceModifier, area);
     }
 
+    void AddMediumStonesHorizontal(int count, int chanceModifier = 1000, int area = 400)
+    {
+        if (count == 0) return;
+        int newCount = count;
+
+        for (int yValue = yMax - 1; yValue >= 0; yValue--)
+        {
+            for (int xValue = 0; xValue < xMax; xValue++)
+            {
+                if (xValue < xMax - 1 && tileArray[xValue, yValue] == area && (tileArray[xValue + 1, yValue] == area || (tileArray[xValue + 1, yValue] == 301) || (tileArray[xValue + 1, yValue] == 201))) // Wenn dicker Grasboden auf einem Feld und dem darüber ist
+                {
+                    if (extrasArray[xValue, yValue] == 0 && extrasArray[xValue + 1, yValue] == 0)
+                    {
+                        if (Random.Range(0, chanceModifier) == 0)
+                        {
+                            extrasArray[xValue, yValue] = 203;
+                            extrasArray[xValue + 1, yValue] = 203;
+
+                            tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = mediumStone0Sprite0;
+                            tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                            tokenSlotReferenceArray[xValue + 1, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = mediumStone0Sprite1;
+                            tokenSlotReferenceArray[xValue + 1, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+
+                            newCount -= 1;
+                            goto ThisLoopEnds;
+                        }
+                    }
+                }
+            }
+        }
+    ThisLoopEnds:
+        AddMediumStonesHorizontal(newCount, chanceModifier, area);
+    }
+
+    void AddMediumStonesVertical(int count, int chanceModifier = 1000, int area = 400)
+    {
+        if (count == 0) return;
+        int newCount = count;
+
+        for (int yValue = yMax - 1; yValue >= 0; yValue--)
+        {
+            for (int xValue = 0; xValue < xMax; xValue++)
+            {
+                if (yValue < yMax - 1 && tileArray[xValue, yValue] == area && (tileArray[xValue, yValue + 1] == area || (tileArray[xValue, yValue + 1] == 301) || (tileArray[xValue, yValue + 1] == 201))) // Wenn dicker Grasboden auf einem Feld und dem darüber ist
+                {
+                    if (extrasArray[xValue, yValue] == 0 && extrasArray[xValue, yValue + 1] == 0)
+                    {
+                        if (Random.Range(0, chanceModifier) == 0)
+                        {
+                            if (Random.Range(0,2) == 0)
+                            {
+                                extrasArray[xValue, yValue] = 204;
+                                extrasArray[xValue, yValue + 1] = 204;
+
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = mediumStone1Sprite0;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = mediumStone1Sprite1;
+                                tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                            }
+                            else
+                            {
+                                extrasArray[xValue, yValue] = 205;
+                                extrasArray[xValue, yValue + 1] = 205;
+
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = mediumStone2Sprite0;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = mediumStone2Sprite1;
+                                tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                            }
+                            newCount -= 1;
+                            goto ThisLoopEnds;
+                        }
+                    }
+                }
+            }
+        }
+    ThisLoopEnds:
+        AddMediumStonesVertical(newCount, chanceModifier, area);
+    }
+
+    void AddSmallStonesToDarkGrass(int count, int chanceModifier = 1000, int area = 400)
+    {
+        if (count == 0) return;
+        int newCount = count;
+
+        for (int yValue = yMax - 1; yValue >= 0; yValue--)
+        {
+            for (int xValue = 0; xValue < xMax; xValue++)
+            {
+                if (tileArray[xValue, yValue] == area) // Wenn dicker Grasboden auf einem Feld und dem darüber ist
+                {
+                    if (extrasArray[xValue, yValue] == 0)
+                    {
+                        if (Random.Range(0, chanceModifier) == 0)
+                        {
+                            int randMod = Random.Range(0, 3);
+                            if (randMod == 0)
+                            {
+                                extrasArray[xValue, yValue] = 206;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = smallStone0Sprite;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                            }
+                            else if(randMod == 1)
+                            {
+                                extrasArray[xValue, yValue] = 207;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = smallStone1Sprite;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                            }
+                            else
+                            {
+                                extrasArray[xValue, yValue] = 208;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = smallStone2Sprite;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                            }
+                            newCount -= 1;
+                            goto ThisLoopEnds;
+                        }
+                    }
+                }
+            }
+        }
+    ThisLoopEnds:
+        AddSmallStonesToDarkGrass(newCount, chanceModifier, area);
+    }
+
+    void AddSmallStones(int count, int chanceModifier = 1000, int area = 400)
+    {
+        if (count == 0) return;
+        int newCount = count;
+
+        for (int yValue = yMax - 1; yValue >= 0; yValue--)
+        {
+            for (int xValue = 0; xValue < xMax; xValue++)
+            {
+                if (tileArray[xValue, yValue] == area) // Wenn dicker Grasboden auf einem Feld und dem darüber ist
+                {
+                    if (extrasArray[xValue, yValue] == 0)
+                    {
+                        if (Random.Range(0, chanceModifier) == 0)
+                        {
+                            int randMod = Random.Range(0, 2);
+                            if (randMod == 0)
+                            {
+                                extrasArray[xValue, yValue] = 208;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = smallStone3Sprite;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                            }
+                            else if (randMod == 1)
+                            {
+                                extrasArray[xValue, yValue] = 209;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = smallStone4Sprite;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                            }
+
+                            newCount -= 1;
+                            goto ThisLoopEnds;
+                        }
+                    }
+                }
+            }
+        }
+    ThisLoopEnds:
+        AddSmallStones(newCount, chanceModifier, area);
+    }
+
+    void AddBigMushrooms(int count, int chanceModifier = 1000, int area = 400)
+    {
+        if (count == 0) return;
+        int newCount = count;
+
+        for (int yValue = yMax - 1; yValue >= 0; yValue--)
+        {
+            for (int xValue = 0; xValue < xMax; xValue++)
+            {
+                if (yValue < yMax - 1 && xValue < xMax - 1 && tileArray[xValue, yValue] == area && (tileArray[xValue + 1, yValue] == area || (tileArray[xValue + 1, yValue] == 301) || (tileArray[xValue + 1, yValue] == 201))) // Wenn dicker Grasboden auf einem Feld und dem darüber ist
+                {
+                    if ((tileArray[xValue, yValue + 1] == area || (tileArray[xValue, yValue + 1] == 301) || (tileArray[xValue, yValue + 1] == 201)) && (tileArray[xValue + 1, yValue + 1] == area || (tileArray[xValue + 1, yValue + 1] == 301) || (tileArray[xValue + 1, yValue + 1] == 201)))
+                    {
+                        if (extrasArray[xValue, yValue] == 0 && extrasArray[xValue, yValue + 1] == 0 && extrasArray[xValue + 1, yValue] == 0 && extrasArray[xValue + 1, yValue + 1] == 0)
+                        {
+                            if (Random.Range(0, chanceModifier) == 0)
+                            {
+                                extrasArray[xValue, yValue] = 301;
+                                extrasArray[xValue + 1, yValue] = 301;
+                                extrasArray[xValue, yValue + 1] = 301;
+                                extrasArray[xValue + 1, yValue + 1] = 301;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigMushroom0Sprite00;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigMushroom0Sprite01;
+                                tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
+
+                                tokenSlotReferenceArray[xValue + 1, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigMushroom0Sprite10;
+                                tokenSlotReferenceArray[xValue + 1, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                tokenSlotReferenceArray[xValue + 1, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigMushroom0Sprite11;
+                                tokenSlotReferenceArray[xValue + 1, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
+
+                                newCount -= 1;
+
+                                goto ThisLoopEnds;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ThisLoopEnds:
+        AddBigMushrooms(newCount, chanceModifier, area);
+    }
+
+    void AddMediumHerbsVertical(int count, int chanceModifier = 1000, int area = 400)
+    {
+        if (count == 0) return;
+        int newCount = count;
+
+        for (int yValue = yMax - 1; yValue >= 0; yValue--)
+        {
+            for (int xValue = 0; xValue < xMax; xValue++)
+            {
+                if (yValue < yMax - 1 && tileArray[xValue, yValue] == area && (tileArray[xValue, yValue + 1] == area || (tileArray[xValue, yValue + 1] == 301) || (tileArray[xValue, yValue + 1] == 201))) // Wenn dicker Grasboden auf einem Feld und dem darüber ist
+                {
+                    if (extrasArray[xValue, yValue] == 0 && extrasArray[xValue, yValue + 1] == 0)
+                    {
+                        if (Random.Range(0, chanceModifier) == 0)
+                        {
+                            extrasArray[xValue, yValue] = 302;
+                            extrasArray[xValue, yValue + 1] = 302;
+
+                            tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = mediumHerb0Sprite0;
+                            tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                            tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = mediumHerb0Sprite1;
+                            tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
+
+                            newCount -= 1;
+                            goto ThisLoopEnds;
+                        }
+                    }
+                }
+            }
+        }
+    ThisLoopEnds:
+        AddMediumHerbsVertical(newCount, chanceModifier, area);
+    }
+
+    void AddSmallHerbs(int count, int chanceModifier = 1000, int area = 400)
+    {
+        if (count == 0) return;
+        int newCount = count;
+
+        for (int yValue = yMax - 1; yValue >= 0; yValue--)
+        {
+            for (int xValue = 0; xValue < xMax; xValue++)
+            {
+                if (tileArray[xValue, yValue] == area) // Wenn dicker Grasboden auf einem Feld und dem darüber ist
+                {
+                    if (extrasArray[xValue, yValue] == 0)
+                    {
+                        if (Random.Range(0, chanceModifier) == 0)
+                        {
+                            int randomMod = Random.Range(0, 6);
+
+                            switch (randomMod)
+                            {
+                                case 0:
+                                    extrasArray[xValue, yValue] = 303;
+                                    tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = smallHerb0Sprite;
+                                    tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                    break;
+                                case 1:
+                                    extrasArray[xValue, yValue] = 304;
+                                    tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = smallHerb1Sprite;
+                                    tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                    break;
+                                case 2:
+                                    extrasArray[xValue, yValue] = 305;
+                                    tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = smallHerb2Sprite;
+                                    tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                    break;
+                                case 3:
+                                    extrasArray[xValue, yValue] = 306;
+                                    tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = smallHerb3Sprite;
+                                    tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                    break;
+                                case 4:
+                                    extrasArray[xValue, yValue] = 307;
+                                    tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = smallHerb4Sprite;
+                                    tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                    break;
+                                case 5:
+                                    extrasArray[xValue, yValue] = 308;
+                                    tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = smallHerb5Sprite;
+                                    tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            newCount -= 1;
+                            goto ThisLoopEnds;
+                        }
+                    }
+                }
+            }
+        }
+    ThisLoopEnds:
+        AddSmallHerbs(newCount, chanceModifier, area);
+    }
+
     void AddCrystals(int crystalCount, int chanceModifier = 1000, int area = 400)
     {
         if (crystalCount == 0) return;
@@ -1140,16 +1497,16 @@ public class TilemapGenerator : MonoBehaviour
                             switch (treeType)
                             {
                                 case 1:
-                                    extrasArray[xValue, yValue] = 301;
-                                    extrasArray[xValue, yValue + 1] = 301;
+                                    extrasArray[xValue, yValue] = 401;
+                                    extrasArray[xValue, yValue + 1] = 401;
                                     tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = crystal0Sprite0;
                                     tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
                                     tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = crystal0Sprite1;
                                     tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
                                     break;
                                 case 2:
-                                    extrasArray[xValue, yValue] = 302;
-                                    extrasArray[xValue, yValue + 1] = 302;
+                                    extrasArray[xValue, yValue] = 402;
+                                    extrasArray[xValue, yValue + 1] = 402;
                                     tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = crystal1Sprite0;
                                     tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
                                     tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = crystal1Sprite1;
@@ -1170,5 +1527,185 @@ public class TilemapGenerator : MonoBehaviour
         }
     ThisLoopEnds:
         AddCrystals(newCrystalCount, chanceModifier, area);
+    }
+
+    void AddMediumLoreStoneVertical(int count, int chanceModifier = 1000, int area = 400)
+    {
+        if (count == 0) return;
+        int newCount = count;
+
+        for (int yValue = yMax - 1; yValue >= 0; yValue--)
+        {
+            for (int xValue = 0; xValue < xMax; xValue++)
+            {
+                if (yValue < yMax - 1 && tileArray[xValue, yValue] == area && (tileArray[xValue, yValue + 1] == area || (tileArray[xValue, yValue + 1] == 301) || (tileArray[xValue, yValue + 1] == 201))) // Wenn dicker Grasboden auf einem Feld und dem darüber ist
+                {
+                    if (extrasArray[xValue, yValue] == 0 && extrasArray[xValue, yValue + 1] == 0)
+                    {
+                        if (Random.Range(0, chanceModifier) == 0)
+                        {
+                            if (Random.Range(0, 2) == 0)
+                            {
+                                extrasArray[xValue, yValue] = 403;
+                                extrasArray[xValue, yValue + 1] = 403;
+
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = mediumLoreStone0Sprite0;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 255);
+                                tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = mediumLoreStone0Sprite1;
+                                tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 255);
+                            }
+                            else
+                            {
+                                extrasArray[xValue, yValue] = 404;
+                                extrasArray[xValue, yValue + 1] = 404;
+
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = mediumLoreStone1Sprite0;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 255);
+                                tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = mediumLoreStone1Sprite1;
+                                tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 255);
+                            }
+                            newCount -= 1;
+                            goto ThisLoopEnds;
+                        }
+                    }
+                }
+            }
+        }
+    ThisLoopEnds:
+        AddMediumLoreStoneVertical(newCount, chanceModifier, area);
+    }
+
+    void AddBigLoreStones(int count, int chanceModifier = 1000, int area = 400)
+    {
+        if (count == 0) return;
+        int newCount = count;
+
+        for (int yValue = yMax - 1; yValue >= 0; yValue--)
+        {
+            for (int xValue = 0; xValue < xMax; xValue++)
+            {
+                if (yValue < yMax - 1 && xValue < xMax - 1 && tileArray[xValue, yValue] == area && (tileArray[xValue + 1, yValue] == area || (tileArray[xValue + 1, yValue] == 301) || (tileArray[xValue + 1, yValue] == 201))) // Wenn dicker Grasboden auf einem Feld und dem darüber ist
+                {
+                    if ((tileArray[xValue, yValue + 1] == area || (tileArray[xValue, yValue + 1] == 301) || (tileArray[xValue, yValue + 1] == 201)) && (tileArray[xValue + 1, yValue + 1] == area || (tileArray[xValue + 1, yValue + 1] == 301) || (tileArray[xValue + 1, yValue + 1] == 201)))
+                    {
+                        if (extrasArray[xValue, yValue] == 0 && extrasArray[xValue, yValue + 1] == 0 && extrasArray[xValue + 1, yValue] == 0 && extrasArray[xValue + 1, yValue + 1] == 0)
+                        {
+                            if (Random.Range(0, chanceModifier) == 0)
+                            {
+                                extrasArray[xValue, yValue] = 405;
+                                extrasArray[xValue + 1, yValue] = 405;
+                                extrasArray[xValue, yValue + 1] = 405;
+                                extrasArray[xValue + 1, yValue + 1] = 405;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigLoreStone0Sprite00;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 255);
+                                tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigLoreStone0Sprite01;
+                                tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 255);
+
+                                tokenSlotReferenceArray[xValue + 1, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigLoreStone0Sprite10;
+                                tokenSlotReferenceArray[xValue + 1, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                tokenSlotReferenceArray[xValue + 1, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 255);
+                                tokenSlotReferenceArray[xValue + 1, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigLoreStone0Sprite11;
+                                tokenSlotReferenceArray[xValue + 1, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                tokenSlotReferenceArray[xValue + 1, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 255);
+
+                                newCount -= 1;
+                                goto ThisLoopEnds;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ThisLoopEnds:
+        AddBigLoreStones(newCount, chanceModifier, area);
+    }
+
+    void AddBigTreasure(int count, int chanceModifier = 1000, int area = 400)
+    {
+        if (count == 0) return;
+        int newCount = count;
+
+        for (int yValue = yMax - 1; yValue >= 0; yValue--)
+        {
+            for (int xValue = 0; xValue < xMax; xValue++)
+            {
+                if (yValue < yMax - 1 && xValue < xMax - 1 && tileArray[xValue, yValue] == area && (tileArray[xValue + 1, yValue] == area || (tileArray[xValue + 1, yValue] == 301) || (tileArray[xValue + 1, yValue] == 201))) // Wenn dicker Grasboden auf einem Feld und dem darüber ist
+                {
+                    if ((tileArray[xValue, yValue + 1] == area || (tileArray[xValue, yValue + 1] == 301) || (tileArray[xValue, yValue + 1] == 201)) && (tileArray[xValue + 1, yValue + 1] == area || (tileArray[xValue + 1, yValue + 1] == 301) || (tileArray[xValue + 1, yValue + 1] == 201)))
+                    {
+                        if (extrasArray[xValue, yValue] == 0 && extrasArray[xValue, yValue + 1] == 0 && extrasArray[xValue + 1, yValue] == 0 && extrasArray[xValue + 1, yValue + 1] == 0)
+                        {
+                            if (Random.Range(0, chanceModifier) == 0)
+                            {
+                                extrasArray[xValue, yValue] = 406;
+                                extrasArray[xValue + 1, yValue] = 406;
+                                extrasArray[xValue, yValue + 1] = 406;
+                                extrasArray[xValue + 1, yValue + 1] = 406;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigTreasure0Sprite00;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigTreasure0Sprite01;
+                                tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
+
+                                tokenSlotReferenceArray[xValue + 1, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigTreasure0Sprite10;
+                                tokenSlotReferenceArray[xValue + 1, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                tokenSlotReferenceArray[xValue + 1, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigTreasure0Sprite11;
+                                tokenSlotReferenceArray[xValue + 1, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
+
+                                newCount -= 1;
+                                goto ThisLoopEnds;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ThisLoopEnds:
+        AddBigTreasure(newCount, chanceModifier, area);
+    }
+
+    void AddSmallTreasure(int count, int chanceModifier = 1000, int area = 400)
+    {
+        if (count == 0) return;
+        int newCount = count;
+
+        for (int yValue = yMax - 1; yValue >= 0; yValue--)
+        {
+            for (int xValue = 0; xValue < xMax; xValue++)
+            {
+                if (tileArray[xValue, yValue] == area) // Wenn dicker Grasboden auf einem Feld und dem darüber ist
+                {
+                    if (extrasArray[xValue, yValue] == 0)
+                    {
+                        if (Random.Range(0, chanceModifier) == 0)
+                        {
+                            int randMod = Random.Range(0, 2);
+                            if (randMod == 0)
+                            {
+                                extrasArray[xValue, yValue] = 407;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = smallTreasure0Sprite;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                            }
+                            else if (randMod == 1)
+                            {
+                                extrasArray[xValue, yValue] = 408;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = smallTreasure1Sprite;
+                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                            }
+
+                            newCount -= 1;
+                            goto ThisLoopEnds;
+                        }
+                    }
+                }
+            }
+        }
+    ThisLoopEnds:
+        AddSmallTreasure(newCount, chanceModifier, area);
     }
 }
