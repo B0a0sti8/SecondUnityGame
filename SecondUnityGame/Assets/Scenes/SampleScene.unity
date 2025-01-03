@@ -1021,7 +1021,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &619394801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2509,6 +2509,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a6fdf2e0141aa74b9ec90e9e3175da4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tokenSlot: {fileID: 0}
   waterTile: {fileID: 21300000, guid: 2db2b61ebaed44346ab928b0cbb607e8, type: 2}
   grassLightTile: {fileID: 21300000, guid: 094848763b8b61a4a94a0b1e07cde152, type: 2}
   grassDarkTile: {fileID: 21300000, guid: 8b154008a8bc85b479101a80f9608d20, type: 2}
@@ -2531,8 +2532,34 @@ MonoBehaviour:
   threeLightGrassOneDarkGrassLeft_tile: {fileID: 21300000, guid: fd11719fb64ba9742a195fba0ec9cfa3, type: 2}
   threeDarkGrassOneLightGrassLeft_tile: {fileID: 21300000, guid: 87b70b962e941144eb24959cc359d628, type: 2}
   threeDarkGrassOneLightGrassRight_tile: {fileID: 21300000, guid: a77775a04d567d94890737e5bbadcaca, type: 2}
-  tokenSlot: {fileID: 0}
-  generationVector: {x: 30, y: 30, z: 0}
+  tree1Sprite0: {fileID: -664439852, guid: 28edaca78c6d77243bbaf16ae09cc33a, type: 3}
+  tree1Sprite1: {fileID: -672290294, guid: 28edaca78c6d77243bbaf16ae09cc33a, type: 3}
+  tree2Sprite0: {fileID: 1646835649, guid: 5d7a16e86a867a44f8170de3b4d859f7, type: 3}
+  tree2Sprite1: {fileID: 1418742672, guid: 5d7a16e86a867a44f8170de3b4d859f7, type: 3}
+  tree3Sprite0: {fileID: 1099685171, guid: 569813a320994164f871ac367811fc6d, type: 3}
+  tree3Sprite1: {fileID: -2081475655, guid: 569813a320994164f871ac367811fc6d, type: 3}
+  tree4Sprite0: {fileID: -1193202955, guid: e626b1ce2293c4c4e8874969d64dae06, type: 3}
+  tree4Sprite1: {fileID: -207920737, guid: e626b1ce2293c4c4e8874969d64dae06, type: 3}
+  tree5Sprite0: {fileID: 252706577, guid: cb2d2a4e5864281498d8116088f75822, type: 3}
+  tree5Sprite1: {fileID: 1115740780, guid: cb2d2a4e5864281498d8116088f75822, type: 3}
+  tree6Sprite0: {fileID: -4979966, guid: 3bd687dc50467a946abc71f4f5a82e7c, type: 3}
+  tree6Sprite1: {fileID: 326230516, guid: 3bd687dc50467a946abc71f4f5a82e7c, type: 3}
+  tree7Sprite0: {fileID: 1464580334, guid: 519168a24a63cd340ba42ef5a89f9b92, type: 3}
+  tree7Sprite1: {fileID: -1088960206, guid: 519168a24a63cd340ba42ef5a89f9b92, type: 3}
+  tree8Sprite0: {fileID: -1350261003, guid: 6d9c01fb6a447cc4e95c0bcdf30252e3, type: 3}
+  tree8Sprite1: {fileID: -1015056390, guid: 6d9c01fb6a447cc4e95c0bcdf30252e3, type: 3}
+  bitStone0Sprite00: {fileID: 21300000, guid: 87da79185aa279f45954528bd0d01b7f, type: 2}
+  bigStone0Sprite10: {fileID: 21300000, guid: a5e292e015fb83f4fb554772b4de3fcb, type: 2}
+  bigStone0Sprite01: {fileID: 21300000, guid: fc49fe926f7f1fb47ba4e4659430aaae, type: 2}
+  bigStone0Sprite11: {fileID: 21300000, guid: a7df6d31de5383a44ab8fd3c14f0c1bd, type: 2}
+  bitStone1Sprite00: {fileID: 21300000, guid: 4ed2cc579f79c6f44a210f4ded74d1e5, type: 2}
+  bigStone1Sprite10: {fileID: 21300000, guid: eeff6c417863cf74eaea32e30364da9e, type: 2}
+  bigStone1Sprite01: {fileID: 21300000, guid: 4a088f907eac1724a87f02d6adc005df, type: 2}
+  bigStone1Sprite11: {fileID: 21300000, guid: a9653dc18dbfbb3498048d5cdae08a54, type: 2}
+  crystal0Sprite0: {fileID: 21300000, guid: f8cbba94f732a1647bdd953d0e400d8e, type: 2}
+  crystal0Sprite1: {fileID: 21300000, guid: aa2c96b58d97510409f98b103d90e34d, type: 2}
+  crystal1Sprite0: {fileID: 21300000, guid: 9c624b1c7b1600543a0afc1f6efcd926, type: 2}
+  crystal1Sprite1: {fileID: 21300000, guid: a5d40fce9d190ef488b9f2a8bb54bead, type: 2}
 --- !u!1 &1932745376
 GameObject:
   m_ObjectHideFlags: 0

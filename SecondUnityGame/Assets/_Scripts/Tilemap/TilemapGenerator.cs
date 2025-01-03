@@ -26,21 +26,32 @@ public class TilemapGenerator : MonoBehaviour
     int[] darkGrassOffsetArray;
     #endregion
 
-    int[,] tileArray;       // Bedeutung des Arrays: 0 = Wasser, 1 = Sand, 2 = dünnes Gras, 3 = dickes Gras
+    int[,] tileArray;       // Bedeutung des Arrays: 100 = Wasser, 200 = Sand, 300 = dünnes Gras, 400 = dickes Gras
+    int[,] extrasArray;     // Bedeutung: 100 = Baum (Meistens 2 Felder Hoch), 200 = Stein / Erz
     GameObject[,] tokenSlotReferenceArray;
 
+    [SerializeField] GameObject tokenSlot;
 
-
+    // Main Tiles
     [SerializeField] Sprite waterTile, grassLightTile, grassDarkTile, sandTile;
-    [SerializeField] Sprite hallow;
 
-    [Header("BaseTiles")]
-
+    // Border Tiles
     [SerializeField] Sprite waterBottomSandTop1_tile, waterBottomSandTop2_tile, threeSandOneWaterRight_tile, threeSandOneWaterLeft_tile, threeWaterOneSandRight_tile, threeWaterOneSandLeft_tile;
     [SerializeField] Sprite sandBottomLightGrassTop1_tile, sandBottomLightGrassTop2_tile, sandBottomLightGrassTop3_tile, threeGrassLightOneSandRight_tile, threeGrassLightOneSandLeft_tile, threeSandOneGrassLightRight_tile, threeSandOneGrassLightLeft_tile;
     [SerializeField] Sprite lightGrassBottomdarkGrassTop1_tile, threeLightGrassOneDarkGrassRight_tile, threeLightGrassOneDarkGrassLeft_tile, threeDarkGrassOneLightGrassLeft_tile, threeDarkGrassOneLightGrassRight_tile;
-    [SerializeField] GameObject tokenSlot;
-    [SerializeField] Vector3 generationVector;
+
+
+    // Extras Tiles
+    [SerializeField]
+    Sprite tree1Sprite0, tree1Sprite1, tree2Sprite0, tree2Sprite1, tree3Sprite0, tree3Sprite1, tree4Sprite0, tree4Sprite1, tree5Sprite0, tree5Sprite1,
+        tree6Sprite0, tree6Sprite1, tree7Sprite0, tree7Sprite1, tree8Sprite0, tree8Sprite1;
+
+    [SerializeField] Sprite bitStone0Sprite00, bigStone0Sprite10, bigStone0Sprite01, bigStone0Sprite11, bitStone1Sprite00, bigStone1Sprite10, bigStone1Sprite01, bigStone1Sprite11;
+
+    [SerializeField] Sprite crystal0Sprite0, crystal0Sprite1, crystal1Sprite0, crystal1Sprite1;
+
+
+
 
     private void Start()
     {
@@ -64,12 +75,24 @@ public class TilemapGenerator : MonoBehaviour
         FillWaterSandBorder();
         FillSandGrassLightBorder();
         FillLightGrassDarkGrassBorder();
+
+        // BaumAnzahl Chance, Gebiet (400 = dunkles Gras, 300 = helles Gras)
+        AddTrees(80, 1000, 400);
+        AddTrees(35, 300, 300);
+
+        AddBigStones(5, 1000, 400);
+        AddBigStones(3, 1000, 300);
+        AddBigStones(2, 1000, 200);
+
+        AddCrystals(10, 1000, 400);
+        AddCrystals(3, 1000, 300);
+        AddCrystals(1, 1000, 200);
     }
 
     void ResetArraysAndDeleteTiles()
     {
         tileArray = new int[xMax, yMax];
-
+        extrasArray = new int[xMax, yMax];
 
         for (int xValue = 0; xValue < xMax; xValue++)
         {
@@ -228,6 +251,56 @@ public class TilemapGenerator : MonoBehaviour
             default:
                 break;
         }
+
+    }
+
+    public void PaintTree(Vector3 position, int type)
+    {
+        Sprite mySprite1 = waterTile;
+        Sprite mySprite2 = waterTile;
+
+        switch (type)
+        {
+            case 101:
+                mySprite1 = tree1Sprite0;
+                mySprite2 = tree1Sprite1;
+                break;
+            case 102:
+                mySprite1 = tree2Sprite0;
+                mySprite2 = tree2Sprite1;
+                break;
+            case 103:
+                mySprite1 = tree3Sprite0;
+                mySprite2 = tree3Sprite1;
+                break;
+            case 104:
+                mySprite1 = tree4Sprite0;
+                mySprite2 = tree4Sprite1;
+                break;
+            case 105:
+                mySprite1 = tree5Sprite0;
+                mySprite2 = tree5Sprite1;
+                break;
+            case 106:
+                mySprite1 = tree6Sprite0;
+                mySprite2 = tree6Sprite1;
+                break;
+            case 107:
+                mySprite1 = tree7Sprite0;
+                mySprite2 = tree7Sprite1;
+                break;
+            case 108:
+                mySprite1 = tree8Sprite0;
+                mySprite2 = tree8Sprite1;
+                break;
+            default:
+                break;
+        }
+
+        tokenSlotReferenceArray[(int)Mathf.Round(position.x), (int)Mathf.Round(position.y)].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = mySprite1;
+        tokenSlotReferenceArray[(int)Mathf.Round(position.x), (int)Mathf.Round(position.y)].transform.Find("ExtraFeature").gameObject.SetActive(true);
+        tokenSlotReferenceArray[(int)Mathf.Round(position.x), (int)Mathf.Round(position.y) + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = mySprite2;
+        tokenSlotReferenceArray[(int)Mathf.Round(position.x), (int)Mathf.Round(position.y) + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
 
     }
 
@@ -905,8 +978,197 @@ public class TilemapGenerator : MonoBehaviour
         }
     }
 
-    void AddTrees()
+    void AddTrees(int treeCount, int chanceModifier = 1000, int area = 400)
     {
+        if (treeCount == 0) return;
+        int newTreeCount = treeCount;
 
+        for (int yValue = yMax - 1; yValue >= 0; yValue--)
+        {
+            for (int xValue = 0; xValue < xMax; xValue++)
+            {
+                if (yValue < yMax - 1 && tileArray[xValue,yValue] == area && (tileArray[xValue, yValue + 1] == area || (tileArray[xValue, yValue + 1] == 301))) // Wenn dicker Grasboden auf einem Feld und dem darüber ist
+                {
+                    if (extrasArray[xValue, yValue] == 0 && extrasArray[xValue, yValue + 1] == 0)
+                    {
+                        if (Random.Range(0, chanceModifier) == 0)
+                        {
+                            int treeType = Random.Range(1,9);
+                            switch (treeType)
+                            {
+                                case 1:
+                                    PaintTree(new Vector3(xValue, yValue, 0), 101);
+                                    extrasArray[xValue, yValue] = 101;
+                                    extrasArray[xValue, yValue + 1] = 101;
+                                    break;
+                                case 2:
+                                    PaintTree(new Vector3(xValue, yValue, 0), 102);
+                                    extrasArray[xValue, yValue] = 102;
+                                    extrasArray[xValue, yValue + 1] = 102;
+                                    break;
+                                case 3:
+                                    PaintTree(new Vector3(xValue, yValue, 0), 103);
+                                    extrasArray[xValue, yValue] = 103;
+                                    extrasArray[xValue, yValue + 1] = 103;
+                                    break;
+                                case 4:
+                                    PaintTree(new Vector3(xValue, yValue, 0), 104);
+                                    extrasArray[xValue, yValue] = 104;
+                                    extrasArray[xValue, yValue + 1] = 104;
+                                    break;
+                                case 5:
+                                    PaintTree(new Vector3(xValue, yValue, 0), 105);
+                                    extrasArray[xValue, yValue] = 105;
+                                    extrasArray[xValue, yValue + 1] = 105;
+                                    break;
+                                case 6:
+                                    PaintTree(new Vector3(xValue, yValue, 0), 106);
+                                    extrasArray[xValue, yValue] = 106;
+                                    extrasArray[xValue, yValue + 1] = 106;
+                                    break;
+                                case 7:
+                                    PaintTree(new Vector3(xValue, yValue, 0), 107);
+                                    extrasArray[xValue, yValue] = 107;
+                                    extrasArray[xValue, yValue + 1] = 107;
+                                    break;
+                                case 8:
+                                    PaintTree(new Vector3(xValue, yValue, 0), 108);
+                                    extrasArray[xValue, yValue] = 108;
+                                    extrasArray[xValue, yValue + 1] = 108;
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            newTreeCount -= 1;
+
+                            goto ThisLoopEnds;
+                        }
+
+                    }
+                }
+            }
+        }
+        ThisLoopEnds:
+            AddTrees(newTreeCount, chanceModifier, area);
+    }
+
+    void AddBigStones(int count, int chanceModifier = 1000, int area = 400)
+    {
+        if (count == 0) return;
+        int newCount = count;
+
+        for (int yValue = yMax - 1; yValue >= 0; yValue--)
+        {
+            for (int xValue = 0; xValue < xMax; xValue++)
+            {
+                if (yValue < yMax - 1 && xValue < xMax - 1 && tileArray[xValue, yValue] == area && (tileArray[xValue + 1, yValue] == area || (tileArray[xValue + 1, yValue] == 301) || (tileArray[xValue + 1, yValue] == 201))) // Wenn dicker Grasboden auf einem Feld und dem darüber ist
+                {
+                    if ((tileArray[xValue, yValue + 1] == area || (tileArray[xValue, yValue + 1] == 301) || (tileArray[xValue, yValue + 1] == 201)) && (tileArray[xValue + 1, yValue + 1] == area || (tileArray[xValue + 1, yValue + 1] == 301) || (tileArray[xValue + 1, yValue + 1] == 201)))
+                    {
+                        if (extrasArray[xValue, yValue] == 0 && extrasArray[xValue, yValue + 1] == 0 && extrasArray[xValue + 1, yValue] == 0 && extrasArray[xValue + 1, yValue + 1] == 0)
+                        {
+                            if (Random.Range(0, chanceModifier) == 0)
+                            {
+                                int treeType = Random.Range(1, 3);
+                                switch (treeType)
+                                { 
+                                    case 1:
+                                        extrasArray[xValue, yValue] = 201;
+                                        extrasArray[xValue + 1, yValue] = 201;
+                                        extrasArray[xValue, yValue + 1] = 201;
+                                        extrasArray[xValue + 1, yValue + 1] = 201;
+                                        tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bitStone0Sprite00;
+                                        tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                        tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigStone0Sprite01;
+                                        tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
+
+                                        tokenSlotReferenceArray[xValue + 1, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigStone0Sprite10;
+                                        tokenSlotReferenceArray[xValue + 1, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                        tokenSlotReferenceArray[xValue + 1, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigStone0Sprite11;
+                                        tokenSlotReferenceArray[xValue + 1, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                        break;
+                                    case 2:
+                                        extrasArray[xValue, yValue] = 202;
+                                        extrasArray[xValue + 1, yValue] = 202;
+                                        extrasArray[xValue, yValue + 1] = 202;
+                                        extrasArray[xValue + 1, yValue + 1] = 202;
+                                        tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bitStone1Sprite00;
+                                        tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                        tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigStone1Sprite01;
+                                        tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
+
+                                        tokenSlotReferenceArray[xValue + 1, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigStone1Sprite10;
+                                        tokenSlotReferenceArray[xValue + 1, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                        tokenSlotReferenceArray[xValue + 1, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigStone1Sprite11;
+                                        tokenSlotReferenceArray[xValue + 1, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                newCount -= 1;
+
+                                goto ThisLoopEnds;
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+    ThisLoopEnds:
+        AddBigStones(newCount, chanceModifier, area);
+    }
+
+    void AddCrystals(int crystalCount, int chanceModifier = 1000, int area = 400)
+    {
+        if (crystalCount == 0) return;
+        int newCrystalCount = crystalCount;
+
+        for (int yValue = yMax - 1; yValue >= 0; yValue--)
+        {
+            for (int xValue = 0; xValue < xMax; xValue++)
+            {
+                if (yValue < yMax - 1 && tileArray[xValue, yValue] == area && (tileArray[xValue, yValue + 1] == area || (tileArray[xValue, yValue + 1] == 301) || (tileArray[xValue, yValue + 1] == 201))) // Wenn dicker Grasboden auf einem Feld und dem darüber ist
+                {
+                    if (extrasArray[xValue, yValue] == 0 && extrasArray[xValue, yValue + 1] == 0)
+                    {
+                        if (Random.Range(0, chanceModifier) == 0)
+                        {
+                            int treeType = Random.Range(1, 3);
+                            switch (treeType)
+                            {
+                                case 1:
+                                    extrasArray[xValue, yValue] = 301;
+                                    extrasArray[xValue, yValue + 1] = 301;
+                                    tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = crystal0Sprite0;
+                                    tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                    tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = crystal0Sprite1;
+                                    tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                    break;
+                                case 2:
+                                    extrasArray[xValue, yValue] = 302;
+                                    extrasArray[xValue, yValue + 1] = 302;
+                                    tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = crystal1Sprite0;
+                                    tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                    tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = crystal1Sprite1;
+                                    tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            newCrystalCount -= 1;
+
+                            goto ThisLoopEnds;
+                        }
+
+                    }
+                }
+            }
+        }
+    ThisLoopEnds:
+        AddCrystals(newCrystalCount, chanceModifier, area);
     }
 }
