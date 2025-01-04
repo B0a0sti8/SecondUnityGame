@@ -22,7 +22,7 @@ public class CardDragAndDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHan
     {
         myCanvasGroup.alpha = 0.3f;
         myCanvasGroup.blocksRaycasts = false;
-        MouseGrabManager.instance.myGrabbedItem = this.gameObject;
+        MouseClickAndGrabManager.instance.myGrabbedItem = this.gameObject;
     }
 
     public void OnDrag(PointerEventData eventData)

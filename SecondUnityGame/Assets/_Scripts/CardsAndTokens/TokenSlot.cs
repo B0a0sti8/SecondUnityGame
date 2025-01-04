@@ -6,27 +6,28 @@ public class TokenSlot : MonoBehaviour
 {
     public bool hasToken;
     GameObject mouseOverMarker;
-    GameObject myToken;
+    GameObject myTokenSprite;
+    CardPrefabScriptable myCardToken;
 
-    protected enum AreaType
-    {
-        water,
-        grassLight,
-        grassDark,
-        sand,
-        forest
-    }
+    //protected enum AreaType
+    //{
+    //    water,
+    //    grassLight,
+    //    grassDark,
+    //    sand,
+    //    forest
+    //}
 
-    protected AreaType myAreaType = AreaType.water;
+    //protected AreaType myAreaType = AreaType.water;
 
     void Awake()
     {
         hasToken = false;
         mouseOverMarker = transform.Find("MouseOverMarker").gameObject;
-        myToken = transform.Find("Token").gameObject;
+        myTokenSprite = transform.Find("TokenSprite").gameObject;
 
         mouseOverMarker.SetActive(false);
-        myToken.SetActive(false);
+        myTokenSprite.SetActive(false);
     }
 
     private void OnMouseEnter()
@@ -39,17 +40,29 @@ public class TokenSlot : MonoBehaviour
         mouseOverMarker.SetActive(false);
     }
 
-    public void SetToken(GameObject myNewToken)
+    public void SetToken(GameObject myNewCardToken)
     {
-        //if (MouseGrabManager.instance.myGrabbedItem == null) return;
-        //Transform myCard = MouseGrabManager.instance.myGrabbedItem.transform;
-        //if (myCard == null) return;
-        //if (hasToken) return;
+        myCardToken = myNewCardToken.GetComponent<MainCardScript>().myCardScriptable;
+        myTokenSprite.GetComponent<SpriteRenderer>().sprite = myCardToken.tokenSprite;
+        myTokenSprite.SetActive(true);
 
-        myToken.GetComponent<SpriteRenderer>().sprite = myNewToken.GetComponent<MainCardScript>().tokenPicture;
-        myToken.SetActive(true);
-
-        MouseGrabManager.instance.RemoveGrabbedItem();
+        MouseClickAndGrabManager.instance.RemoveGrabbedItem();
         hasToken = true;
     }
+
+    public void RemoveToken()
+    {
+
+    }
+
+    private void OnMouseUpAsButton()
+    {
+        Debug.Log("Schnitzel");
+
+        if (myCardToken != null)
+        {
+            MouseClickAndGrabManager.instance.TokenClicked(this.gameObject);
+        }
+    }
+
 }

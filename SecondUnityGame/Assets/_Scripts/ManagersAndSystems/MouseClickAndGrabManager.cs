@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class MouseGrabManager : MonoBehaviour
+public class MouseClickAndGrabManager : MonoBehaviour
 {
     public GameObject myGrabbedItem;
 
-    public static MouseGrabManager instance;
+    public static MouseClickAndGrabManager instance;
     Camera mainCam;
 
     private void Awake()
@@ -14,8 +14,7 @@ public class MouseGrabManager : MonoBehaviour
         mainCam = Camera.main;
     }
 
-
-    private void Update()
+    void Update()
     {
         DraggingCard();
     }
@@ -41,6 +40,13 @@ public class MouseGrabManager : MonoBehaviour
     {
         Destroy(myGrabbedItem.gameObject);
         myGrabbedItem = null;
+    }
+
+    public void TokenClicked(GameObject tokenSlotClicked)
+    {
+        tokenSlotClicked.GetComponent<SpriteRenderer>().color = new Color(255, 0, 0, 255);
+
+        GridMovementManager.instance.TokenWantsToMove((int)Mathf.Round(tokenSlotClicked.transform.position.x), (int)Mathf.Round(tokenSlotClicked.transform.position.y));
     }
 
 }

@@ -40,7 +40,6 @@ public class TilemapGenerator : MonoBehaviour
     [SerializeField] Sprite sandBottomLightGrassTop1_tile, sandBottomLightGrassTop2_tile, sandBottomLightGrassTop3_tile, threeGrassLightOneSandRight_tile, threeGrassLightOneSandLeft_tile, threeSandOneGrassLightRight_tile, threeSandOneGrassLightLeft_tile;
     [SerializeField] Sprite lightGrassBottomdarkGrassTop1_tile, threeLightGrassOneDarkGrassRight_tile, threeLightGrassOneDarkGrassLeft_tile, threeDarkGrassOneLightGrassLeft_tile, threeDarkGrassOneLightGrassRight_tile;
 
-
     // Extras Tiles
     // Trees
     [SerializeField]
@@ -138,6 +137,20 @@ public class TilemapGenerator : MonoBehaviour
         AddSmallTreasure(8, 1000, 400);
         AddSmallTreasure(3, 1000, 300);
         AddSmallTreasure(1, 1000, 200);
+
+        GridMovementManager.instance.mapMovementCostArray = new int[xMax, yMax];
+
+        for (int xValue = 0; xValue < xMax; xValue++)
+        {
+            for (int yValue = 0; yValue < yMax; yValue++)
+            {
+                if (extrasArray[xValue, yValue] != 0) GridMovementManager.instance.mapMovementCostArray[xValue, yValue] += 1; // Um an einem Baum / Stein / Sonstwas vorbei zu kommen braucht man Movement
+                if (tileArray[xValue, yValue] == 400) GridMovementManager.instance.mapMovementCostArray[xValue, yValue] += 1; // Im Dichten Gras im Landesinneren sind die Movementkosten höher
+                if (tileArray[xValue, yValue] == 100) GridMovementManager.instance.mapMovementCostArray[xValue, yValue] += 1000; // Über wasser kann man nicht laufen --> Movementkosten viel zu hoch
+            }
+        }
+
+        GridMovementManager.instance.allTokenSlots = tokenSlotReferenceArray;
     }
 
     void ResetArraysAndDeleteTiles()
@@ -1551,10 +1564,10 @@ public class TilemapGenerator : MonoBehaviour
 
                                 tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = mediumLoreStone0Sprite0;
                                 tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
-                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 255);
+                                //tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 254);
                                 tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = mediumLoreStone0Sprite1;
                                 tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
-                                tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 255);
+                                //tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 254);
                             }
                             else
                             {
@@ -1563,10 +1576,10 @@ public class TilemapGenerator : MonoBehaviour
 
                                 tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = mediumLoreStone1Sprite0;
                                 tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
-                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 255);
+                                //tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 254);
                                 tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = mediumLoreStone1Sprite1;
                                 tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
-                                tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 255);
+                                //tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 254);
                             }
                             newCount -= 1;
                             goto ThisLoopEnds;
@@ -1602,17 +1615,17 @@ public class TilemapGenerator : MonoBehaviour
                                 extrasArray[xValue + 1, yValue + 1] = 405;
                                 tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigLoreStone0Sprite00;
                                 tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
-                                tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 255);
+                                //tokenSlotReferenceArray[xValue, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 255);
                                 tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigLoreStone0Sprite01;
                                 tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
-                                tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 255);
+                                //tokenSlotReferenceArray[xValue, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 255);
 
                                 tokenSlotReferenceArray[xValue + 1, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigLoreStone0Sprite10;
                                 tokenSlotReferenceArray[xValue + 1, yValue].transform.Find("ExtraFeature").gameObject.SetActive(true);
-                                tokenSlotReferenceArray[xValue + 1, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 255);
+                                //tokenSlotReferenceArray[xValue + 1, yValue].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 255);
                                 tokenSlotReferenceArray[xValue + 1, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().sprite = bigLoreStone0Sprite11;
                                 tokenSlotReferenceArray[xValue + 1, yValue + 1].transform.Find("ExtraFeature").gameObject.SetActive(true);
-                                tokenSlotReferenceArray[xValue + 1, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 255);
+                                //tokenSlotReferenceArray[xValue + 1, yValue + 1].transform.Find("ExtraFeature").GetComponent<SpriteRenderer>().color = new Color(255, 181, 0, 255);
 
                                 newCount -= 1;
                                 goto ThisLoopEnds;
