@@ -5,25 +5,15 @@ using UnityEngine.UI;
 public class TokenSlot : MonoBehaviour
 {
     public bool hasToken;
-    GameObject mouseOverMarker;
+    GameObject mouseOverMarker, movementMarker;
     GameObject myTokenSprite;
-    CardPrefabScriptable myCardToken;
-
-    //protected enum AreaType
-    //{
-    //    water,
-    //    grassLight,
-    //    grassDark,
-    //    sand,
-    //    forest
-    //}
-
-    //protected AreaType myAreaType = AreaType.water;
+    public CardPrefabScriptable myCardToken;
 
     void Awake()
     {
         hasToken = false;
         mouseOverMarker = transform.Find("MouseOverMarker").gameObject;
+        movementMarker = transform.Find("MovementMarker").gameObject;
         myTokenSprite = transform.Find("TokenSprite").gameObject;
 
         mouseOverMarker.SetActive(false);
@@ -40,25 +30,32 @@ public class TokenSlot : MonoBehaviour
         mouseOverMarker.SetActive(false);
     }
 
-    public void SetToken(GameObject myNewCardToken)
+    public void SetToken(CardPrefabScriptable myNewCardToken, bool isPlayedAsCard = false)
     {
-        myCardToken = myNewCardToken.GetComponent<MainCardScript>().myCardScriptable;
+        myCardToken = myNewCardToken;
+        Debug.Log(myCardToken);
         myTokenSprite.GetComponent<SpriteRenderer>().sprite = myCardToken.tokenSprite;
         myTokenSprite.SetActive(true);
 
-        MouseClickAndGrabManager.instance.RemoveGrabbedItem();
+        if (isPlayedAsCard)
+        {
+            myCardToken.currentEnergy = myCardToken.maxEnergy;
+            MouseClickAndGrabManager.instance.RemoveGrabbedItem();
+        }
         hasToken = true;
     }
 
+
     public void RemoveToken()
     {
-
+        hasToken = false;
+        myCardToken = null;
+        myTokenSprite.GetComponent<SpriteRenderer>().sprite = null;
+        myTokenSprite.SetActive(false);
     }
 
     private void OnMouseUpAsButton()
     {
-        Debug.Log("Schnitzel");
-
         if (myCardToken != null)
         {
             MouseClickAndGrabManager.instance.TokenClicked(this.gameObject);

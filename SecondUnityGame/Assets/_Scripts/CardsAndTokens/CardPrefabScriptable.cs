@@ -16,6 +16,12 @@ public class CardPrefabScriptable : ScriptableObject
     public Sprite unitTypeSprite;
 
     public int maxEnergy;
+    public int currentEnergy;
     public int maxLife;
     public int attackValue;
+
+    public CardPrefabScriptable Clone()
+    {
+        return (CardPrefabScriptable)this.MemberwiseClone();
+    }
 }
