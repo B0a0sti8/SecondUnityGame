@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class CardManager : MonoBehaviour
 {
-    Dictionary<string, GameObject> allCardsInTheGame;
-
     Dictionary<int, GameObject> usedCards;
 
     Dictionary<int, GameObject> cardDeck1;
@@ -20,11 +18,15 @@ public class CardManager : MonoBehaviour
     public Sprite buildingTypeSprite;
     public Sprite specialTypeSprite;
 
+    #region Liste aller Karten
+    [SerializeField] CardPrefabScriptable Archer;
+    [SerializeField] CardPrefabScriptable Solder;
+
+    #endregion
+
     private void Awake()
     {
         instance = this;
-        allCardsInTheGame = new Dictionary<string, GameObject>();
-
     }
 
 

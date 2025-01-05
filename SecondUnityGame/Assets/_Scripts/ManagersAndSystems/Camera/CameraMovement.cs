@@ -26,8 +26,8 @@ public class CameraMovement : MonoBehaviour
         cameraSpeed = 50f;
         edgeScrollSize = 20;
 
-        targetFieldOfView = 35f;
-        foVmin = 5f; foVmax = 40f;
+        targetFieldOfView = 15f;
+        foVmin = 5f; foVmax = 30f;
     }
 
     // Update is called once per frame

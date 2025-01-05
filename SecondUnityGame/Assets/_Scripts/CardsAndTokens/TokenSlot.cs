@@ -8,6 +8,15 @@ public class TokenSlot : MonoBehaviour
     GameObject mouseOverMarker, movementMarker;
     GameObject myTokenSprite;
     public CardPrefabScriptable myCardToken;
+    float energyRegenerationElapsed=0;
+
+    public enum EnergyModificationSource
+    {
+        Moving, 
+        Fighting,
+        Gathering,
+        Regeneration
+    }
 
     void Awake()
     {
@@ -20,20 +29,32 @@ public class TokenSlot : MonoBehaviour
         myTokenSprite.SetActive(false);
     }
 
-    private void OnMouseEnter()
+    private void Update()
     {
-        mouseOverMarker.SetActive(true);
+        if (hasToken)
+        {
+            energyRegenerationElapsed += Time.deltaTime;
+            if (energyRegenerationElapsed >= 1)
+            {
+                energyRegenerationElapsed = 0;
+                ModifyTokenEnergy(1, EnergyModificationSource.Regeneration);
+            }
+        }
     }
 
-    private void OnMouseExit()
+    public void ModifyTokenEnergy(int amount, EnergyModificationSource source)
     {
-        mouseOverMarker.SetActive(false);
+        myCardToken.currentEnergy += amount;
+        Debug.Log("Removing " + amount  +" Energy: ");
+        Debug.Log("Remaining Energy: " + myCardToken.currentEnergy);
+
+        if (myCardToken.currentEnergy > myCardToken.maxEnergy) myCardToken.currentEnergy = myCardToken.maxEnergy;
+        if (myCardToken.currentEnergy < 0) myCardToken.currentEnergy = 0;
     }
 
     public void SetToken(CardPrefabScriptable myNewCardToken, bool isPlayedAsCard = false)
     {
         myCardToken = myNewCardToken;
-        Debug.Log(myCardToken);
         myTokenSprite.GetComponent<SpriteRenderer>().sprite = myCardToken.tokenSprite;
         myTokenSprite.SetActive(true);
 
@@ -61,5 +82,13 @@ public class TokenSlot : MonoBehaviour
             MouseClickAndGrabManager.instance.TokenClicked(this.gameObject);
         }
     }
+    private void OnMouseEnter()
+    {
+        mouseOverMarker.SetActive(true);
+    }
 
+    private void OnMouseExit()
+    {
+        mouseOverMarker.SetActive(false);
+    }
 }

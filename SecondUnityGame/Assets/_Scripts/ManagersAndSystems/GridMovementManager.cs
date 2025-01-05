@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +12,9 @@ public class GridMovementManager : MonoBehaviour
     public List<GameObject> activeMovementIndicators;
     public int xMax, yMax;
 
+    List<GameObject> pathMarkers = new List<GameObject>();
     List<int[]> tilesToCheck = new List<int[]>();
+    List<int[]> tilesToCheck_Pathfind = new List<int[]>();
 
     private void Awake()
     {
@@ -21,15 +24,16 @@ public class GridMovementManager : MonoBehaviour
     public void TokenWantsToMove(int xValue, int yValue)
     {
         // An die Funktion IterativeMovementCheck wird je eine Liste gegeben, die die Positionen der Felder beinhaltet, die getestet werden sollen und zusätzlich die Energy die übrig ist.
-
+        DisableMovementMarkers();
         int energyRem = allTokenSlots[xValue, yValue].GetComponent<TokenSlot>().myCardToken.currentEnergy;
         MouseClickAndGrabManager.instance.movingTokenOrigin = allTokenSlots[xValue, yValue];
 
         tilesToCheck.Clear();
-        PrepareTiles(new int[] { xValue, yValue }, energyRem);
+        tilesToCheck_Pathfind.Clear();
+        PrepareTiles(new int[] { xValue, yValue }, energyRem + mapMovementCostArray[xValue, yValue]);
 
         List<int[]> startingList = new List<int[]>();
-        startingList.Add(new int[] { xValue, yValue, energyRem });
+        startingList.Add(new int[] { xValue, yValue, energyRem + mapMovementCostArray[xValue, yValue]});
 
         IterativeMovementCheck(startingList, 0);
     }
@@ -42,8 +46,8 @@ public class GridMovementManager : MonoBehaviour
             {
                 if (Mathf.Abs(kek[0] - xVal) + Mathf.Abs(kek[1] - yVal) < energyRem)
                 {
-                    //allMovementIndicators[xVal, yVal].SetActive(true);
                     tilesToCheck.Add(new int[] { xVal, yVal });
+                    tilesToCheck_Pathfind.Add(new int[] { xVal, yVal });
                 }
             }
         }
@@ -114,5 +118,145 @@ public class GridMovementManager : MonoBehaviour
             mark.SetActive(false);
         }
         activeMovementIndicators.Clear();
+    }
+
+    public int FindEnergyCostBetweenTokenSlots(GameObject origin, GameObject destination)
+    {
+        foreach (GameObject pm in pathMarkers)
+        {
+            pm.SetActive(false);
+        }
+        pathMarkers.Clear();
+
+        List<int[]> openList = new List<int[]>();
+        int energyCost = 0;
+        int[] originPos = new int[] { (int)Mathf.Round(origin.transform.position.x), (int)Mathf.Round(origin.transform.position.y), 0};
+        int[] destinationPos = new int[] { (int)Mathf.Round(destination.transform.position.x), (int)Mathf.Round(destination.transform.position.y)};
+        int[] lowC = originPos;
+
+        int removeOrigin = 1000;
+        for (int i = 0; i < tilesToCheck_Pathfind.Count; i++)
+        {
+            int[] tile = tilesToCheck_Pathfind[i];
+            if (originPos[0] == tile[0] && originPos[1] == tile[1])
+            {
+                removeOrigin = i;
+            }
+        }
+        if (removeOrigin != 1000) tilesToCheck_Pathfind.RemoveAt(removeOrigin);
+
+        // for debugging
+        GameObject pathMarker = allTokenSlots[originPos[0], originPos[1]].transform.Find("PathfindingMarker").gameObject;
+        pathMarkers.Add(pathMarker);
+        pathMarker.SetActive(true);
+
+        bool foundDestination = false;
+        int counter = 0;
+
+        while (!foundDestination && counter < 10)
+        {
+            counter += 1;
+
+            openList = GetNeighbourTiles(lowC);
+            lowC = GiveLowestCostTile(openList, destinationPos, out bool isDestination);
+            foundDestination = isDestination;
+            if (foundDestination)
+            {
+                energyCost = lowC[2];
+            }
+        }
+        tilesToCheck_Pathfind.Clear();
+        StartCoroutine(ClearUpPathfindingMarks(0.5f));
+        return energyCost;
+    }
+
+    int[] GiveLowestCostTile(List<int[]> potTiles, int[] destPos, out bool isDestination)
+    {
+        isDestination = false;
+        int[] lowestCostTile = new int[] { 0, 0, 1000 };
+        float lowestHCost = 100;
+
+        foreach (int[] tile in potTiles)
+        {
+            float hCost = Mathf.Sqrt(Mathf.Pow(destPos[0] - tile[0], 2) + Mathf.Pow(destPos[1] - tile[1], 2)); // h cost: optimistische Abschätzung des Abstandes zwischen Tile und Destination
+            if (hCost == 0)
+            {
+                // Found Destination
+                isDestination = true;
+            }
+            int gCost = tile[2] + mapMovementCostArray[tile[0], tile[1]]; // Bisheriger, tatsächlicher Laufweg. In diesem Fall: Bisherige Energy kosten.
+            float fCost = gCost + hCost;
+
+            if (fCost < lowestCostTile[2] + lowestHCost)
+            {
+                tile[2] = gCost;
+                lowestCostTile = tile;
+                lowestHCost = hCost;
+            }
+            else if (hCost < lowestHCost) // gCost < lowestCostTile[2]
+            {
+                tile[2] = gCost;
+                lowestCostTile = tile;
+                lowestHCost = hCost;
+            }
+        }
+        GameObject pathMarker = allTokenSlots[lowestCostTile[0], lowestCostTile[1]].transform.Find("PathfindingMarker").gameObject;
+        pathMarker.SetActive(true);
+        pathMarkers.Add(pathMarker);
+
+        return lowestCostTile;
+    }
+
+    List<int[]> GetNeighbourTiles(int[] tilePos)
+    {
+        List<int> removeList = new List<int>();
+        List<int[]> neighbours = new List<int[]>();
+
+        for (int i = 0; i < tilesToCheck_Pathfind.Count; i++)
+        {
+            int[] tile = tilesToCheck_Pathfind[i];
+
+            if (tile[0] == tilePos[0] + 1 && tile[1] == tilePos[1])
+            {
+                neighbours.Add(new int[] { tilePos[0] + 1, tilePos[1], tilePos[2] });
+                removeList.Add(i);
+            }
+
+            if (tile[0] == tilePos[0] - 1 && tile[1] == tilePos[1])
+            {
+                neighbours.Add(new int[] { tilePos[0] - 1, tilePos[1], tilePos[2] });
+                removeList.Add(i);
+            }
+
+            if (tile[0] == tilePos[0] && tile[1] == tilePos[1] + 1)
+            {
+                neighbours.Add(new int[] { tilePos[0], tilePos[1] + 1, tilePos[2] });
+                removeList.Add(i);
+            }
+
+            if (tile[0] == tilePos[0] && tile[1] == tilePos[1] - 1)
+            {
+                neighbours.Add(new int[] { tilePos[0], tilePos[1] - 1, tilePos[2] });
+                removeList.Add(i);
+            }
+        }
+
+        for (int i = removeList.Count - 1; i >= 0; i--)
+        {
+            tilesToCheck_Pathfind.RemoveAt(removeList[i]);
+        }
+        removeList.Clear();
+        return neighbours;
+    }
+
+    public IEnumerator ClearUpPathfindingMarks(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        foreach (GameObject pm in pathMarkers)
+        {
+            pm.SetActive(false);
+        }
+        pathMarkers.Clear();
     }
 }

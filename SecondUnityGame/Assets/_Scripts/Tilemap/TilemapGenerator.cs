@@ -3,26 +3,26 @@ using UnityEngine;
 public class TilemapGenerator : MonoBehaviour
 {
     #region Generation-params
-    int xMax = 80;                   // Breite der Map in Anzahl der Tiles
-    int yMax = 55;                   // Höhe der Map " " " "
+    int xMax = 50;                   // Breite der Map in Anzahl der Tiles
+    int yMax = 40;                   // Höhe der Map " " " "
 
     // Die Anfangshöhe und offsets der einzelnen Streifen lassen sich im Nachhinein noch durch funktionen beeinflussen
-    int waterHeight = 3;             // Dicke des Wasserstreifens
+    int waterHeight = 2;             // Dicke des Wasserstreifens
     int[] waterHeightArray;
 
-    int sandHeight = 6;              // Dicke des Sandstreifens
+    int sandHeight = 3;              // Dicke des Sandstreifens
     int[] sandHeightArray;
-    int sandOffset = 9;              // Offset des Sandstreifens
+    int sandOffset = 8;              // Offset des Sandstreifens
     int[] sandOffsetArray;
 
-    int lightGrassHeight = 7;        // Dicke des dünnen Grasstreifens
+    int lightGrassHeight = 3;        // Dicke des dünnen Grasstreifens
     int[] lightGrassHeightArray;
-    int lightGrassOffset = 21;       // Offset des dünnen Grasstreifens
+    int lightGrassOffset = 17;       // Offset des dünnen Grasstreifens
     int[] lightGrassOffsetArray;
 
-    int darkGrassHeight = 19;        // Dicke des dicken Grasstreifens
+    int darkGrassHeight = 15;        // Dicke des dicken Grasstreifens
     int[] darkGrassHeightArray;
-    int darkGrassOffset = 38;        // Offset des dicken Grasstreifens
+    int darkGrassOffset = 29;        // Offset des dicken Grasstreifens
     int[] darkGrassOffsetArray;
     #endregion
 
@@ -92,51 +92,51 @@ public class TilemapGenerator : MonoBehaviour
         // Fügt der Karte Details hinzu
         // BaumAnzahl, Chance, Gebiet (400 = dunkles Gras, 300 = helles Gras)
         // Alle anderen Add funktionen sind gleich aufgebaut.
-        AddTrees(80, 1000, 400);
-        AddTrees(35, 300, 300);
+        AddTrees(45, 800, 400);
+        AddTrees(20, 300, 300);
 
-        AddBigStones(5, 1000, 400);
-        AddBigStones(3, 1000, 300);
-        AddBigStones(2, 1000, 200);
+        AddBigStones(3, 800, 400);
+        AddBigStones(2, 800, 300);
+        AddBigStones(1, 800, 200);
 
-        AddMediumStonesHorizontal(4, 1000, 400);
-        AddMediumStonesHorizontal(2, 1000, 300);
-        AddMediumStonesHorizontal(1, 1000, 200);
+        AddMediumStonesHorizontal(3, 800, 400);
+        AddMediumStonesHorizontal(2, 800, 300);
+        AddMediumStonesHorizontal(1, 800, 200);
 
-        AddMediumStonesVertical(5, 1000, 400);
-        AddMediumStonesVertical(3, 1000, 300);
-        AddMediumStonesVertical(2, 1000, 200);
+        AddMediumStonesVertical(2, 800, 400);
+        AddMediumStonesVertical(2, 800, 300);
+        AddMediumStonesVertical(1, 800, 200);
 
-        AddSmallStonesToDarkGrass(10, 1000, 400);
-        AddSmallStones(10, 1000, 400);
-        AddSmallStones(6, 1000, 300);
-        AddSmallStones(3, 1000, 200);
+        AddSmallStonesToDarkGrass(7, 800, 400);
+        AddSmallStones(7, 800, 400);
+        AddSmallStones(4, 800, 300);
+        AddSmallStones(2, 800, 200);
 
-        AddBigMushrooms(10, 1000, 400);
+        AddBigMushrooms(3, 800, 400);
 
-        AddMediumHerbsVertical(10, 1000, 400);
-        AddMediumHerbsVertical(6, 1000, 300);
+        AddMediumHerbsVertical(6, 800, 400);
+        AddMediumHerbsVertical(3, 800, 300);
 
-        AddSmallHerbs(10, 1000, 400);
-        AddSmallHerbs(6, 1000, 300);
-        AddSmallHerbs(3, 1000, 200);
+        AddSmallHerbs(8, 800, 400);
+        AddSmallHerbs(5, 800, 300);
+        AddSmallHerbs(2, 800, 200);
 
-        AddCrystals(10, 1000, 400);
-        AddCrystals(3, 1000, 300);
-        AddCrystals(2, 1000, 200);
+        AddCrystals(6, 800, 400);
+        AddCrystals(2, 800, 300);
+        AddCrystals(1, 800, 200);
 
-        AddMediumLoreStoneVertical(10, 1000, 400);
-        AddMediumLoreStoneVertical(2, 1000, 300);
+        AddMediumLoreStoneVertical(4, 800, 400);
+        AddMediumLoreStoneVertical(2, 800, 300);
 
-        AddBigLoreStones(4, 1000, 400);
-        AddBigLoreStones(2, 1000, 300);
+        AddBigLoreStones(2, 800, 400);
+        AddBigLoreStones(1, 800, 300);
 
-        AddBigTreasure(4, 1000, 400);
-        AddBigTreasure(2, 1000, 300);
+        AddBigTreasure(2, 800, 400);
+        AddBigTreasure(1, 800, 300);
 
-        AddSmallTreasure(8, 1000, 400);
-        AddSmallTreasure(3, 1000, 300);
-        AddSmallTreasure(1, 1000, 200);
+        AddSmallTreasure(5, 800, 400);
+        AddSmallTreasure(3, 800, 300);
+        AddSmallTreasure(1, 800, 200);
 
         GridMovementManager.instance.mapMovementCostArray = new int[xMax, yMax];
         GridMovementManager.instance.allMovementIndicators = new GameObject[xMax, yMax];
