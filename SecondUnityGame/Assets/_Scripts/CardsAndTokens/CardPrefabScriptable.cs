@@ -16,7 +16,6 @@ public class CardPrefabScriptable : ScriptableObject
     public Sprite unitTypeSprite;
 
     public int maxEnergy;
-    public int currentEnergy;
     public int maxLife;
     public int attackValue;
 

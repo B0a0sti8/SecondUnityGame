@@ -38,15 +38,18 @@ public class HandCardScript : MonoBehaviour
         }
     }
 
-    public void AddCard(GameObject newCard)
+    public bool AddCard(GameObject newCard)
     {
         FetchAllCards();
-        if (myHandCards.Count >= maximumHandCards) return;
+        if (myHandCards.Count >= maximumHandCards) return false;
+        else
+        {
+            GameObject myNewCard = Instantiate(newCard, transform);
+            myHandCards.Add(myNewCard);
 
-        GameObject myNewCard = Instantiate(newCard, transform);
-        myHandCards.Add(myNewCard);
-
-        ScaleUIBasedOnCardCount();
+            ScaleUIBasedOnCardCount();
+            return true;
+        }
     }
 
     public void RemoveCard(GameObject oldCard)
@@ -57,20 +60,5 @@ public class HandCardScript : MonoBehaviour
         myHandCards.Remove(oldCard);
 
         ScaleUIBasedOnCardCount();
-    }
-
-
-    public void AddSimpleCardForDebugging()
-    {
-        AddCard(mySimpleCardPrefab);
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("Spacebar pressed...");
-            AddSimpleCardForDebugging();
-        }
     }
 }

@@ -25,7 +25,7 @@ public class GridMovementManager : MonoBehaviour
     {
         // An die Funktion IterativeMovementCheck wird je eine Liste gegeben, die die Positionen der Felder beinhaltet, die getestet werden sollen und zusätzlich die Energy die übrig ist.
         DisableMovementMarkers();
-        int energyRem = allTokenSlots[xValue, yValue].GetComponent<TokenSlot>().myCardToken.currentEnergy;
+        int energyRem = allTokenSlots[xValue, yValue].GetComponent<TokenSlot>().currentEnergy;
         MouseClickAndGrabManager.instance.movingTokenOrigin = allTokenSlots[xValue, yValue];
 
         tilesToCheck.Clear();

@@ -36,23 +36,40 @@ public class MainCardScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        FetchFields();
+        LoadDataFromScriptableObject();
+        UpdateCardUI();
+    }
+
+    public void FetchFields()
+    {
         myCardImage = transform.Find("Content").Find("Picture").GetComponent<Image>();
         myCardTypeImage = transform.Find("Content").Find("Type").GetComponent<Image>();
         myTitleField = transform.Find("Content").Find("Name").GetComponent<TextMeshProUGUI>();
         myDescriptionField = transform.Find("Content").Find("Description").GetComponent<TextMeshProUGUI>();
         myLifeText = transform.Find("Content").Find("Life").GetComponent<TextMeshProUGUI>();
         myEnergyText = transform.Find("Content").Find("Energy").GetComponent<TextMeshProUGUI>();
-
-        LoadDataFromScriptableObject();
-        UpdateCardUI();
     }
 
-    void UpdateCardUI()
+    public void UpdateCardUI()
     {
+        LoadDataFromScriptableObject(); 
         myTitleField.text = cardName;
         myDescriptionField.text = cardDescription;
-        myLifeText.text = currentCardLife.ToString() + " / " + maxCardLife.ToString();
-        myEnergyText.text = currentCardEnergy.ToString() + " / " + maxCardEnergy.ToString();
+        myLifeText.text = maxCardLife.ToString();
+        myEnergyText.text = maxCardEnergy.ToString();
+
+        myCardTypeImage.sprite = typePicture;
+        myCardImage.sprite = cardPicture;
+    }
+
+    public void UpdateCardUI(int currentLife, int currenEnergy)
+    {
+        LoadDataFromScriptableObject();
+        myTitleField.text = cardName;
+        myDescriptionField.text = cardDescription;
+        myLifeText.text = currentLife.ToString() + " / " + maxCardLife.ToString();
+        myEnergyText.text = currenEnergy.ToString() + " / " + maxCardEnergy.ToString();
 
         myCardTypeImage.sprite = typePicture;
         myCardImage.sprite = cardPicture;
@@ -69,9 +86,7 @@ public class MainCardScript : MonoBehaviour
         typePicture = myCardScriptable.unitTypeSprite;
 
         maxCardLife = myCardScriptable.maxLife;
-        currentCardLife = maxCardLife;
         maxCardEnergy = myCardScriptable.maxEnergy;
-        currentCardEnergy = maxCardEnergy;
 
         woodCost = myCardScriptable.woodCost;
         stoneCost = myCardScriptable.stoneCost;

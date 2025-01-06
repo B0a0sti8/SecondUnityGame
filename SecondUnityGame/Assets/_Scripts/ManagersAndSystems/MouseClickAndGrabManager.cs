@@ -34,6 +34,7 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
         if (myTokSlot != null && myTokSlot.hasToken == false)
         {
+            CardManager.instance.AddCardToDiscardPile(myGrabbedItem.GetComponent<MainCardScript>().myCardScriptable);
             myTokSlot.SetToken(myGrabbedItem.GetComponent<MainCardScript>().myCardScriptable, true);
         }
         isDraggingCard = false;

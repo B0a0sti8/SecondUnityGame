@@ -10,6 +10,9 @@ public class TokenSlot : MonoBehaviour
     public CardPrefabScriptable myCardToken;
     float energyRegenerationElapsed=0;
 
+    public int currentEnergy;
+    public int currentLife;
+
     public enum EnergyModificationSource
     {
         Moving, 
@@ -44,12 +47,12 @@ public class TokenSlot : MonoBehaviour
 
     public void ModifyTokenEnergy(int amount, EnergyModificationSource source)
     {
-        myCardToken.currentEnergy += amount;
-        Debug.Log("Removing " + amount  +" Energy: ");
-        Debug.Log("Remaining Energy: " + myCardToken.currentEnergy);
+        currentEnergy += amount;
+        //Debug.Log("Removing " + amount  +" Energy: ");
+        //Debug.Log("Remaining Energy: " + currentEnergy);
 
-        if (myCardToken.currentEnergy > myCardToken.maxEnergy) myCardToken.currentEnergy = myCardToken.maxEnergy;
-        if (myCardToken.currentEnergy < 0) myCardToken.currentEnergy = 0;
+        if (currentEnergy > myCardToken.maxEnergy) currentEnergy = myCardToken.maxEnergy;
+        if (currentEnergy < 0) currentEnergy = 0;
     }
 
     public void SetToken(CardPrefabScriptable myNewCardToken, bool isPlayedAsCard = false)
@@ -60,7 +63,7 @@ public class TokenSlot : MonoBehaviour
 
         if (isPlayedAsCard)
         {
-            myCardToken.currentEnergy = myCardToken.maxEnergy;
+            currentEnergy = myCardToken.maxEnergy;
             MouseClickAndGrabManager.instance.RemoveGrabbedItem();
         }
         hasToken = true;
@@ -85,10 +88,18 @@ public class TokenSlot : MonoBehaviour
     private void OnMouseEnter()
     {
         mouseOverMarker.SetActive(true);
+        if (hasToken)
+        {
+            CardManager.instance.previewCard.GetComponent<MainCardScript>().myCardScriptable = this.myCardToken;
+            CardManager.instance.previewCard.SetActive(true);
+            CardManager.instance.previewCard.GetComponent<MainCardScript>().FetchFields();
+            CardManager.instance.previewCard.GetComponent<MainCardScript>().UpdateCardUI(currentLife, currentEnergy);
+        }
     }
 
     private void OnMouseExit()
     {
         mouseOverMarker.SetActive(false);
+        if (CardManager.instance.previewCard.activeSelf) CardManager.instance.previewCard.SetActive(false);
     }
 }
