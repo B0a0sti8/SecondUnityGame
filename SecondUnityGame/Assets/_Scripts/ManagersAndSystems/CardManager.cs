@@ -9,6 +9,7 @@ public class CardManager : MonoBehaviour
 
     // Card Management Stuff
     public GameObject previewCard;
+    [SerializeField] GameObject deckAndDiscardPileViewer;
 
     [SerializeField] GameObject lastDiscardedCard;
     List<CardPrefabScriptable> discardPile = new List<CardPrefabScriptable>();
@@ -39,6 +40,11 @@ public class CardManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        deckAndDiscardPileViewer.SetActive(false);
+        for (int i = 0; i < deckAndDiscardPileViewer.transform.Find("Content").childCount; i++)
+        {
+            deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).gameObject.SetActive(false);
+        }
     }
 
     private void Start()
@@ -123,6 +129,64 @@ public class CardManager : MonoBehaviour
         UpdateDeckUI(decknumber);
     }
 
+    public void ShowAndHideDiscardPile()
+    {
+        if (!deckAndDiscardPileViewer.activeSelf)
+        {
+            deckAndDiscardPileViewer.SetActive(true);
+
+            for (int i = 0; i < deckAndDiscardPileViewer.transform.Find("Content").childCount; i++)
+            {
+                deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).gameObject.SetActive(false);
+            }
+
+            for (int i = 0; i < discardPile.Count; i++)
+            {
+                deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).gameObject.SetActive(true);
+                deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).GetComponent<MainCardScript>().myCardScriptable = discardPile[i];
+            }
+        }
+        else
+        {
+            deckAndDiscardPileViewer.SetActive(false);
+        }
+    }
+
+    public void ShowAndHideDeck(int deckNumber)
+    {
+        if (!deckAndDiscardPileViewer.activeSelf)
+        {
+            deckAndDiscardPileViewer.SetActive(true);
+
+            List<CardPrefabScriptable> shuffledDeck = allDeckList[deckNumber];
+            int maxCount = shuffledDeck.Count;
+
+            for (int k = 0; k < maxCount - 1; k++)
+            {
+                var myRandom = new System.Random(Random.Range(0, 1000));
+                var r = myRandom.Next(k, maxCount);
+                var tmp = shuffledDeck[k];
+                shuffledDeck[k] = shuffledDeck[r];
+                shuffledDeck[r] = tmp;
+            }
+
+            for (int i = 0; i < deckAndDiscardPileViewer.transform.Find("Content").childCount; i++)
+            {
+                deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).gameObject.SetActive(false);
+            }
+
+            for (int i = 0; i < allDeckList[deckNumber].Count; i++)
+            {
+                deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).gameObject.SetActive(true);
+                deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).GetComponent<MainCardScript>().myCardScriptable = shuffledDeck[i];
+            }
+        }
+        else
+        {
+            deckAndDiscardPileViewer.SetActive(false);
+        }
+    }
+
     void UpdateDeckUI(int decknumber)
     {
         Debug.Log("Updating UI for Deck nr: " + decknumber);
@@ -154,11 +218,14 @@ public class CardManager : MonoBehaviour
             Debug.Log("Discard Pile newest card: " + discardPile[discardPile.Count - 1]);
             lastDiscardedCard.GetComponent<MainCardScript>().myCardScriptable = discardPile[discardPile.Count - 1];
             lastDiscardedCard.GetComponent<MainCardScript>().UpdateCardUI();
+            lastDiscardedCard.GetComponent<CanvasGroup>().blocksRaycasts = false;
+
+            discardPileImage.texture = deckBackImages[Mathf.Clamp(discardPile.Count, 0, 5)];
+            discardPileImage.gameObject.SetActive(true);
 
             if (discardPile.Count >= 2)
             {
-                discardPileImage.texture = deckBackImages[Mathf.Clamp(discardPile.Count, 0, 5)];
-                discardPileImage.gameObject.SetActive(true);
+
             }
         }
     }

@@ -1,5 +1,6 @@
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -39,15 +40,16 @@ public class CameraMovement : MonoBehaviour
 
     void HandleCameraZoom()
     {
-        if (Input.mouseScrollDelta.y != 0)
-        {
-            if (Input.mouseScrollDelta.y > 0) targetFieldOfView += -1;
-            if (Input.mouseScrollDelta.y < 0) targetFieldOfView += 1;
+        if (Input.mouseScrollDelta.y == 0) return;
+        if (EventSystem.current.IsPointerOverGameObject()) return;
 
-            targetFieldOfView = Mathf.Clamp(targetFieldOfView, foVmin, foVmax);
+        if (Input.mouseScrollDelta.y > 0) targetFieldOfView += -1;
+        if (Input.mouseScrollDelta.y < 0) targetFieldOfView += 1;
 
-            cinemachineCamera.Lens.OrthographicSize = targetFieldOfView;
-        }
+        targetFieldOfView = Mathf.Clamp(targetFieldOfView, foVmin, foVmax);
+
+        cinemachineCamera.Lens.OrthographicSize = targetFieldOfView;
+
     }
 
     void HandleCameraMovement()
