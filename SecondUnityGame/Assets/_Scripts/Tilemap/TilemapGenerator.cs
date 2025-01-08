@@ -141,6 +141,10 @@ public class TilemapGenerator : MonoBehaviour
         GridMovementManager.instance.mapMovementCostArray = new int[xMax, yMax];
         GridMovementManager.instance.allMovementIndicators = new GameObject[xMax, yMax];
 
+        EnemyAiManager.instance.tileArray = tileArray;
+        EnemyAiManager.instance.gridXMax = xMax;
+        EnemyAiManager.instance.gridYMax = yMax;
+
         for (int xValue = 0; xValue < xMax; xValue++)
         {
             for (int yValue = 0; yValue < yMax; yValue++)

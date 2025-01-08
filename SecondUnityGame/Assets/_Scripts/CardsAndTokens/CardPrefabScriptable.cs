@@ -19,6 +19,8 @@ public class CardPrefabScriptable : ScriptableObject
     public int maxLife;
     public int attackValue;
 
+    public bool isEnemy = false;
+
     public CardPrefabScriptable Clone()
     {
         return (CardPrefabScriptable)this.MemberwiseClone();

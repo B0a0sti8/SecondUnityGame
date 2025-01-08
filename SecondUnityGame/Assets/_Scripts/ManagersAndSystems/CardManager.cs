@@ -163,8 +163,7 @@ public class CardManager : MonoBehaviour
 
             for (int k = 0; k < maxCount - 1; k++)
             {
-                var myRandom = new System.Random(Random.Range(0, 1000));
-                var r = myRandom.Next(k, maxCount);
+                var r = Random.Range(k, maxCount);
                 var tmp = shuffledDeck[k];
                 shuffledDeck[k] = shuffledDeck[r];
                 shuffledDeck[r] = tmp;
@@ -179,6 +178,8 @@ public class CardManager : MonoBehaviour
             {
                 deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).gameObject.SetActive(true);
                 deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).GetComponent<MainCardScript>().myCardScriptable = shuffledDeck[i];
+                deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).GetComponent<MainCardScript>().FetchFields();
+                deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).GetComponent<MainCardScript>().UpdateCardUI();
             }
         }
         else
@@ -189,7 +190,6 @@ public class CardManager : MonoBehaviour
 
     void UpdateDeckUI(int decknumber)
     {
-        Debug.Log("Updating UI for Deck nr: " + decknumber);
         if (allDeckList[decknumber].Count == 0)
         {
             allDeckImages[decknumber].gameObject.SetActive(false);
