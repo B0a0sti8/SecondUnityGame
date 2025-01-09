@@ -10,6 +10,8 @@ public class TokenSlot : MonoBehaviour
     public CardPrefabScriptable myCardToken;
     float energyRegenerationElapsed=0;
 
+    RessourceManager.ressourceType myResType;
+
     public int currentEnergy;
     public int currentLife;
 
@@ -34,6 +36,12 @@ public class TokenSlot : MonoBehaviour
 
     private void Update()
     {
+        EnergyRegeneration();
+        TryGatherRessources();
+    }
+
+    void EnergyRegeneration()
+    {
         if (hasToken)
         {
             energyRegenerationElapsed += Time.deltaTime;
@@ -45,17 +53,60 @@ public class TokenSlot : MonoBehaviour
         }
     }
 
+    public void SetRessource(RessourceManager.ressourceType newResType)
+    {
+        myResType = newResType;
+    }
+
+    void TryGatherRessources()
+    {
+        if (currentEnergy < 10) return;
+        if (!(hasToken && myCardToken.isEnemy == false && (myCardToken.unitTypeString == "Military Unit" || myCardToken.unitTypeString == "Building Unit"))) return;
+        if (myResType == RessourceManager.ressourceType.none) return;
+
+        int myAmount = 1;             // könnte später durch Modifikatoren geändert werden
+        if (myCardToken.unitTypeString == "Building Unit") myAmount = 2; // manche Einheiten sammeln doppelt so schnell
+
+        // Könnte man auch deutlich leichter machen ( einfach resType gathern...). So hat man später aber mehr Freiheiten. Z.b. chance auf reagenzien, wenn man Kräuter farmt.
+        switch (myResType)
+        {
+            case RessourceManager.ressourceType.wood:
+                RessourceManager.instance.GatherRessource(myResType, myAmount); 
+                break;
+            case RessourceManager.ressourceType.stone:
+                RessourceManager.instance.GatherRessource(myResType, myAmount);
+                break;
+            case RessourceManager.ressourceType.food:
+                RessourceManager.instance.GatherRessource(myResType, myAmount);
+                break;
+            case RessourceManager.ressourceType.reagents:
+                RessourceManager.instance.GatherRessource(myResType, myAmount);
+                break;
+            case RessourceManager.ressourceType.knowledge:
+                RessourceManager.instance.GatherRessource(myResType, myAmount);
+                break;
+            case RessourceManager.ressourceType.coin:
+                RessourceManager.instance.GatherRessource(myResType, myAmount);
+                break;
+            default:
+                break;
+        }
+
+        ModifyTokenEnergy(-5, EnergyModificationSource.Gathering);
+    }
+
     public void ModifyTokenEnergy(int amount, EnergyModificationSource source)
     {
         currentEnergy += amount;
         //Debug.Log("Removing " + amount  +" Energy: ");
-        //Debug.Log("Remaining Energy: " + currentEnergy);
+
 
         if (currentEnergy > myCardToken.maxEnergy) currentEnergy = myCardToken.maxEnergy;
         if (currentEnergy < 0) currentEnergy = 0;
+        //Debug.Log("Remaining Energy: " + currentEnergy);
     }
 
-    public void SetToken(CardPrefabScriptable myNewCardToken, bool isPlayedAsCard = false)
+    public void SetToken(CardPrefabScriptable myNewCardToken, bool isPlayedAsCard = false, int remainingEnergy = 1)
     {
         myCardToken = myNewCardToken;
         myTokenSprite.GetComponent<SpriteRenderer>().sprite = myCardToken.tokenSprite;
@@ -66,9 +117,12 @@ public class TokenSlot : MonoBehaviour
             currentEnergy = myCardToken.maxEnergy;
             MouseClickAndGrabManager.instance.RemoveGrabbedItem();
         }
+        else
+        {
+            ModifyTokenEnergy(remainingEnergy, EnergyModificationSource.Moving);
+        }
         hasToken = true;
     }
-
 
     public void RemoveToken()
     {
@@ -85,6 +139,7 @@ public class TokenSlot : MonoBehaviour
             MouseClickAndGrabManager.instance.TokenClicked(this.gameObject);
         }
     }
+
     private void OnMouseEnter()
     {
         mouseOverMarker.SetActive(true);

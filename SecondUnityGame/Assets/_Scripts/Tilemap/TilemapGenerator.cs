@@ -27,7 +27,7 @@ public class TilemapGenerator : MonoBehaviour
     #endregion
 
     int[,] tileArray;       // Bedeutung des Arrays: 100 = Wasser, 200 = Sand, 300 = dünnes Gras, 400 = dickes Gras
-    int[,] extrasArray;     // Bedeutung: 100 = Baum (Meistens 2 Felder Hoch), 200 = Stein / Erz
+    int[,] extrasArray;     // Bedeutung: 10x = Baum (Meistens 2 Felder Hoch), 20x = Stein / Erz, 30x = Kräuter, 40x = Kristall / Lorestone / Treasure 
     GameObject[,] tokenSlotReferenceArray;
 
     [SerializeField] GameObject tokenSlot;
@@ -138,8 +138,9 @@ public class TilemapGenerator : MonoBehaviour
         AddSmallTreasure(3, 800, 300);
         AddSmallTreasure(1, 800, 200);
 
-        GridMovementManager.instance.mapMovementCostArray = new int[xMax, yMax];
-        GridMovementManager.instance.allMovementIndicators = new GameObject[xMax, yMax];
+        GridAndMovementManager.instance.mapMovementCostArray = new int[xMax, yMax];
+        GridAndMovementManager.instance.allMovementIndicators = new GameObject[xMax, yMax];
+        GridAndMovementManager.instance.ressourceMap = extrasArray;
 
         EnemyAiManager.instance.tileArray = tileArray;
         EnemyAiManager.instance.gridXMax = xMax;
@@ -149,10 +150,10 @@ public class TilemapGenerator : MonoBehaviour
         {
             for (int yValue = 0; yValue < yMax; yValue++)
             {
-                GridMovementManager.instance.mapMovementCostArray[xValue, yValue] += 1; // Jedes Feld hat kosten von mindestens 1
-                if (extrasArray[xValue, yValue] != 0) GridMovementManager.instance.mapMovementCostArray[xValue, yValue] += 1; // Um an einem Baum / Stein / Sonstwas vorbei zu kommen braucht man Movement
-                if (tileArray[xValue, yValue] == 400) GridMovementManager.instance.mapMovementCostArray[xValue, yValue] += 1; // Im Dichten Gras im Landesinneren sind die Movementkosten höher
-                if (tileArray[xValue, yValue] == 100) GridMovementManager.instance.mapMovementCostArray[xValue, yValue] += 1000; // Über wasser kann man nicht laufen --> Movementkosten viel zu hoch
+                GridAndMovementManager.instance.mapMovementCostArray[xValue, yValue] += 1; // Jedes Feld hat kosten von mindestens 1
+                if (extrasArray[xValue, yValue] != 0) GridAndMovementManager.instance.mapMovementCostArray[xValue, yValue] += 1; // Um an einem Baum / Stein / Sonstwas vorbei zu kommen braucht man Movement
+                if (tileArray[xValue, yValue] == 400) GridAndMovementManager.instance.mapMovementCostArray[xValue, yValue] += 1; // Im Dichten Gras im Landesinneren sind die Movementkosten höher
+                if (tileArray[xValue, yValue] == 100) GridAndMovementManager.instance.mapMovementCostArray[xValue, yValue] += 1000; // Über wasser kann man nicht laufen --> Movementkosten viel zu hoch
             }
         }
 
@@ -160,12 +161,13 @@ public class TilemapGenerator : MonoBehaviour
         {
             for (int yVal = 0; yVal < yMax; yVal++)
             {
-                GridMovementManager.instance.allMovementIndicators[xVal, yVal] = tokenSlotReferenceArray[xVal, yVal].transform.Find("MovementMarker").gameObject;
+                GridAndMovementManager.instance.allMovementIndicators[xVal, yVal] = tokenSlotReferenceArray[xVal, yVal].transform.Find("MovementMarker").gameObject;
             }
         }
 
-        GridMovementManager.instance.allTokenSlots = tokenSlotReferenceArray;
-        GridMovementManager.instance.xMax = xMax; GridMovementManager.instance.yMax = yMax;
+        GridAndMovementManager.instance.allTokenSlots = tokenSlotReferenceArray;
+        GridAndMovementManager.instance.xMax = xMax; GridAndMovementManager.instance.yMax = yMax;
+        GridAndMovementManager.instance.SetRessourceTypes();
     }
 
     void ResetArraysAndDeleteTiles()

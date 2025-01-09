@@ -5,7 +5,7 @@ public class CardPrefabScriptable : ScriptableObject
 {
     public string cardName;
     public string description;
-    public string unitTypeString;
+    public string unitTypeString; // "Military Unit", "Building", "Building Unit" oder "Special"
 
     public int woodCost;
     public int stoneCost;

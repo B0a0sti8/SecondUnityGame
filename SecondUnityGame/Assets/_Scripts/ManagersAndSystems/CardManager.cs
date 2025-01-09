@@ -144,6 +144,8 @@ public class CardManager : MonoBehaviour
             {
                 deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).gameObject.SetActive(true);
                 deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).GetComponent<MainCardScript>().myCardScriptable = discardPile[i];
+                deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).GetComponent<MainCardScript>().FetchFields();
+                deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).GetComponent<MainCardScript>().UpdateCardUI();
             }
         }
         else

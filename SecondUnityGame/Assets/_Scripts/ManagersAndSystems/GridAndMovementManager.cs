@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridMovementManager : MonoBehaviour
+public class GridAndMovementManager : MonoBehaviour
 {
-    public static GridMovementManager instance;
+    public static GridAndMovementManager instance;
+
+    public int[,] ressourceMap;
 
     public int[,] mapMovementCostArray;
     public GameObject[,] allTokenSlots;
@@ -21,6 +23,28 @@ public class GridMovementManager : MonoBehaviour
         instance = this;
     }
 
+    public void SetRessourceTypes()
+    {
+        for (int xPos = 0; xPos < xMax; xPos++)
+        {
+            for (int yPos = 0; yPos < yMax; yPos++)
+            {
+                int tile = ressourceMap[xPos, yPos];
+                RessourceManager.ressourceType resType = RessourceManager.ressourceType.none;
+
+                if (tile >= 101 && tile < 109) resType = RessourceManager.ressourceType.wood;               // baum
+                else if (tile >= 201 && tile < 210) resType = RessourceManager.ressourceType.stone;         // stein
+                else if (tile >= 301 && tile < 310) resType = RessourceManager.ressourceType.food;          // Kraut
+                else if (tile == 401 || tile == 402) resType = RessourceManager.ressourceType.reagents;     // Kristall
+                else if (tile >= 403 && tile < 406) resType = RessourceManager.ressourceType.knowledge;     // Runenstein
+                else if (tile >= 406 && tile < 409) resType = RessourceManager.ressourceType.coin;     // Schatz
+                else resType = RessourceManager.ressourceType.none;
+
+                allTokenSlots[xPos, yPos].GetComponent<TokenSlot>().SetRessource(resType);
+            }
+        }
+    }
+
     public void TokenWantsToMove(int xValue, int yValue)
     {
         // An die Funktion IterativeMovementCheck wird je eine Liste gegeben, die die Positionen der Felder beinhaltet, die getestet werden sollen und zusätzlich die Energy die übrig ist.
@@ -28,9 +52,11 @@ public class GridMovementManager : MonoBehaviour
         int energyRem = allTokenSlots[xValue, yValue].GetComponent<TokenSlot>().currentEnergy;
         MouseClickAndGrabManager.instance.movingTokenOrigin = allTokenSlots[xValue, yValue];
 
+        Debug.Log("Energy: " + energyRem);
+
         tilesToCheck.Clear();
         tilesToCheck_Pathfind.Clear();
-        PrepareTiles(new int[] { xValue, yValue }, energyRem + mapMovementCostArray[xValue, yValue]);
+        PrepareTilesForMovement(new int[] { xValue, yValue }, energyRem + mapMovementCostArray[xValue, yValue]);
 
         List<int[]> startingList = new List<int[]>();
         startingList.Add(new int[] { xValue, yValue, energyRem + mapMovementCostArray[xValue, yValue]});
@@ -38,7 +64,7 @@ public class GridMovementManager : MonoBehaviour
         IterativeMovementCheck(startingList, 0);
     }
 
-    void PrepareTiles(int[] kek, int energyRem)
+    void PrepareTilesForMovement(int[] kek, int energyRem)
     {
         for (int xVal = 0; xVal < xMax; xVal++)
         {
@@ -66,19 +92,19 @@ public class GridMovementManager : MonoBehaviour
 
             int[] tileToTest1 = new int[3];
             tileToTest1[0] = tile[0] + 1; tileToTest1[1] = tile[1]; tileToTest1[2] = newEnergyRemain;
-            if (TestTileInList(tileToTest1)) newTilesToCheck.Add(tileToTest1);
+            if (TestTileInListForMovement(tileToTest1)) newTilesToCheck.Add(tileToTest1);
 
             int[] tileToTest2 = new int[3];
             tileToTest2[0] = tile[0] - 1; tileToTest2[1] = tile[1]; tileToTest2[2] = newEnergyRemain;
-            if (TestTileInList(tileToTest2)) newTilesToCheck.Add(tileToTest2);
+            if (TestTileInListForMovement(tileToTest2)) newTilesToCheck.Add(tileToTest2);
 
             int[] tileToTest3 = new int[3];
             tileToTest3[0] = tile[0]; tileToTest3[1] = tile[1] + 1; tileToTest3[2] = newEnergyRemain;
-            if (TestTileInList(tileToTest3)) newTilesToCheck.Add(tileToTest3);
+            if (TestTileInListForMovement(tileToTest3)) newTilesToCheck.Add(tileToTest3);
 
             int[] tileToTest4 = new int[3];
             tileToTest4[0] = tile[0]; tileToTest4[1] = tile[1] - 1; tileToTest4[2] = newEnergyRemain;
-            if (TestTileInList(tileToTest4)) newTilesToCheck.Add(tileToTest4);
+            if (TestTileInListForMovement(tileToTest4)) newTilesToCheck.Add(tileToTest4);
         }
 
         if (newTilesToCheck.Count > 0)
@@ -87,7 +113,7 @@ public class GridMovementManager : MonoBehaviour
         }
     }
 
-    bool TestTileInList(int[] tileToTest)
+    bool TestTileInListForMovement(int[] tileToTest)
     {
         List<int[]> removeStuff = new List<int[]>();
         bool isInList = false;
@@ -120,7 +146,7 @@ public class GridMovementManager : MonoBehaviour
         activeMovementIndicators.Clear();
     }
 
-    public int FindEnergyCostBetweenTokenSlots(GameObject origin, GameObject destination)
+    public int Pathfinding_FindEnergyCostBetweenTokenSlots(GameObject origin, GameObject destination)
     {
         foreach (GameObject pm in pathMarkers)
         {
@@ -157,8 +183,8 @@ public class GridMovementManager : MonoBehaviour
         {
             counter += 1;
 
-            openList = GetNeighbourTiles(lowC);
-            lowC = GiveLowestCostTile(openList, destinationPos, out bool isDestination);
+            openList = Pathfinding_GetNeighbourTiles(lowC);
+            lowC = Pathfinding_GiveLowestCostTile(openList, destinationPos, out bool isDestination);
             foundDestination = isDestination;
             if (foundDestination)
             {
@@ -166,11 +192,11 @@ public class GridMovementManager : MonoBehaviour
             }
         }
         tilesToCheck_Pathfind.Clear();
-        StartCoroutine(ClearUpPathfindingMarks(0.5f));
+        StartCoroutine(Pathfinding_ClearUpMarks(0.5f));
         return energyCost;
     }
 
-    int[] GiveLowestCostTile(List<int[]> potTiles, int[] destPos, out bool isDestination)
+    int[] Pathfinding_GiveLowestCostTile(List<int[]> potTiles, int[] destPos, out bool isDestination)
     {
         isDestination = false;
         int[] lowestCostTile = new int[] { 0, 0, 1000 };
@@ -207,7 +233,7 @@ public class GridMovementManager : MonoBehaviour
         return lowestCostTile;
     }
 
-    List<int[]> GetNeighbourTiles(int[] tilePos)
+    List<int[]> Pathfinding_GetNeighbourTiles(int[] tilePos)
     {
         List<int> removeList = new List<int>();
         List<int[]> neighbours = new List<int[]>();
@@ -249,7 +275,7 @@ public class GridMovementManager : MonoBehaviour
         return neighbours;
     }
 
-    public IEnumerator ClearUpPathfindingMarks(float time)
+    public IEnumerator Pathfinding_ClearUpMarks(float time)
     {
         yield return new WaitForSeconds(time);
 

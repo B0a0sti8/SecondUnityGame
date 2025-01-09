@@ -49,12 +49,13 @@ public class MouseClickAndGrabManager : MonoBehaviour
         {
             if (myTokSlot.transform.Find("MovementMarker").gameObject.activeSelf)
             {
-                int energyCost = GridMovementManager.instance.FindEnergyCostBetweenTokenSlots(movingTokenOrigin, myTokSlot.gameObject);
-                myTokSlot.SetToken(movingTokenOrigin.GetComponent<TokenSlot>().myCardToken, false);
-                movingTokenOrigin.GetComponent<TokenSlot>().ModifyTokenEnergy(-1 * energyCost, TokenSlot.EnergyModificationSource.Moving);
+                int energyCost = GridAndMovementManager.instance.Pathfinding_FindEnergyCostBetweenTokenSlots(movingTokenOrigin, myTokSlot.gameObject);
+                int currentEnergy = movingTokenOrigin.GetComponent<TokenSlot>().currentEnergy;
+                myTokSlot.SetToken(movingTokenOrigin.GetComponent<TokenSlot>().myCardToken, false, currentEnergy - energyCost);
+                //movingTokenOrigin.GetComponent<TokenSlot>().ModifyTokenEnergy(-1 * energyCost, TokenSlot.EnergyModificationSource.Moving);
                 movingTokenOrigin.GetComponent<TokenSlot>().RemoveToken();
             }
-            GridMovementManager.instance.DisableMovementMarkers();
+            GridAndMovementManager.instance.DisableMovementMarkers();
             isMovingToken = false;
         }
     }
@@ -67,7 +68,7 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
     public void TokenClicked(GameObject tokenSlotClicked)
     {
-        GridMovementManager.instance.TokenWantsToMove((int)Mathf.Round(tokenSlotClicked.transform.position.x), (int)Mathf.Round(tokenSlotClicked.transform.position.y));
+        GridAndMovementManager.instance.TokenWantsToMove((int)Mathf.Round(tokenSlotClicked.transform.position.x), (int)Mathf.Round(tokenSlotClicked.transform.position.y));
         isMovingToken = true;
     }
 

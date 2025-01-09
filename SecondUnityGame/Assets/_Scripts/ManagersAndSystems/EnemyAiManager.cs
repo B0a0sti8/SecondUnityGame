@@ -38,10 +38,10 @@ public class EnemyAiManager : MonoBehaviour
     {
         int[] position = new int[] { Random.Range(0, gridXMax), Random.Range(0, gridYMax) };
         if (!(tileArray[position[0], position[1]] == 400)) return false;
-        if (GridMovementManager.instance.allTokenSlots[position[0], position[1]].GetComponent<TokenSlot>().hasToken) return false;
+        if (GridAndMovementManager.instance.allTokenSlots[position[0], position[1]].GetComponent<TokenSlot>().hasToken) return false;
 
         CardPrefabScriptable myEnemy = allEnemyTokenPrefabs[Random.Range(0, allEnemyTokenPrefabs.Count)];
-        GridMovementManager.instance.allTokenSlots[position[0], position[1]].GetComponent<TokenSlot>().SetToken(myEnemy);
+        GridAndMovementManager.instance.allTokenSlots[position[0], position[1]].GetComponent<TokenSlot>().SetToken(myEnemy);
         activeEnemyTokens.Add(myEnemy);
         enemyPositions.Add(myEnemy, position);
         Debug.Log("Enemy Spawned at: " + position[0] + " " + position[1]);
@@ -52,6 +52,6 @@ public class EnemyAiManager : MonoBehaviour
     public void MoveEnemyToken(CardPrefabScriptable enemy)
     {
         int[] start = enemyPositions[enemy];
-        GridMovementManager.instance.TokenWantsToMove(start[0], start[1]);
+        GridAndMovementManager.instance.TokenWantsToMove(start[0], start[1]);
     }
 }
