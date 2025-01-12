@@ -7,6 +7,11 @@ public class TokenSlot : MonoBehaviour
     public bool hasToken;
     GameObject mouseOverMarker, movementMarker;
     GameObject myTokenSprite;
+
+    Image healthBar, energyBar;
+    GameObject uICanvas;
+
+
     public CardPrefabScriptable myCardToken;
     float energyRegenerationElapsed=0;
 
@@ -30,8 +35,14 @@ public class TokenSlot : MonoBehaviour
         movementMarker = transform.Find("MovementMarker").gameObject;
         myTokenSprite = transform.Find("TokenSprite").gameObject;
 
+        uICanvas = transform.Find("TokenSlotWorldCanvas").gameObject;
+
+        healthBar = uICanvas.transform.Find("HealthBar").Find("Health").GetComponent<Image>();
+        energyBar = uICanvas.transform.Find("EnergyBar").Find("Energy").GetComponent<Image>();
+
         mouseOverMarker.SetActive(false);
         myTokenSprite.SetActive(false);
+        uICanvas.SetActive(false);
     }
 
     private void Update()
@@ -100,10 +111,26 @@ public class TokenSlot : MonoBehaviour
         currentEnergy += amount;
         //Debug.Log("Removing " + amount  +" Energy: ");
 
-
         if (currentEnergy > myCardToken.maxEnergy) currentEnergy = myCardToken.maxEnergy;
         if (currentEnergy < 0) currentEnergy = 0;
-        //Debug.Log("Remaining Energy: " + currentEnergy);
+
+        UpdateLifeAndEnergyBar();
+    }
+
+    public void ModifyTokenLife(int amount)
+    {
+        currentLife += amount;
+
+        if (currentLife > myCardToken.maxLife) currentLife = myCardToken.maxLife;
+        if (currentLife < 0) currentLife = 0;
+
+        UpdateLifeAndEnergyBar();
+    }
+
+    void UpdateLifeAndEnergyBar()
+    {
+        healthBar.fillAmount = (float)currentLife / (float)myCardToken.maxLife;
+        energyBar.fillAmount = (float)currentEnergy / (float)myCardToken.maxEnergy;
     }
 
     public void SetToken(CardPrefabScriptable myNewCardToken, bool isPlayedAsCard = false, int remainingEnergy = 1)
@@ -115,6 +142,7 @@ public class TokenSlot : MonoBehaviour
         if (isPlayedAsCard)
         {
             currentEnergy = myCardToken.maxEnergy;
+            currentLife = myCardToken.maxLife;
             MouseClickAndGrabManager.instance.RemoveGrabbedItem();
         }
         else
@@ -122,6 +150,8 @@ public class TokenSlot : MonoBehaviour
             ModifyTokenEnergy(remainingEnergy, EnergyModificationSource.Moving);
         }
         hasToken = true;
+        uICanvas.SetActive(true);
+        UpdateLifeAndEnergyBar();
     }
 
     public void RemoveToken()
@@ -130,6 +160,7 @@ public class TokenSlot : MonoBehaviour
         myCardToken = null;
         myTokenSprite.GetComponent<SpriteRenderer>().sprite = null;
         myTokenSprite.SetActive(false);
+        uICanvas.SetActive(false);
     }
 
     private void OnMouseUpAsButton()
