@@ -152,6 +152,9 @@ public class TokenSlot : MonoBehaviour
         hasToken = true;
         uICanvas.SetActive(true);
         UpdateLifeAndEnergyBar();
+
+        if (myNewCardToken.isEnemy) GridAndMovementManager.instance.enemyAndAllyMap[(int)Mathf.Round(transform.position.x), (int)Mathf.Round(transform.position.y)] = 2;
+        else GridAndMovementManager.instance.enemyAndAllyMap[(int)Mathf.Round(transform.position.x), (int)Mathf.Round(transform.position.y)] = 1;
     }
 
     public void RemoveToken()
@@ -161,6 +164,7 @@ public class TokenSlot : MonoBehaviour
         myTokenSprite.GetComponent<SpriteRenderer>().sprite = null;
         myTokenSprite.SetActive(false);
         uICanvas.SetActive(false);
+        GridAndMovementManager.instance.enemyAndAllyMap[(int)Mathf.Round(transform.position.x), (int)Mathf.Round(transform.position.y)] = 0;
     }
 
     private void OnMouseUpAsButton()

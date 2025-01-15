@@ -68,7 +68,7 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
     public void TokenClicked(GameObject tokenSlotClicked)
     {
-        GridAndMovementManager.instance.TokenWantsToMove((int)Mathf.Round(tokenSlotClicked.transform.position.x), (int)Mathf.Round(tokenSlotClicked.transform.position.y));
+        GridAndMovementManager.instance.AllyTokenWantsToMove((int)Mathf.Round(tokenSlotClicked.transform.position.x), (int)Mathf.Round(tokenSlotClicked.transform.position.y));
         isMovingToken = true;
     }
 

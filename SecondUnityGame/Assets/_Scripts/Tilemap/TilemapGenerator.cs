@@ -168,6 +168,8 @@ public class TilemapGenerator : MonoBehaviour
         GridAndMovementManager.instance.allTokenSlots = tokenSlotReferenceArray;
         GridAndMovementManager.instance.xMax = xMax; GridAndMovementManager.instance.yMax = yMax;
         GridAndMovementManager.instance.SetRessourceTypes();
+
+        GridAndMovementManager.instance.enemyAndAllyMap = new int[xMax, yMax];
     }
 
     void ResetArraysAndDeleteTiles()

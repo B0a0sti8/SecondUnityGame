@@ -18,6 +18,8 @@ public class GridAndMovementManager : MonoBehaviour
     List<int[]> tilesToCheck = new List<int[]>();
     List<int[]> tilesToCheck_Pathfind = new List<int[]>();
 
+    public int[,] enemyAndAllyMap; // Allies = 1, Enemies = 2
+
     private void Awake()
     {
         instance = this;
@@ -45,14 +47,36 @@ public class GridAndMovementManager : MonoBehaviour
         }
     }
 
-    public void TokenWantsToMove(int xValue, int yValue)
+    public List<int[]> EnemyWantsToSearchAllies(int xValue, int yValue, int distance)
+    {
+        List<int[]> allyPos = new List<int[]>();
+        for (int xVal = xValue - distance; xVal < xValue + distance + 1; xVal++)
+        {
+            for (int yVal = yValue - distance; yVal < yValue + distance + 1; yVal++)
+            {
+                if (xVal >=0 && xVal < xMax && yVal >= 0 && yVal < yMax)
+                {
+                    //Debug.Log(xVal + " / " + yVal);
+                    if (Mathf.Abs(xValue - xVal) + Mathf.Abs(yValue - yVal) < distance)
+                    {
+                        //allMovementIndicators[xVal, yVal].SetActive(true);
+                        if (enemyAndAllyMap[xVal, yVal] == 1) // Ally gefunden!
+                        {
+                            allyPos.Add(new int[] { xVal, yVal});
+                        }
+                    }
+                }
+            }
+        }
+        return allyPos;
+    }
+
+    public void AllyTokenWantsToMove(int xValue, int yValue)
     {
         // An die Funktion IterativeMovementCheck wird je eine Liste gegeben, die die Positionen der Felder beinhaltet, die getestet werden sollen und zusätzlich die Energy die übrig ist.
         DisableMovementMarkers();
         int energyRem = allTokenSlots[xValue, yValue].GetComponent<TokenSlot>().currentEnergy;
         MouseClickAndGrabManager.instance.movingTokenOrigin = allTokenSlots[xValue, yValue];
-
-        Debug.Log("Energy: " + energyRem);
 
         tilesToCheck.Clear();
         tilesToCheck_Pathfind.Clear();
