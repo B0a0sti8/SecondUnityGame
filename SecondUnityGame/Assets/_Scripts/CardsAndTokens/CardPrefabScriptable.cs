@@ -18,6 +18,7 @@ public class CardPrefabScriptable : ScriptableObject
     public int maxEnergy;
     public int maxLife;
     public int attackValue;
+    public int attackRange;
 
     public bool isEnemy = false;
 

@@ -17,6 +17,7 @@ public class GridAndMovementManager : MonoBehaviour
     List<GameObject> pathMarkers = new List<GameObject>();
     List<int[]> tilesToCheck = new List<int[]>();
     List<int[]> tilesToCheck_Pathfind = new List<int[]>();
+    List<int[]> tilesToCheck_Pathfind_enemies = new List<int[]>();
 
     public int[,] enemyAndAllyMap; // Allies = 1, Enemies = 2
 
@@ -59,9 +60,10 @@ public class GridAndMovementManager : MonoBehaviour
                     //Debug.Log(xVal + " / " + yVal);
                     if (Mathf.Abs(xValue - xVal) + Mathf.Abs(yValue - yVal) < distance)
                     {
-                        //allMovementIndicators[xVal, yVal].SetActive(true);
+                        allMovementIndicators[xVal, yVal].SetActive(true);
                         if (enemyAndAllyMap[xVal, yVal] == 1) // Ally gefunden!
                         {
+
                             allyPos.Add(new int[] { xVal, yVal});
                         }
                     }
@@ -170,6 +172,72 @@ public class GridAndMovementManager : MonoBehaviour
         activeMovementIndicators.Clear();
     }
 
+    public int[] Pathfinding_FindEnergyCostBetweenTokenSlots_LimitedStep(GameObject origin, GameObject destination, int maxStep)
+    {
+        foreach (GameObject pm in pathMarkers)
+        {
+            pm.SetActive(false);
+        }
+        pathMarkers.Clear();
+        tilesToCheck_Pathfind_enemies.Clear();
+
+        List<int[]> openList = new List<int[]>();
+        int energyCost = 0;
+        int[] originPos = new int[] { (int)Mathf.Round(origin.transform.position.x), (int)Mathf.Round(origin.transform.position.y), 0 };
+        int[] destinationPos = new int[] { (int)Mathf.Round(destination.transform.position.x), (int)Mathf.Round(destination.transform.position.y) };
+        int[] lowC = originPos;
+
+        for (int xVal = 0; xVal < xMax; xVal++)
+        {
+            for (int yVal = 0; yVal < yMax; yVal++)
+            {
+                if (Mathf.Abs(originPos[0] - xVal) + Mathf.Abs(originPos[1] - yVal) < maxStep + 1)
+                {
+                    tilesToCheck_Pathfind_enemies.Add(new int[] { xVal, yVal });
+                }
+            }
+        }
+
+        Debug.Log("Before first run: FieldPos = " + lowC[0] + " / " + lowC[1]);
+
+        int removeOrigin = 1000;
+        for (int i = 0; i < tilesToCheck_Pathfind_enemies.Count; i++)
+        {
+            int[] tile = tilesToCheck_Pathfind_enemies[i];
+            if (originPos[0] == tile[0] && originPos[1] == tile[1])
+            {
+                removeOrigin = i;
+            }
+        }
+        if (removeOrigin != 1000) tilesToCheck_Pathfind_enemies.RemoveAt(removeOrigin);
+
+        // for debugging
+        GameObject pathMarker = allTokenSlots[originPos[0], originPos[1]].transform.Find("PathfindingMarker").gameObject;
+        pathMarkers.Add(pathMarker);
+        pathMarker.SetActive(true);
+
+        bool foundDestination = false;
+        int counter = 0;
+
+        while (!foundDestination && counter < maxStep)
+        {
+            counter += 1;
+
+            openList = Pathfinding_GetNeighbourTiles_limitedStep(lowC);
+            lowC = Pathfinding_GiveLowestCostTile(openList, destinationPos, out bool isDestination);
+            foundDestination = isDestination;
+            if (foundDestination)
+            {
+                energyCost = lowC[2];
+            }
+
+            Debug.Log("Run Nr. " + counter + "FieldPos = " + lowC[0] + " / " + lowC[1]);
+        }
+        tilesToCheck_Pathfind.Clear();
+        StartCoroutine(Pathfinding_ClearUpMarks(0.5f));
+        return lowC;
+    }
+
     public int Pathfinding_FindEnergyCostBetweenTokenSlots(GameObject origin, GameObject destination)
     {
         foreach (GameObject pm in pathMarkers)
@@ -203,7 +271,7 @@ public class GridAndMovementManager : MonoBehaviour
         bool foundDestination = false;
         int counter = 0;
 
-        while (!foundDestination && counter < 10)
+        while (!foundDestination && counter < 20)
         {
             counter += 1;
 
@@ -294,6 +362,48 @@ public class GridAndMovementManager : MonoBehaviour
         for (int i = removeList.Count - 1; i >= 0; i--)
         {
             tilesToCheck_Pathfind.RemoveAt(removeList[i]);
+        }
+        removeList.Clear();
+        return neighbours;
+    }
+
+    List<int[]> Pathfinding_GetNeighbourTiles_limitedStep(int[] tilePos)
+    {
+        List<int> removeList = new List<int>();
+        List<int[]> neighbours = new List<int[]>();
+
+        for (int i = 0; i < tilesToCheck_Pathfind_enemies.Count; i++)
+        {
+            int[] tile = tilesToCheck_Pathfind_enemies[i];
+
+            if (tile[0] == tilePos[0] + 1 && tile[1] == tilePos[1])
+            {
+                neighbours.Add(new int[] { tilePos[0] + 1, tilePos[1], tilePos[2] });
+                removeList.Add(i);
+            }
+
+            if (tile[0] == tilePos[0] - 1 && tile[1] == tilePos[1])
+            {
+                neighbours.Add(new int[] { tilePos[0] - 1, tilePos[1], tilePos[2] });
+                removeList.Add(i);
+            }
+
+            if (tile[0] == tilePos[0] && tile[1] == tilePos[1] + 1)
+            {
+                neighbours.Add(new int[] { tilePos[0], tilePos[1] + 1, tilePos[2] });
+                removeList.Add(i);
+            }
+
+            if (tile[0] == tilePos[0] && tile[1] == tilePos[1] - 1)
+            {
+                neighbours.Add(new int[] { tilePos[0], tilePos[1] - 1, tilePos[2] });
+                removeList.Add(i);
+            }
+        }
+
+        for (int i = removeList.Count - 1; i >= 0; i--)
+        {
+            tilesToCheck_Pathfind_enemies.RemoveAt(removeList[i]);
         }
         removeList.Clear();
         return neighbours;

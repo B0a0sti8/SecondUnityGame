@@ -18,6 +18,7 @@ public class EnemyAiManager : MonoBehaviour
     {
         public CardPrefabScriptable enemyObject;
         public int[] enemyPosition;
+        public int attackRange;
     }
 
     void Awake()
@@ -29,7 +30,7 @@ public class EnemyAiManager : MonoBehaviour
 
     private void Update()
     {
-        if (enemyUpdateElapsed < 0.1)
+        if (enemyUpdateElapsed < 1)
         {
             enemyUpdateElapsed += Time.deltaTime;
             return;
@@ -40,16 +41,59 @@ public class EnemyAiManager : MonoBehaviour
 
         foreach (var item in allEnemyData)
         {
+
             int enemyIdent = item.Key;
             CardPrefabScriptable enemy = item.Value.enemyObject;
             int[] position = item.Value.enemyPosition;
+            int thisAttackRange = 0;//enemy.attackRange;
+            int enemyEnergy = GridAndMovementManager.instance.allTokenSlots[position[0], position[1]].GetComponent<TokenSlot>().currentEnergy;
+
+            if (enemyEnergy < 2) continue;
 
             // Check if Allies are nearby
-            List<int[]> allyPos = GridAndMovementManager.instance.EnemyWantsToSearchAllies(position[0], position[1], 5);
-            if (allyPos.Count == 0)
+            List<int[]> allyPos = GridAndMovementManager.instance.EnemyWantsToSearchAllies(position[0], position[1], 8);
+            if (allyPos.Count == 0 )
             {
                 // Wenn niemand gefunden wurde, laufen wir bisschen wahllos in der Gegend herum.
-                EnemiesSearching(enemyIdent, position);
+                //EnemiesSearching(enemyIdent, position);
+            }
+            else
+            {
+                // Wenn Energie niedrig brauchen wir gar nicht weitermachen.
+
+                // Jemand wurde gefunden. Check if in attackRange.
+                bool isTargetInRange = false;
+                int[] myTargetPosition = new int[] { 0, 0 };
+                if (allyPos.Count > 0)
+                {
+                    foreach (var tar in allyPos)
+                    {
+                        if (Mathf.Abs(position[0] - tar[0]) + Mathf.Abs(position[1] - tar[1]) <= thisAttackRange)
+                        {
+                            //Debug.Log("Raaargh" + tar[0] + " / " + tar[1]);
+                            isTargetInRange = true;
+                            myTargetPosition[0] = tar[0]; myTargetPosition[1] = tar[1];
+                            break;
+                        }
+                    }
+                    if (!isTargetInRange)
+                    {
+                        myTargetPosition[0] = allyPos[0][0]; myTargetPosition[1] = allyPos[0][1];
+                    }
+                }
+
+
+                if (isTargetInRange)
+                {
+                    // Jemand ist in Angriffsreichweite, Angriff auf Feld "tar"!
+
+                }
+                else
+                {
+                    //Debug.Log(allyPos.Count);
+                    //Debug.Log(myTargetPosition[0] + " / " + myTargetPosition[1]);
+                    EnemyChasing(enemyIdent, position, myTargetPosition);
+                }
             }
         }
 
@@ -90,6 +134,7 @@ public class EnemyAiManager : MonoBehaviour
         int thisEnemyID = GetNewEnemyID();
         enemyData thisEnemyData = new enemyData();
         thisEnemyData.enemyObject = myEnemy; thisEnemyData.enemyPosition = position;
+        thisEnemyData.attackRange = myEnemy.attackRange;
 
         activeEnemyTokens.Add(myEnemy);
         allEnemyData.Add(thisEnemyID, thisEnemyData);
@@ -121,6 +166,30 @@ public class EnemyAiManager : MonoBehaviour
         }
     }
 
+    void EnemyChasing(int enemyIdent, int[] startPos, int[] targetPos)
+    {
+        Debug.Log("Fange an zu jagen!");
+        // Nicht in Range, Lauf Richtung "tar"!
+        GameObject startT = GridAndMovementManager.instance.allTokenSlots[startPos[0], startPos[1]];
+        GameObject stopT = GridAndMovementManager.instance.allTokenSlots[targetPos[0], targetPos[1]];
+
+        int minDistance = Mathf.Abs(startPos[0] - targetPos[0]) + Mathf.Abs(startPos[1] - targetPos[1]);
+        int maxFieldCount = 3; // Wie weit sie pro Durchgang laufen können.
+        int[] targetField = GridAndMovementManager.instance.Pathfinding_FindEnergyCostBetweenTokenSlots_LimitedStep(startT, stopT, Mathf.Min(maxFieldCount, minDistance));
+
+        int[] residualPos = new int[] { targetField[0], targetField[1] };
+        Debug.Log(targetField[0] + " / " + targetField[1]);
+
+        if (MovingEnemy(startPos, residualPos))
+        {
+            Debug.Log("Moved Enemy From: " + startPos[0] + " / " + startPos[1] + " to " + residualPos[0] + " / " + residualPos[1]);
+            newEnemyPositions.Add(enemyIdent, residualPos);
+        }
+        //GameObject targetSlot = GridAndMovementManager.instance.allTokenSlots[targetField[0], targetField[1]];
+        //targetSlot.GetComponent<TokenSlot>().SetToken(startT.GetComponent<TokenSlot>().myCardToken, false, startT.GetComponent<TokenSlot>().currentEnergy - targetField[2]);
+        //startT.GetComponent<TokenSlot>().RemoveToken();
+    }
+
     bool MovingEnemy(int[] start, int[] stop)
     {
         int xMax = GridAndMovementManager.instance.xMax;
@@ -147,6 +216,7 @@ public class EnemyAiManager : MonoBehaviour
             myStartSlot.GetComponent<TokenSlot>().RemoveToken();
             hasMoved = true;
         }
+
         return hasMoved;
     }
 
