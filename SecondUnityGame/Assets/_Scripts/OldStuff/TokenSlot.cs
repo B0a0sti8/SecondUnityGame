@@ -143,7 +143,7 @@ public class TokenSlot : MonoBehaviour
         {
             currentEnergy = myCardToken.maxEnergy;
             currentLife = myCardToken.maxLife;
-            MouseClickAndGrabManager.instance.RemoveGrabbedObject();
+            //MouseClickAndGrabManager.instance.RemoveGrabbedObject();
         }
         else
         {

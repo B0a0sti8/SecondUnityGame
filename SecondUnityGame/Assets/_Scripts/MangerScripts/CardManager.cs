@@ -206,7 +206,6 @@ public class CardManager : MonoBehaviour
 
     private void UpdateDiscardPileUI()
     {
-        Debug.Log("Updating UI for Discard pile");
         if (discardPile.Count == 0)
         {
             discardPileImage.gameObject.SetActive(false);
@@ -217,10 +216,9 @@ public class CardManager : MonoBehaviour
         {
             discardPileImage.gameObject.SetActive(false);
             lastDiscardedCard.SetActive(true);
-            Debug.Log("Discard Pile newest card: " + discardPile[discardPile.Count - 1]);
             lastDiscardedCard.GetComponent<MainCardScript>().myPlayerTokenScriptable = discardPile[discardPile.Count - 1];
             lastDiscardedCard.GetComponent<MainCardScript>().UpdateCardUI();
-            lastDiscardedCard.GetComponent<CanvasGroup>().blocksRaycasts = false;
+            //lastDiscardedCard.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
             discardPileImage.texture = deckBackImages[Mathf.Clamp(discardPile.Count, 0, 5)];
             discardPileImage.gameObject.SetActive(true);

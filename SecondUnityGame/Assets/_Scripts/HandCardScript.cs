@@ -63,14 +63,9 @@ public class HandCardScript : MonoBehaviour
 
     public void RemoveCard(GameObject oldCard)
     {
-        Debug.Log("Check");
         FetchAllCards();
-
         myHandCards.Remove(oldCard);
-
         ScaleUIBasedOnCardCount();
-
-        Debug.Log("Check2");
     }
 
     public void RemoveRandomCard()

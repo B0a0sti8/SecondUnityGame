@@ -722,7 +722,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be0281981889563438adf68bf5de4961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myCardScriptable: {fileID: 11400000, guid: b9da526a273e46a4881dafcc8cca11e7, type: 2}
+  createsPlayerToken: 1
+  myPlayerTokenScriptable: {fileID: 0}
   tokenPicture: {fileID: -739385909, guid: cdd3d7cb81987f14f801a63dc5fcae63, type: 3}
 --- !u!1 &8582857612988528848
 GameObject:

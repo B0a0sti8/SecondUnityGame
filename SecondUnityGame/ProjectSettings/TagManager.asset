@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Card
   - PlayerSlot
+  - EnemySlot
   layers:
   - Default
   - TransparentFX
