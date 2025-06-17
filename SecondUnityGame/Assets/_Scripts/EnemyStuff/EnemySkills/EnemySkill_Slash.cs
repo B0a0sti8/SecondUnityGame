@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class EnemySkill_Slash : EnemySkillPrefab
 {
+    int baseDamage = 3;
+
     protected override void Start()
     {
         base.Start();
@@ -12,6 +14,6 @@ public class EnemySkill_Slash : EnemySkillPrefab
         base.UseSkill();
         //Debug.Log(myEnemyToken);
         Debug.Log("Using Slash on: " + myEnemyToken.currentMainTarget);
-        BattleManager.instance.DealDamage(myEnemyToken.currentMainTarget, myEnemyToken.gameObject);
+        BattleManager.instance.DealDamage(myEnemyToken.currentMainTarget, myEnemyToken.gameObject, baseDamage);
     }
 }

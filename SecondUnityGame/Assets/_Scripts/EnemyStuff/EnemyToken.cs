@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyToken : MonoBehaviour
 { 
@@ -13,12 +14,15 @@ public class EnemyToken : MonoBehaviour
     // Eigenschafte und Werte für Kampf
     public int maxEnergy;
     public int maxLife;
+    public int currentLife;
     public int attackValue;
     public int attackRange;
 
     EnemyTokenSlot mySlot;
     public GameObject currentMainTarget;
     List<EnemySkillPrefab> mySkillList = new List<EnemySkillPrefab>();
+
+    public GameObject healthBar;
 
     private void Start()
     {
@@ -28,6 +32,8 @@ public class EnemyToken : MonoBehaviour
         {
             mySkillList.Add(transform.Find("EnemySkills").GetChild(i).GetComponent<EnemySkillPrefab>());
         }
+
+        healthBar = transform.Find("Canvas").Find("Healthbar").Find("Health").gameObject;
     }
 
     public void EvaluateBuffsAndDebuffs()
@@ -66,5 +72,16 @@ public class EnemyToken : MonoBehaviour
             }
 
         }
+    }
+
+    public void TakeDamage(int DamageAmount)
+    {
+        currentLife -= DamageAmount;
+        UpdateHealthbar();
+    }
+
+    public void UpdateHealthbar()
+    {
+        healthBar.GetComponent<Image>().fillAmount = (float)currentLife / (float)maxLife;
     }
 }
