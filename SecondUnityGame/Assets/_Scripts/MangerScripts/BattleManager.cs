@@ -21,7 +21,7 @@ public class BattleManager : MonoBehaviour
 
     public void DealDamage(GameObject target, GameObject source, float damageAmount)
     {
-        Debug.Log(source + " deals damage to " + target);
+        //Debug.Log(source + " deals damage to " + target);
 
         // Check if target is Playertoken
         if (target.GetComponentInChildren<DefaultToken>() != null)
@@ -37,6 +37,11 @@ public class BattleManager : MonoBehaviour
 
     }
 
+    public void DealDamageToPlayer(GameObject source, float damageAmount)
+    {
+        RessourceManager.instance.TakeDamageOrHealing_Player((int)damageAmount);
+    }
+
     public void ShowSkillEffect(Sprite skillSprite, Vector2 position, float scalingFactor, float duration) 
     {
         skillEffectSprite.SetActive(true);
@@ -49,7 +54,8 @@ public class BattleManager : MonoBehaviour
     public void ShowDamageHealingIndicator(int amount, bool isCrit, bool isDamage, Vector3 position)
     {
         GameObject myDamagePopUp = GameObject.Instantiate(damageIndicatorObject, combatVisualObject.transform.Find("Canvas"));
-        myDamagePopUp.transform.position = position;
+        Vector3 randomPosMod = new Vector3(Random.Range(0f, 3f), Random.Range(0f, 3f), 0);
+        myDamagePopUp.transform.position = position + randomPosMod;
         myDamagePopUp.GetComponent<TextMeshProUGUI>().text = amount.ToString();
         if (isCrit) myDamagePopUp.GetComponent<TextMeshProUGUI>().text += "!";
 
@@ -57,8 +63,6 @@ public class BattleManager : MonoBehaviour
         else myDamagePopUp.GetComponent<FadeOverTime>().myTextColor = Color.green;
 
     }
-
-
 
     IEnumerator SetSkillEffectSpriteInactive(float time)
     {

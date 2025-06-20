@@ -11,12 +11,17 @@ public class TurnAndEnemyManager : MonoBehaviour
     [SerializeField] GameObject levelObject;
     List<GameObject> allEnemySlots = new List<GameObject>();
 
-    public static TurnAndEnemyManager instance;
+    [SerializeField] List<GameObject> allEnemiesInLevel = new List<GameObject>();
 
     float timeBetweenEnemies;
     float timeBetweenEnemiesElapsed;
-    int enemyCounter;
+    int enemyActionCounter;
+    int enemySpawnCounter;
+    int enemySpawnAmountPerTurn;
+
     List<GameObject> allEnemySlotsWithTokens;
+
+    public static TurnAndEnemyManager instance;
 
     private void Awake()
     {
@@ -29,9 +34,11 @@ public class TurnAndEnemyManager : MonoBehaviour
         {
             allEnemySlots.Add(levelObject.transform.Find("EnemySlots").GetChild(i).gameObject);
         }
-        timeBetweenEnemies = 0.4f;
+        timeBetweenEnemies = 0.5f;
         timeBetweenEnemiesElapsed = 0f;
-        enemyCounter = 0;
+        enemyActionCounter = 0;
+        enemySpawnCounter = 0;
+        enemySpawnAmountPerTurn = 2;
 
         allEnemySlotsWithTokens = new List<GameObject>();
     }
@@ -49,25 +56,42 @@ public class TurnAndEnemyManager : MonoBehaviour
             } 
 
             // Jeder Tokenslot, der einen Token hat, spielt. Mit etwas Zeit dazwischen.
-            if (timeBetweenEnemiesElapsed < timeBetweenEnemies) timeBetweenEnemiesElapsed += Time.deltaTime;
-            else
+            if (enemyActionCounter < allEnemySlotsWithTokens.Count)
             {
-                if (enemyCounter < allEnemySlotsWithTokens.Count)
-                {
-                    PlayEnemyTurn(allEnemySlotsWithTokens[enemyCounter]);
-                    enemyCounter++;
-                    timeBetweenEnemiesElapsed = 0f;
-                }
+                if (timeBetweenEnemiesElapsed < timeBetweenEnemies) timeBetweenEnemiesElapsed += Time.deltaTime;
                 else
                 {
-                    EndEnemyTurn();
+                    PlayEnemyTurn(allEnemySlotsWithTokens[enemyActionCounter]);
+                    enemyActionCounter++;
+                    timeBetweenEnemiesElapsed = 0f;
                 }
+
+                return;
             }
+
+            // Spawne neue Gegner
+            if (enemySpawnCounter < enemySpawnAmountPerTurn)
+            {
+                if (timeBetweenEnemiesElapsed < timeBetweenEnemies) timeBetweenEnemiesElapsed += Time.deltaTime;
+                else
+                {
+                    SpawnRandomEnemyInRandomSlot();
+                    enemySpawnCounter++;
+                    timeBetweenEnemiesElapsed = 0f;
+                }
+
+                return;
+            }
+
+            // Beende gegnerische Runde
+            EndEnemyTurn();
         }
     }
 
     public void EndPlayerTurn()
     {
+        if (!isPlayerTurn) return;
+
         isPlayerTurn = false;
         turnIndicatorText.text = "Enemy Turn";
         Debug.Log("Ended Player Turn");
@@ -85,7 +109,8 @@ public class TurnAndEnemyManager : MonoBehaviour
     {
         allEnemySlotsWithTokens.Clear();
         enemyTurnTimer_Debug = 1f;
-        enemyCounter = 0;
+        enemyActionCounter = 0;
+        enemySpawnCounter = 0;
 
         isPlayerTurn = true;
         turnIndicatorText.text = "Player Turn";
@@ -97,5 +122,26 @@ public class TurnAndEnemyManager : MonoBehaviour
         EnemyToken enemyToken = enemyTokenSlot.GetComponentInChildren<EnemyToken>();
         enemyToken.EvaluateBuffsAndDebuffs();
         enemyToken.ChooseTargetsAndUseSkills();
+    }
+
+    GameObject FindEmptyEnemySlot()
+    {
+        List<GameObject> emptySlots = new List<GameObject>();
+        emptySlots.Clear();
+
+        for (int i = 0; i < allEnemySlots.Count; i++)
+        {
+            if (allEnemySlots[i].GetComponentInChildren<DefaultToken>() == null) emptySlots.Add(allEnemySlots[i]);
+        }
+
+        return emptySlots[Random.Range(0, emptySlots.Count)];
+    }
+
+    void SpawnRandomEnemyInRandomSlot()
+    {
+        GameObject mySlot = FindEmptyEnemySlot();
+        GameObject myToken = allEnemiesInLevel[Random.Range(0, allEnemiesInLevel.Count)];
+
+        Instantiate(myToken, mySlot.transform);
     }
 }

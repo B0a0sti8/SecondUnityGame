@@ -16,7 +16,7 @@ public class DefaultToken : MonoBehaviour
         currentLife -= DamageAmount;
         UpdateHealthbar();
 
-        Debug.Log("currentlife = " + currentLife);
+        //Debug.Log("currentlife = " + currentLife);
 
         if (currentLife <= 0) Die();
     }

@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxLife: 20
   currentLife: 0
-  attackValue: 0
+  attackValue: 3
   healthBar: {fileID: 0}
   cardName: 
   description: 

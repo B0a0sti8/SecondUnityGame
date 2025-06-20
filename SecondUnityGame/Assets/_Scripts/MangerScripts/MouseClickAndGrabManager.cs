@@ -53,9 +53,13 @@ public class MouseClickAndGrabManager : MonoBehaviour
             else if (Input.GetMouseButtonDown(0))
             {
                 if (currentTokenAbility.abilityCheckPoints < currentTokenAbility.abilityCheckPointsMax) currentTokenAbility.UseAbility();
-                else currentTokenAbility.ApplyAbilityEffect();
+                else
+                {
+                    currentTokenAbility.ApplyAbilityEffect();
+                    isPlayingTokenAbility = false;
+                    currentTokenAbility = null;
+                } 
             }
-
             return;
         }
 

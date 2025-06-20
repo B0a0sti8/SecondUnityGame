@@ -52,7 +52,8 @@ public class EnemyToken : DefaultToken
 
         if (potentialTargets.Count == 0)
         {
-            // Wenn er keine Ziele findet, soll er den Spieler angreifen.
+            BattleManager.instance.DealDamageToPlayer(gameObject, attackValue);
+            Debug.Log("Dealing damage to player");
         }
         else
         {
