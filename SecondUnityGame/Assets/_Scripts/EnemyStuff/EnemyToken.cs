@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -74,14 +75,28 @@ public class EnemyToken : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int DamageAmount)
+    public void TakeDamageOrHealing(int DamageAmount)
     {
         currentLife -= DamageAmount;
         UpdateHealthbar();
+
+        if (currentLife <= 0) Die();
     }
 
     public void UpdateHealthbar()
     {
         healthBar.GetComponent<Image>().fillAmount = (float)currentLife / (float)maxLife;
+    }
+
+
+    public void Die()
+    {
+        StartCoroutine((RemoveEnemy(0.2f)));
+    }
+
+    IEnumerator RemoveEnemy(float time)
+    {
+        yield return new WaitForSeconds(time);
+        Destroy(gameObject);
     }
 }

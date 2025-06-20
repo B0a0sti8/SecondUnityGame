@@ -550,3 +550,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdbf8dc1ac921d0489f551f9fa209c72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillSprite: {fileID: -5335494388506533814, guid: 64aafc3d99101b946a518cfd89f915a9, type: 3}

@@ -25,4 +25,5 @@ MonoBehaviour:
   maxLife: 5
   attackValue: 2
   attackRange: 5
-  isEnemy: 0
+  tokenAbilities:
+  - DoubleArrow

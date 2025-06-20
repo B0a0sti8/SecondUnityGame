@@ -6,7 +6,7 @@ public class TurnAndEnemyManager : MonoBehaviour
 {
     bool isPlayerTurn = true;
     [SerializeField] TextMeshProUGUI turnIndicatorText;
-    float enemyTurnTimer_Debug = 1.5f;
+    float enemyTurnTimer_Debug = 1f;
 
     [SerializeField] GameObject levelObject;
     List<GameObject> allEnemySlots = new List<GameObject>();
@@ -30,7 +30,7 @@ public class TurnAndEnemyManager : MonoBehaviour
             else
             {
                 //Debug.Log("Starting Enemy Turn");
-                enemyTurnTimer_Debug = 3f;
+                enemyTurnTimer_Debug = 1f;
                 for (int i = 0; i < allEnemySlots.Count; i++)
                 {
                     if (!allEnemySlots[i].GetComponent<EnemyTokenSlot>().hasToken) continue;

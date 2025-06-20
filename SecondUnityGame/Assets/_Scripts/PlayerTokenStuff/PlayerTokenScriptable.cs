@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Card", menuName = "Scriptable Objects/PlayerToken")]
@@ -19,6 +20,8 @@ public class PlayerTokenScriptable : ScriptableObject
     public int maxLife;
     public int attackValue;
     public int attackRange;
+
+    public List<string> tokenAbilities = new List<string>();
 
     public PlayerTokenScriptable Clone()
     {

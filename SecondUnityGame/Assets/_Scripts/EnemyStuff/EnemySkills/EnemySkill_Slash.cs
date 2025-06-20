@@ -15,5 +15,6 @@ public class EnemySkill_Slash : EnemySkillPrefab
         //Debug.Log(myEnemyToken);
         Debug.Log("Using Slash on: " + myEnemyToken.currentMainTarget);
         BattleManager.instance.DealDamage(myEnemyToken.currentMainTarget, myEnemyToken.gameObject, baseDamage);
+        BattleManager.instance.ShowSkillEffect(skillSprite, myEnemyToken.currentMainTarget.transform.position, 1, 0.1f);
     }
 }

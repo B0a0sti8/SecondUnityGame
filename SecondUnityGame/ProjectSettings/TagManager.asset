@@ -7,6 +7,7 @@ TagManager:
   - Card
   - PlayerSlot
   - EnemySlot
+  - SelectionButton
   layers:
   - Default
   - TransparentFX
