@@ -47,17 +47,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5adcb922a68f5624db19d7f34fa26573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxLife: 20
+  currentLife: 0
+  attackValue: 0
+  healthBar: {fileID: 0}
   cardName: 
   description: 
   unitTypeSprite: {fileID: 0}
   tokenSprite: {fileID: -344693628, guid: 038d7fedafa835940aef8b55a2b0a65a, type: 3}
   maxEnergy: 0
-  maxLife: 0
-  currentLife: 0
-  attackValue: 0
-  attackRange: 0
   currentMainTarget: {fileID: 0}
-  healthBar: {fileID: 0}
 --- !u!1 &2505230611775035756
 GameObject:
   m_ObjectHideFlags: 0

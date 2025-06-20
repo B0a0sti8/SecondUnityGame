@@ -36,36 +36,46 @@ public class MouseClickAndGrabManager : MonoBehaviour
     {
         // Wenn kein Button im Auswahlmenü getroffen wird, und dieses offen ist, wird es geschlossen. 
         // Wenn ein Button getroffen wird, wird versucht die Fähigkeit zu starten
-        if (Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(0)) CheckCloseTokenSelectionMenue(); 
+        if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0)) CheckCloseTokenSelectionMenue(); 
 
+
+        // Wenn momentan eine Fähigkeit aktiv ist, können keine Karten gespielt werden oder ähnliches.
+        // Mit Rechtsklick wird die Fähigkeit abgebrochen. Mit Linksklick wird versucht einen Checkpoint zu erreichen (z.B. ein zusätzliches Ziel zu wählen)
         if (isPlayingTokenAbility)
         {
-            if (Input.GetMouseButtonUp(1)) isPlayingTokenAbility = false;
-
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonDown(1))
             {
-                //if (TryFinishPlayingTokenAbility()) isPlayingTokenAbility = false;
-                return;
+                isPlayingTokenAbility = false;
+                currentTokenAbility.CancelAbility();
+                currentTokenAbility = null;
             }
+
+            else if (Input.GetMouseButtonDown(0))
+            {
+                if (currentTokenAbility.abilityCheckPoints < currentTokenAbility.abilityCheckPointsMax) currentTokenAbility.UseAbility();
+                else currentTokenAbility.ApplyAbilityEffect();
+            }
+
+            return;
         }
 
         if (!isCardPending)         // Es wird gerade kein Karten-Effekt gespielt
         {
-            if (Input.GetMouseButtonUp(0) && myGrabbedItem == null) GrabCardOrToken();             // Wenn du nichts in der Hand hast und Linksklick kommt, versuche was zu greifen.
-            if (Input.GetMouseButtonUp(1) && myGrabbedItem == null) SelectToken();                 // Wenn du nichts in der Hand hast und Rechtsklick kommt, versuche Token zu nutzen.
+            if (Input.GetMouseButtonDown(0) && myGrabbedItem == null) GrabCardOrToken();             // Wenn du nichts in der Hand hast und Linksklick kommt, versuche was zu greifen.
+            else if (Input.GetMouseButtonDown(1) && myGrabbedItem == null) SelectToken();                 // Wenn du nichts in der Hand hast und Rechtsklick kommt, versuche Token zu nutzen.
 
-            else if (Input.GetMouseButtonUp(0) && myGrabbedItem != null && myGrabbedItem.gameObject.tag == "Card") TryPlayCard();         // Wenn Karte in der Hand und Linksklick --> Versuche zu spielen 
-            else if (Input.GetMouseButtonUp(0) && myGrabbedItem != null && myGrabbedItem.gameObject.tag != "Card") TryPlaceToken();       // Wenn Token in der Hand und Linksklick --> Versuche zu legen / tauschen 
-            else if (Input.GetMouseButtonUp(1) && myGrabbedItem != null) RemoveGrabbedObject();         // Wenn du was in der Hand hast und Rechtsklick kommt, leg es wieder hin.
+            else if (Input.GetMouseButtonDown(0) && myGrabbedItem != null && myGrabbedItem.gameObject.tag == "Card") TryPlayCard();         // Wenn Karte in der Hand und Linksklick --> Versuche zu spielen 
+            else if (Input.GetMouseButtonDown(0) && myGrabbedItem != null && myGrabbedItem.gameObject.tag != "Card") TryPlaceToken();       // Wenn Token in der Hand und Linksklick --> Versuche zu legen / tauschen 
+            else if (Input.GetMouseButtonDown(1) && myGrabbedItem != null) RemoveGrabbedObject();         // Wenn du was in der Hand hast und Rechtsklick kommt, leg es wieder hin.
         }
         else             // Es wird gerade ein Karten-Effekt gespielt
         {
-            if (Input.GetMouseButtonUp(1))
+            if (Input.GetMouseButtonDown(1))
             {
                 Debug.Log("Check Card Pending");
                 PlaceCardBackInHand();
             }
-            else if (Input.GetMouseButtonUp(0) && myGrabbedItem != null && myGrabbedItem.gameObject.tag != "Card") // Die karte hat ein Token erschaffen und es wird Linksklick gedrückt
+            else if (Input.GetMouseButtonDown(0) && myGrabbedItem != null && myGrabbedItem.gameObject.tag != "Card") // Die karte hat ein Token erschaffen und es wird Linksklick gedrückt
             {
                 if (TryPlaceToken()) HandlePlayedCard();
             }
@@ -126,12 +136,13 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
         if (raycastResults.Count > 0 && raycastResults[0].gameObject.tag == "SelectionButton") // Button wurde geklickt
         {
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonDown(0))
             {
+                currentTokenAbility = raycastResults[0].gameObject.GetComponent<AbilitySelectionButton>().myAbilityObject.GetComponent<PlayerTokenAbilityPrefab>();
                 if (currentTokenAbility.StartUsingAbility())
                 {
                     isPlayingTokenAbility = true;
-                    currentTokenAbility = raycastResults[0].gameObject.GetComponent<AbilitySelectionButton>().myAbilityObject.GetComponent<PlayerTokenAbilityPrefab>();
+
                     tokenSelectionMenue.SetActive(false);
                 }
             }
@@ -170,6 +181,7 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
         if (rayHit && rayHit.transform.gameObject.tag == "PlayerSlot" && rayHit.transform.Find("PlayerToken") != null)
         {
+
             myGrabbedItem = rayHit.transform.Find("PlayerToken").gameObject;//
             originPosition = myGrabbedItem.transform.localPosition;
             originRotation = myGrabbedItem.transform.localEulerAngles;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EnemyToken : MonoBehaviour
+public class EnemyToken : DefaultToken
 { 
     // Dinge die im Tooltipp angezeigt werden
     public string cardName;
@@ -14,21 +14,16 @@ public class EnemyToken : MonoBehaviour
 
     // Eigenschafte und Werte für Kampf
     public int maxEnergy;
-    public int maxLife;
-    public int currentLife;
-    public int attackValue;
-    public int attackRange;
 
     EnemyTokenSlot mySlot;
     public GameObject currentMainTarget;
     List<EnemySkillPrefab> mySkillList = new List<EnemySkillPrefab>();
 
-    public GameObject healthBar;
-
     private void Start()
     {
+        currentLife = maxLife;
+
         mySlot = transform.parent.GetComponent<EnemyTokenSlot>();
-        mySlot.hasToken = true;
         for (int i = 0; i < transform.Find("EnemySkills").childCount; i++)
         {
             mySkillList.Add(transform.Find("EnemySkills").GetChild(i).GetComponent<EnemySkillPrefab>());
@@ -75,28 +70,7 @@ public class EnemyToken : MonoBehaviour
         }
     }
 
-    public void TakeDamageOrHealing(int DamageAmount)
-    {
-        currentLife -= DamageAmount;
-        UpdateHealthbar();
-
-        if (currentLife <= 0) Die();
-    }
-
-    public void UpdateHealthbar()
-    {
-        healthBar.GetComponent<Image>().fillAmount = (float)currentLife / (float)maxLife;
-    }
 
 
-    public void Die()
-    {
-        StartCoroutine((RemoveEnemy(0.2f)));
-    }
 
-    IEnumerator RemoveEnemy(float time)
-    {
-        yield return new WaitForSeconds(time);
-        Destroy(gameObject);
-    }
 }

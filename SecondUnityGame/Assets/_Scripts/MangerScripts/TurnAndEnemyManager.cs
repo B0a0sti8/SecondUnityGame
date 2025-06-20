@@ -11,12 +11,29 @@ public class TurnAndEnemyManager : MonoBehaviour
     [SerializeField] GameObject levelObject;
     List<GameObject> allEnemySlots = new List<GameObject>();
 
+    public static TurnAndEnemyManager instance;
+
+    float timeBetweenEnemies;
+    float timeBetweenEnemiesElapsed;
+    int enemyCounter;
+    List<GameObject> allEnemySlotsWithTokens;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     private void Start()
     {
         for (int i = 0; i < levelObject.transform.Find("EnemySlots").childCount; i++)
         {
             allEnemySlots.Add(levelObject.transform.Find("EnemySlots").GetChild(i).gameObject);
         }
+        timeBetweenEnemies = 0.4f;
+        timeBetweenEnemiesElapsed = 0f;
+        enemyCounter = 0;
+
+        allEnemySlotsWithTokens = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -25,20 +42,26 @@ public class TurnAndEnemyManager : MonoBehaviour
         if (!isPlayerTurn)
         {
             // Bei Rundenbeginn, warte etwas
-            if (enemyTurnTimer_Debug > 0) enemyTurnTimer_Debug -= Time.deltaTime;
+            if (enemyTurnTimer_Debug > 0) 
+            {
+                enemyTurnTimer_Debug -= Time.deltaTime;
+                return;
+            } 
 
+            // Jeder Tokenslot, der einen Token hat, spielt. Mit etwas Zeit dazwischen.
+            if (timeBetweenEnemiesElapsed < timeBetweenEnemies) timeBetweenEnemiesElapsed += Time.deltaTime;
             else
             {
-                //Debug.Log("Starting Enemy Turn");
-                enemyTurnTimer_Debug = 1f;
-                for (int i = 0; i < allEnemySlots.Count; i++)
+                if (enemyCounter < allEnemySlotsWithTokens.Count)
                 {
-                    if (!allEnemySlots[i].GetComponent<EnemyTokenSlot>().hasToken) continue;
-
-                    //Debug.Log("Playing Enemy: " + allEnemySlots[i]);
-                    PlayEnemyTurn(allEnemySlots[i]);
+                    PlayEnemyTurn(allEnemySlotsWithTokens[enemyCounter]);
+                    enemyCounter++;
+                    timeBetweenEnemiesElapsed = 0f;
                 }
-                EndEnemyTurn();
+                else
+                {
+                    EndEnemyTurn();
+                }
             }
         }
     }
@@ -48,10 +71,22 @@ public class TurnAndEnemyManager : MonoBehaviour
         isPlayerTurn = false;
         turnIndicatorText.text = "Enemy Turn";
         Debug.Log("Ended Player Turn");
+
+        for (int i = 0; i < allEnemySlots.Count; i++)
+        {
+            if (allEnemySlots[i].GetComponentInChildren<EnemyToken>() != null)
+            {
+                allEnemySlotsWithTokens.Add(allEnemySlots[i]);
+            }
+        }
     }
 
     public void EndEnemyTurn()
     {
+        allEnemySlotsWithTokens.Clear();
+        enemyTurnTimer_Debug = 1f;
+        enemyCounter = 0;
+
         isPlayerTurn = true;
         turnIndicatorText.text = "Player Turn";
         Debug.Log("Ended Enemy Turn");

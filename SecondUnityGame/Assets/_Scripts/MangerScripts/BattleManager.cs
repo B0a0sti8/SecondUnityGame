@@ -19,23 +19,17 @@ public class BattleManager : MonoBehaviour
         combatVisualObject = skillEffectSprite.transform.parent.gameObject;
     }
 
-    public void DealDamage(GameObject target, GameObject source, int damageAmount)
+    public void DealDamage(GameObject target, GameObject source, float damageAmount)
     {
         Debug.Log(source + " deals damage to " + target);
 
         // Check if target is Playertoken
-        if (target.GetComponentInChildren<PlayerToken>() != null)
+        if (target.GetComponentInChildren<DefaultToken>() != null)
         {
-            Debug.Log("Treffaaa");
-            target.GetComponentInChildren<PlayerToken>().TakeDamageOrHealing(damageAmount);
-        }
-        // Check if target is EnemyToken
-        else if (target.GetComponentInChildren<EnemyToken>() != null)
-        {
-            target.GetComponentInChildren<EnemyToken>().TakeDamageOrHealing(damageAmount);
+            target.GetComponentInChildren<DefaultToken>().TakeDamageOrHealing((int)damageAmount);
         }
 
-        ShowDamageHealingIndicator(damageAmount, false, true, target.transform.position);
+        ShowDamageHealingIndicator((int)damageAmount, false, true, target.transform.position);
     }
 
     public void DealHealing()

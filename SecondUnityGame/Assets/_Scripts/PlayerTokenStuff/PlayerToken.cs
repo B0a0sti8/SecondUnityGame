@@ -2,24 +2,18 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerToken : MonoBehaviour
+public class PlayerToken : DefaultToken
 {
     private PlayerTokenScriptable myToken;
     [SerializeField] private Transform listOfAllAbilities;
 
     // Eigenschafte und Werte für Kampf
     public int maxEnergy;
-    public int maxLife;
-    public int currentLife;
-    public int attackValue;
-    public int attackRange;
 
-    public GameObject healthBar;
+    public int attackRange;
 
     private void Start()
     {
-        currentLife = maxLife;
-
         healthBar = transform.Find("Canvas").Find("Healthbar").Find("Health").gameObject;
         listOfAllAbilities = GameObject.Find("Systems").transform.Find("ListOfAllPlayerTokenAbilities");
 
@@ -35,6 +29,8 @@ public class PlayerToken : MonoBehaviour
     {
         myToken = newToken;
         UpdatePlayerToken();
+
+        currentLife = maxLife;
     }
 
     void UpdatePlayerToken()
@@ -44,37 +40,5 @@ public class PlayerToken : MonoBehaviour
         maxEnergy = myToken.maxEnergy;
         attackValue = myToken.attackValue;
         attackRange = myToken.attackRange;
-
-
-    }
-
-
-    public void TakeDamageOrHealing(int damageAmount)
-    {
-        Debug.Log("Player Token is taking Damage: " + damageAmount);
-        currentLife -= damageAmount;
-
-        Debug.Log("Current Life: " + currentLife + " maximum Life: " + maxLife);
-
-        UpdateHealthbar();
-
-        if (currentLife <= 0) Die();
-    }
-
-    public void UpdateHealthbar()
-    {
-        healthBar.GetComponent<Image>().fillAmount = (float)currentLife / (float)maxLife;
-    }
-
-
-    public void Die()
-    {
-        StartCoroutine((RemoveEnemy(0.2f)));
-    }
-
-    IEnumerator RemoveEnemy(float time)
-    {
-        yield return new WaitForSeconds(time);
-        Destroy(gameObject);
     }
 }

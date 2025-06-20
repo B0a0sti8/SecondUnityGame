@@ -23,7 +23,7 @@ MonoBehaviour:
   unitTypeSprite: {fileID: 3700915101788899469, guid: 643c49b89cf9f22409f523664a69e91c, type: 3}
   maxEnergy: 5
   maxLife: 5
-  attackValue: 2
+  attackValue: 10
   attackRange: 5
   tokenAbilities:
   - DoubleArrow
