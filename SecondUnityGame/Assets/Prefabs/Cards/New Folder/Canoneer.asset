@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4883e82f3bbaa9b4d9f3d5a33b87ff29, type: 3}
+  m_Name: Canoneer
+  m_EditorClassIdentifier: 
+  cardName: Canoneer
+  description: Shoots with explosives
+  unitTypeString: Military Unit
+  woodCost: 2
+  stoneCost: 1
+  manaCost: 0
+  cardSprite: {fileID: 113114651607312398, guid: 54e12afbebffd434995ce08e07172f8a, type: 3}
+  tokenSprite: {fileID: 113114651607312398, guid: a412a40b8cea894419fbe78a8bb36727, type: 3}
+  unitTypeSprite: {fileID: 3700915101788899469, guid: 643c49b89cf9f22409f523664a69e91c, type: 3}
+  maxEnergy: 5
+  maxLife: 5
+  attackValue: 10
+  attackRange: 7
+  tokenAbilities:
+  - CanonShot

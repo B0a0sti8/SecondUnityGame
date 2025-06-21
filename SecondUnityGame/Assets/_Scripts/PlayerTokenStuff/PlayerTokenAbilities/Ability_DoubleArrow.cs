@@ -1,14 +1,15 @@
 using UnityEngine;
 
-public class DoubleArrow : PlayerTokenAbilityPrefab
+public class Ability_DoubleArrow : PlayerTokenAbilityPrefab
 {
     protected override void Start()
     {
+        isSingleTarget = true;
         base.Start();
         energyCost = 1;
         abilityCheckPoints = 0;
         range = 10;
-        isSingleTarget = true;
+
         abilityCheckPointsMax = 2;
 
         skillDamageBaseModifier = 0.7f;

@@ -34,22 +34,17 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
     void Update()
     {
-        // Wenn kein Button im Auswahlmenü getroffen wird, und dieses offen ist, wird es geschlossen. 
-        // Wenn ein Button getroffen wird, wird versucht die Fähigkeit zu starten
-        if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0)) CheckCloseTokenSelectionMenue(); 
-
-
         // Wenn momentan eine Fähigkeit aktiv ist, können keine Karten gespielt werden oder ähnliches.
-        // Mit Rechtsklick wird die Fähigkeit abgebrochen. Mit Linksklick wird versucht einen Checkpoint zu erreichen (z.B. ein zusätzliches Ziel zu wählen)
         if (isPlayingTokenAbility)
         {
+            // Bei Rechtslklick abbrechen
             if (Input.GetMouseButtonDown(1))
             {
                 isPlayingTokenAbility = false;
                 currentTokenAbility.CancelAbility();
                 currentTokenAbility = null;
             }
-
+            // Bei Linksklick versuchen nächste Fähigkeiten-Stufe zu spielen (z.B. Ziel anvisieren)
             else if (Input.GetMouseButtonDown(0))
             {
                 if (currentTokenAbility.abilityCheckPoints < currentTokenAbility.abilityCheckPointsMax) currentTokenAbility.UseAbility();
@@ -58,12 +53,24 @@ public class MouseClickAndGrabManager : MonoBehaviour
                     currentTokenAbility.ApplyAbilityEffect();
                     isPlayingTokenAbility = false;
                     currentTokenAbility = null;
-                } 
+                }
             }
+            // Bei Mausrad wird für Flächenschaden der Indikator gedreht
+            else if (Input.mouseScrollDelta.y > 0) if (!currentTokenAbility.isSingleTarget) currentTokenAbility.RotateMultiTargetShape(90);
+            else if (Input.mouseScrollDelta.y < 0) if (!currentTokenAbility.isSingleTarget) currentTokenAbility.RotateMultiTargetShape(-90);
             return;
         }
 
-        if (!isCardPending)         // Es wird gerade kein Karten-Effekt gespielt
+        // KameraZoom
+        if (Input.mouseScrollDelta.y > 0) mainCam.transform.parent.GetComponent<CameraMovement>().HandleCameraZoom(-3);
+        if (Input.mouseScrollDelta.y < 0) mainCam.transform.parent.GetComponent<CameraMovement>().HandleCameraZoom(3);
+
+        // Wenn das Token-Menü geöffnet ist, aber kein Button getroffen wird, wird das Menü geschlossen.
+        // Wenn ein Button getroffen wird, wird versucht die Fähigkeit zu starten.
+        if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(0)) CheckCloseTokenSelectionMenue();
+
+        // Wenn gerade keine Karte gespielt wird (allgemeiner Fall)
+        if (!isCardPending)         
         {
             if (Input.GetMouseButtonDown(0) && myGrabbedItem == null) GrabCardOrToken();             // Wenn du nichts in der Hand hast und Linksklick kommt, versuche was zu greifen.
             else if (Input.GetMouseButtonDown(1) && myGrabbedItem == null) SelectToken();                 // Wenn du nichts in der Hand hast und Rechtsklick kommt, versuche Token zu nutzen.
@@ -72,7 +79,8 @@ public class MouseClickAndGrabManager : MonoBehaviour
             else if (Input.GetMouseButtonDown(0) && myGrabbedItem != null && myGrabbedItem.gameObject.tag != "Card") TryPlaceToken();       // Wenn Token in der Hand und Linksklick --> Versuche zu legen / tauschen 
             else if (Input.GetMouseButtonDown(1) && myGrabbedItem != null) RemoveGrabbedObject();         // Wenn du was in der Hand hast und Rechtsklick kommt, leg es wieder hin.
         }
-        else             // Es wird gerade ein Karten-Effekt gespielt
+        // Es wird gerade ein Karten-Effekt gespielt --> Es können keine Token-Menüs geöffnet oder Tokens verschoben werden usw.
+        else
         {
             if (Input.GetMouseButtonDown(1))
             {
@@ -86,21 +94,13 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
             // Hier müssen alle Karteneffekte abgehandelt werden, die keine Tokens erzeugen.
         }
-
+        // Wenn ein item gegriffen ist, wird zwischen Karte und Token unterschieden. Und das Item entsprechend bewegt.
         if (myGrabbedItem != null)
         {
-            // Wenn ein item gegriffen ist, wird zwischen Karte und Token unterschieden. Und das Item entsprechend bewegt.
             if (myGrabbedItem.gameObject.tag == "Card") myGrabbedItem.transform.position = Input.mousePosition;
-            else myGrabbedItem.transform.position = (Vector2)mainCam.ScreenToWorldPoint(Input.mousePosition); //- (Vector2)parentPosition
+            else myGrabbedItem.transform.position = (Vector2)mainCam.ScreenToWorldPoint(Input.mousePosition);
         }
     }
-
-    //bool TryFinishPlayingTokenAbility()
-    //{
-    //    //currentTokenAbility
-    //    if (true) return true;
-    //    else return false;
-    //}
 
     void SelectToken()
     {

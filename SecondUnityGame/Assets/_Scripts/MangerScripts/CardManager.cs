@@ -30,8 +30,8 @@ public class CardManager : MonoBehaviour
     [SerializeField] Texture deckBackImage1, deckBackImage2, deckBackImage3, deckBackImage4, deckBackImage5;
 
     #region Liste aller Karten
-    [SerializeField] PlayerTokenScriptable Archer;
-    [SerializeField] PlayerTokenScriptable Solder;
+    //[SerializeField] PlayerTokenScriptable Archer;
+    //[SerializeField] PlayerTokenScriptable Solder;
 
     [SerializeField] List<PlayerTokenScriptable> listOfAllCards = new List<PlayerTokenScriptable>();
 

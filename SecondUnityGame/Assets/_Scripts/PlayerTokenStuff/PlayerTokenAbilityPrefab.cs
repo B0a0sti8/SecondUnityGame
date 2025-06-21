@@ -18,6 +18,11 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
     public List<GameObject> potentialTargets;
     public List<GameObject> currentTargets;
     public bool isSingleTarget;
+    [SerializeField] Sprite multTargetShapeSprite;
+
+    [SerializeField] GameObject multiTargetShape;
+    public GameObject activeMultiTargetShape;
+    List<GameObject> placedMultiTargetShapes = new List<GameObject>();
 
     // UI Stuff
     [SerializeField] protected string abilityName;
@@ -34,10 +39,15 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
         mainCam = Camera.main;
     }
 
+    private void Update()
+    {
+        // Falls die Zielauswahl für Flächenschaden aktiv ist, folgt sie der Maus.
+        if (activeMultiTargetShape != null) SnapMultiTargetShapeIntoGrid(activeMultiTargetShape);
+    }
+
     public bool StartUsingAbility()
     {
-        // Checke Ressourcen usw. Wenn verfügbar, return true;
-
+        // Checke Ressourcen usw. Wenn verfügbar, return true; Wenn nicht, return false
 
         potentialTargets.Clear();
 
@@ -59,11 +69,26 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
         abilityPreviewObject.transform.Find("AbilityIcon").GetComponent<Image>().sprite = abilityIcon;
         abilityPreviewObject.transform.Find("TargetCount").GetComponent<TextMeshProUGUI>().text = "Target count: 0 / " + abilityCheckPointsMax.ToString();
 
+        if (!isSingleTarget)
+        {
+            for (int i = 0; i < multiTargetShape.transform.childCount; i++)
+            {
+                multiTargetShape.transform.GetChild(i).GetComponent<SpriteRenderer>().sprite = multTargetShapeSprite;
+            }
+
+            activeMultiTargetShape = Instantiate(multiTargetShape);
+            activeMultiTargetShape.transform.position = (Vector2)mainCam.ScreenToWorldPoint(Input.mousePosition);
+        }
+
         return true;
     }
 
+    // Eine Fähigkeit kann unter Umständen mehrere Ziele wählen (z.B. 3 Pfeile, die auf verschiedene Gegner verteilt werden können.)
+    // Zudem, kann jede dieser Zielauswahlen Single-Target sein, oder eine Fläche mit einer bestimmten Form. (Quadrat, horizontale oder diagonale Linie, etc.)
+    // Wenn alle Ziele gewählt sind, wird die Fähigkeit mit Linksklick ausgeführt.
     public void UseAbility()
     {
+        // Für single-Target Fähigkeiten
         if (isSingleTarget)
         {
             Vector3 myWorldposition = mainCam.ScreenToWorldPoint(Input.mousePosition);
@@ -77,7 +102,6 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
                     currentTargets.Add(rayHit.transform.gameObject);
 
                     abilityCheckPoints += 1;
-
                     abilityPreviewObject.transform.Find("TargetCount").GetComponent<TextMeshProUGUI>().text = "Target count: " + abilityCheckPoints + " / " + abilityCheckPointsMax.ToString();
                 }
                 else
@@ -86,11 +110,46 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
                 }
             }
         }
+
+        // Für nicht single-Target Fähigkeiten
+        else
+        {
+            // Schau, ob Maus beim Platzieren in der range ist.
+            Vector2 posit = (Vector2)mainCam.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D rayHit = Physics2D.Raycast(posit, new Vector3(0, 0, 1), (1 << LayerMask.NameToLayer("RangeIndicator")));
+            if (rayHit)
+            {
+                List<GameObject> myTargets = GetTargetsFromMultiTargetShape();
+                currentTargets.AddRange(myTargets);
+
+                GameObject newPlacedShape = Instantiate(multiTargetShape);
+                newPlacedShape.transform.position = activeMultiTargetShape.transform.position;
+                placedMultiTargetShapes.Add(newPlacedShape);
+
+                abilityCheckPoints += 1;
+                abilityPreviewObject.transform.Find("TargetCount").GetComponent<TextMeshProUGUI>().text = "Target count: " + abilityCheckPoints + " / " + abilityCheckPointsMax.ToString();
+                if (abilityCheckPoints == abilityCheckPointsMax) RemoveMultShape();
+            }
+        }
+    }
+
+    public void RotateMultiTargetShape(float angle)
+    {
+        activeMultiTargetShape.transform.eulerAngles += new Vector3(0, 0, angle);
+        for (int i = 0; i < activeMultiTargetShape.transform.childCount; i++)
+        {
+            activeMultiTargetShape.transform.GetChild(i).eulerAngles += new Vector3(0, 0, -angle);
+        }
+    }
+
+    private void RemoveMultShape()
+    {
+        Destroy(activeMultiTargetShape);
+        activeMultiTargetShape = null;
     }
 
     public virtual void ApplyAbilityEffect()
     {
-
         AbilityCleanUp();
     }
 
@@ -110,7 +169,6 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
 
             potentialTargets[i].transform.Find("Background").GetComponent<SpriteRenderer>().color = myColor;
             potentialTargets[i].GetComponent<DefaultTokenSlot>().ClearMark();
-
         }
 
         abilityCheckPoints = 0;
@@ -119,10 +177,17 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
 
         currentTargets.Clear();
         potentialTargets.Clear();
+
+        if (!isSingleTarget)
+        {
+            foreach (GameObject placedShape in placedMultiTargetShapes) Destroy(placedShape);
+            placedMultiTargetShapes.Clear();
+            if (activeMultiTargetShape != null) RemoveMultShape();
+        }
     }
 
     // Eine Helferfunktion, die alle Ziele innerhalb eines Kreises findet.
-    public List<GameObject> GetTargetsInCircleHelper(Vector3 circleCenter, float circleRadius)
+    List<GameObject> GetTargetsInCircleHelper(Vector3 circleCenter, float circleRadius)
     {
         List<GameObject> listOfMatches = new List<GameObject>();
 
@@ -138,5 +203,34 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
         }
 
         return listOfMatches;
+    }
+
+    List<GameObject> GetTargetsFromMultiTargetShape()
+    {
+        List<GameObject> listOfMatches = new List<GameObject>();
+
+        for (int i = 0; i < activeMultiTargetShape.transform.childCount; i++)
+        {
+            Transform shapePart = activeMultiTargetShape.transform.GetChild(i);
+            RaycastHit2D rayHit = Physics2D.Raycast((Vector2)shapePart.position, new Vector3(0, 0, 1), (1 << LayerMask.NameToLayer("EnemySlots")) | (1 << LayerMask.NameToLayer("PlayerSlots")));
+
+            if (rayHit && (rayHit.transform.gameObject.tag == "PlayerSlot" || rayHit.transform.gameObject.tag == "EnemySlot"))
+            {
+                //Debug.Log("Found something at: " + (Vector2)shapePart.position);
+                if (rayHit.transform.GetComponentInChildren<DefaultToken>() != null) listOfMatches.Add(rayHit.transform.gameObject);
+            }
+        }
+        return listOfMatches;
+    }
+    
+    void SnapMultiTargetShapeIntoGrid(GameObject multiShape)
+    {
+        // Formposition an Gitter orientieren
+        Vector2 currentMousePos = (Vector2)mainCam.ScreenToWorldPoint(Input.mousePosition);
+        float currentGridX = currentMousePos.x - (currentMousePos.x % 10) + 5 * Mathf.Sign(currentMousePos.x); 
+        float currentGridY = currentMousePos.y - (currentMousePos.y % 10) + 5 * Mathf.Sign(currentMousePos.y);
+
+        Vector2 currentGridPos = new Vector2(currentGridX, currentGridY);
+        multiShape.transform.position = currentGridPos;
     }
 }

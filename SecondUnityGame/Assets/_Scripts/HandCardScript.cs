@@ -18,6 +18,12 @@ public class HandCardScript : MonoBehaviour
         myHandCards = new List<GameObject>();
     }
 
+    private void Start()
+    {
+        FetchAllCards();
+        ScaleUIBasedOnCardCount();
+    }
+
     private void FetchAllCards()
     {
         myHandCards.Clear();
