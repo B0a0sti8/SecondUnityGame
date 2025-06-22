@@ -166,6 +166,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8d7d1333a354b084b960aac4d83cf478, type: 2}
   - {fileID: 11400000, guid: 8944c20c013c48b478143bb9ad98d09f, type: 2}
   - {fileID: 11400000, guid: 336c589c173db994aaa1b188c4f4764f, type: 2}
+  - {fileID: 11400000, guid: af9a4d18bd0d1d644b0a506e0022261c, type: 2}
 --- !u!4 &51794504
 Transform:
   m_ObjectHideFlags: 0
@@ -32385,10 +32386,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tokenPrefab: {fileID: 5086469726416886182, guid: be0c799b3693da44eb3524de73b319d4, type: 3}
-  myGrabbedItem: {fileID: 0}
-  pendingCard: {fileID: 0}
-  isPlayingTokenAbility: 0
-  currentTokenAbility: {fileID: 0}
   tokenSelectionMenue: {fileID: 1829821442}
 --- !u!1 &992506564
 GameObject:
@@ -40611,6 +40608,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1225144683}
     m_Modifications:
     - target: {fileID: 3536459736174722704, guid: 14dade0d8ca15dc46b65c1bd441ba935, type: 3}
+      propertyPath: myCardToken
+      value: 
+      objectReference: {fileID: 11400000, guid: af9a4d18bd0d1d644b0a506e0022261c, type: 2}
+    - target: {fileID: 3536459736174722704, guid: 14dade0d8ca15dc46b65c1bd441ba935, type: 3}
       propertyPath: createsPlayerToken
       value: 1
       objectReference: {fileID: 0}
@@ -42032,6 +42033,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1485769774}
+  - component: {fileID: 1485769775}
   m_Layer: 0
   m_Name: Target
   m_TagString: Untagged
@@ -42054,6 +42056,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1094720520}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1485769775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1485769773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3db54716927aa1b4e89d6fe69a9a0aba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1489447901
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44834,6 +44848,64 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5779777503296041470, guid: 14dade0d8ca15dc46b65c1bd441ba935, type: 3}
   m_PrefabInstance: {fileID: 1693850818}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1705751774
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1705751775}
+  - component: {fileID: 1705751776}
+  m_Layer: 0
+  m_Name: Lightning Strike
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1705751775
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705751774}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2080702468}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1705751776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705751774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d987d54e7956e674d80ee771b48e27e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  energyCost: 0
+  range: 0
+  abilityCheckPoints: 0
+  abilityCheckPointsMax: 3
+  skillDamageBaseModifier: 0
+  myTargetType: 2
+  potentialTargets: []
+  currentTargets: []
+  multTargetShapeSprite: {fileID: -861939439238418533, guid: 60bd98d191e25d84caa26910b0ab8543, type: 3}
+  multiTargetShape: {fileID: 4034010509785220885, guid: 809a1092b83e4aa44addf817caf772ab, type: 3}
+  activeMultiTargetShape: {fileID: 0}
+  abilityName: Lightning Strike
+  abilityDescription: Targets Enemies and strikes them with lightning
+  abilityIcon: {fileID: -861939439238418533, guid: 60bd98d191e25d84caa26910b0ab8543, type: 3}
 --- !u!1 &1714252670
 GameObject:
   m_ObjectHideFlags: 0
@@ -46610,6 +46682,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1225144683}
     m_Modifications:
     - target: {fileID: 3536459736174722704, guid: 14dade0d8ca15dc46b65c1bd441ba935, type: 3}
+      propertyPath: myCardToken
+      value: 
+      objectReference: {fileID: 11400000, guid: b9da526a273e46a4881dafcc8cca11e7, type: 2}
+    - target: {fileID: 3536459736174722704, guid: 14dade0d8ca15dc46b65c1bd441ba935, type: 3}
       propertyPath: createsPlayerToken
       value: 1
       objectReference: {fileID: 0}
@@ -46932,6 +47008,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1225144683}
     m_Modifications:
+    - target: {fileID: 3536459736174722704, guid: 14dade0d8ca15dc46b65c1bd441ba935, type: 3}
+      propertyPath: myCardToken
+      value: 
+      objectReference: {fileID: 11400000, guid: 8944c20c013c48b478143bb9ad98d09f, type: 2}
     - target: {fileID: 3536459736174722704, guid: 14dade0d8ca15dc46b65c1bd441ba935, type: 3}
       propertyPath: createsPlayerToken
       value: 1
@@ -49411,7 +49491,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1705751775}
   m_Father: {fileID: 1225366721}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2080702469
@@ -50676,6 +50757,10 @@ PrefabInstance:
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3536459736174722704, guid: 14dade0d8ca15dc46b65c1bd441ba935, type: 3}
+      propertyPath: myCardToken
+      value: 
+      objectReference: {fileID: 11400000, guid: b9da526a273e46a4881dafcc8cca11e7, type: 2}
     - target: {fileID: 3536459736174722704, guid: 14dade0d8ca15dc46b65c1bd441ba935, type: 3}
       propertyPath: myPlayerTokenScriptable
       value: 

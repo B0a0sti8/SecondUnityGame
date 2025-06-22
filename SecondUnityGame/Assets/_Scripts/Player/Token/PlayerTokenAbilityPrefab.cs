@@ -9,6 +9,8 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
     GameObject rangeIndicator;
     GameObject abilityPreviewObject;
 
+    public bool isAbilityCard;
+
     public int energyCost;
     public int range;
     public int abilityCheckPoints;

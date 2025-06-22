@@ -5,15 +5,14 @@ using UnityEngine.UI;
 public class MainCardScript : MonoBehaviour
 {
     public bool createsPlayerToken;
-    public PlayerTokenScriptable myPlayerTokenScriptable;
+    public DefaultCardScriptable myCardToken;
 
     string cardName;
     Sprite cardPicture;
     public Sprite tokenPicture;
     Sprite typePicture;
 
-
-    string myCardType = "Military Unit";
+    string myCardType = "";
 
     string cardDescription;
 
@@ -78,19 +77,19 @@ public class MainCardScript : MonoBehaviour
 
     void LoadDataFromScriptableObject()
     {
-        cardName = myPlayerTokenScriptable.cardName;
-        cardDescription = myPlayerTokenScriptable.description;
-        myCardType = myPlayerTokenScriptable.cardTypeString;
+        cardName = myCardToken.cardName;
+        cardDescription = myCardToken.description;
+        myCardType = myCardToken.cardTypeString;
 
-        cardPicture = myPlayerTokenScriptable.cardSprite;
-        tokenPicture = myPlayerTokenScriptable.tokenSprite;
-        typePicture = myPlayerTokenScriptable.cardTypeSprite;
+        cardPicture = myCardToken.cardSprite;
+        //tokenPicture = myPlayerTokenScriptable.tokenSprite;
+        typePicture = myCardToken.cardTypeSprite;
 
-        maxCardLife = myPlayerTokenScriptable.maxLife;
-        maxCardEnergy = myPlayerTokenScriptable.maxEnergy;
+        //maxCardLife = myPlayerTokenScriptable.maxLife;
+        //maxCardEnergy = myPlayerTokenScriptable.maxEnergy;
 
-        woodCost = myPlayerTokenScriptable.woodCost;
-        stoneCost = myPlayerTokenScriptable.stoneCost;
-        manaCost = myPlayerTokenScriptable.manaCost;
+        woodCost = myCardToken.woodCost;
+        stoneCost = myCardToken.stoneCost;
+        manaCost = myCardToken.manaCost;
     }
 }

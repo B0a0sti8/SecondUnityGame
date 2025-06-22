@@ -12,14 +12,14 @@ public class CardManager : MonoBehaviour
     [SerializeField] GameObject deckAndDiscardPileViewer;
 
     [SerializeField] GameObject lastDiscardedCard;
-    List<PlayerTokenScriptable> discardPile = new List<PlayerTokenScriptable>();
+    List<DefaultCardScriptable> discardPile = new List<DefaultCardScriptable>();
 
-    List<PlayerTokenScriptable> cardDeck1 = new List<PlayerTokenScriptable>();
-    List<PlayerTokenScriptable> cardDeck2 = new List<PlayerTokenScriptable>();
-    List<PlayerTokenScriptable> cardDeck3 = new List<PlayerTokenScriptable>();
+    List<DefaultCardScriptable> cardDeck1 = new List<DefaultCardScriptable>();
+    List<DefaultCardScriptable> cardDeck2 = new List<DefaultCardScriptable>();
+    List<DefaultCardScriptable> cardDeck3 = new List<DefaultCardScriptable>();
     Dictionary<int, GameObject> handCards;
 
-    Dictionary<int, List<PlayerTokenScriptable>> allDeckList = new Dictionary<int, List<PlayerTokenScriptable>>();
+    Dictionary<int, List<DefaultCardScriptable>> allDeckList = new Dictionary<int, List<DefaultCardScriptable>>();
 
     // UI Stuff
     [SerializeField] RawImage deck1Image, deck2Image, deck3Image, discardPileImage;
@@ -33,7 +33,7 @@ public class CardManager : MonoBehaviour
     //[SerializeField] PlayerTokenScriptable Archer;
     //[SerializeField] PlayerTokenScriptable Solder;
 
-    [SerializeField] List<PlayerTokenScriptable> listOfAllCards = new List<PlayerTokenScriptable>();
+    [SerializeField] List<DefaultCardScriptable> listOfAllCards = new List<DefaultCardScriptable>();
 
     #endregion
 
@@ -74,7 +74,7 @@ public class CardManager : MonoBehaviour
     public void AddSimpleCardToHandForDebugging()
     {
         GameObject newCard = mySimpleCardPrefab;
-        newCard.GetComponent<MainCardScript>().myPlayerTokenScriptable = listOfAllCards[Random.Range(0, listOfAllCards.Count)];
+        newCard.GetComponent<MainCardScript>().myCardToken = listOfAllCards[Random.Range(0, listOfAllCards.Count)];
         HandCardScript.instance.AddCard(newCard);
     }
 
@@ -91,21 +91,21 @@ public class CardManager : MonoBehaviour
         DrawCardFromDeck(allDeckList[decknumber][Random.Range(0, deckSize)], decknumber);
     }
 
-    public void DrawCardFromDeck(PlayerTokenScriptable cardScript, int decknumber)
+    public void DrawCardFromDeck(DefaultCardScriptable cardScript, int decknumber)
     {
         GameObject newHandCard = mySimpleCardPrefab;
-        newHandCard.GetComponent<MainCardScript>().myPlayerTokenScriptable = cardScript;
+        newHandCard.GetComponent<MainCardScript>().myCardToken = cardScript;
         bool hasAddedCard = HandCardScript.instance.AddCard(newHandCard);
         if (hasAddedCard) RemoveCardFromDeck(cardScript, decknumber);
     }
 
-    public void AddCardToDeck(PlayerTokenScriptable cardScript, int decknumber)
+    public void AddCardToDeck(DefaultCardScriptable cardScript, int decknumber)
     {
         allDeckList[decknumber].Add(cardScript);
         UpdateDeckUI(decknumber);
     }
 
-    public void AddCardToDiscardPile(PlayerTokenScriptable cardScript)
+    public void AddCardToDiscardPile(DefaultCardScriptable cardScript)
     {
         discardPile.Add(cardScript);
         UpdateDiscardPileUI();
@@ -117,13 +117,13 @@ public class CardManager : MonoBehaviour
         UpdateDiscardPileUI();
     }
 
-    public void RemoveCardFromDiscardPile(PlayerTokenScriptable cardScript)
+    public void RemoveCardFromDiscardPile(DefaultCardScriptable cardScript)
     {
         discardPile.Remove(cardScript);
         UpdateDiscardPileUI();
     }
 
-    public void RemoveCardFromDeck(PlayerTokenScriptable cardScript, int decknumber)
+    public void RemoveCardFromDeck(DefaultCardScriptable cardScript, int decknumber)
     {
         allDeckList[decknumber].Remove(cardScript);
         UpdateDeckUI(decknumber);
@@ -143,7 +143,7 @@ public class CardManager : MonoBehaviour
             for (int i = 0; i < discardPile.Count; i++)
             {
                 deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).gameObject.SetActive(true);
-                deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).GetComponent<MainCardScript>().myPlayerTokenScriptable = discardPile[i];
+                deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).GetComponent<MainCardScript>().myCardToken = discardPile[i];
                 deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).GetComponent<MainCardScript>().FetchFields();
                 deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).GetComponent<MainCardScript>().UpdateCardUI();
             }
@@ -160,7 +160,7 @@ public class CardManager : MonoBehaviour
         {
             deckAndDiscardPileViewer.SetActive(true);
 
-            List<PlayerTokenScriptable> shuffledDeck = allDeckList[deckNumber];
+            List<DefaultCardScriptable> shuffledDeck = allDeckList[deckNumber];
             int maxCount = shuffledDeck.Count;
 
             for (int k = 0; k < maxCount - 1; k++)
@@ -179,7 +179,7 @@ public class CardManager : MonoBehaviour
             for (int i = 0; i < allDeckList[deckNumber].Count; i++)
             {
                 deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).gameObject.SetActive(true);
-                deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).GetComponent<MainCardScript>().myPlayerTokenScriptable = shuffledDeck[i];
+                deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).GetComponent<MainCardScript>().myCardToken = shuffledDeck[i];
                 deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).GetComponent<MainCardScript>().FetchFields();
                 deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).GetComponent<MainCardScript>().UpdateCardUI();
             }
@@ -216,7 +216,7 @@ public class CardManager : MonoBehaviour
         {
             discardPileImage.gameObject.SetActive(false);
             lastDiscardedCard.SetActive(true);
-            lastDiscardedCard.GetComponent<MainCardScript>().myPlayerTokenScriptable = discardPile[discardPile.Count - 1];
+            lastDiscardedCard.GetComponent<MainCardScript>().myCardToken = discardPile[discardPile.Count - 1];
             lastDiscardedCard.GetComponent<MainCardScript>().UpdateCardUI();
             //lastDiscardedCard.GetComponent<CanvasGroup>().blocksRaycasts = false;
 

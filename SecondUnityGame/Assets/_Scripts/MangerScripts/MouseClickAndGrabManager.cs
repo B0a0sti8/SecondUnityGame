@@ -10,20 +10,20 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
     [SerializeField] GameObject tokenPrefab;
 
-    public GameObject myGrabbedItem;
+    GameObject myGrabbedItem;
     private Vector3 originPosition;
     private Vector3 originRotation;
     private Transform originalParent;
 
-    public GameObject pendingCard;
+    GameObject pendingCard;
     Vector3 pendingCardOriginPosition;
     Vector3 pendingCardOriginRotation;
     private bool isCardPending;
 
-    public bool isPlayingTokenAbility = false;
-    public PlayerTokenAbilityPrefab currentTokenAbility;
+    bool isPlayingAbility = false;
+    PlayerTokenAbilityPrefab currentAbility;
 
-    [SerializeField] GameObject tokenSelectionMenue; 
+    [SerializeField] GameObject tokenSelectionMenue;
 
     private void Awake()
     {
@@ -35,29 +35,44 @@ public class MouseClickAndGrabManager : MonoBehaviour
     void Update()
     {
         // Wenn momentan eine Fähigkeit aktiv ist, können keine Karten gespielt werden oder ähnliches.
-        if (isPlayingTokenAbility)
+        if (isPlayingAbility)
         {
             // Bei Rechtslklick abbrechen
             if (Input.GetMouseButtonDown(1))
             {
-                isPlayingTokenAbility = false;
-                currentTokenAbility.CancelAbility();
-                currentTokenAbility = null;
+                isPlayingAbility = false;
+                currentAbility.CancelAbility();
+                currentAbility = null;
+
+                // Wenn die Fähigkeit durch eine Karte gespielt wird, wird die Karte am Ende der Fähigkeit auf den Ablagestapel gelegt.
+                if (isCardPending)
+                {
+                    PlaceCardBackInHand();
+                    //RemoveGrabbedObject();
+                    isCardPending = false;
+                }
             }
             // Bei Linksklick versuchen nächste Fähigkeiten-Stufe zu spielen (z.B. Ziel anvisieren)
             else if (Input.GetMouseButtonDown(0))
             {
-                if (currentTokenAbility.abilityCheckPoints < currentTokenAbility.abilityCheckPointsMax) currentTokenAbility.UseAbility();
+                if (currentAbility.abilityCheckPoints < currentAbility.abilityCheckPointsMax) currentAbility.UseAbility();
                 else
                 {
-                    currentTokenAbility.ApplyAbilityEffect();
-                    isPlayingTokenAbility = false;
-                    currentTokenAbility = null;
+                    currentAbility.ApplyAbilityEffect();
+                    isPlayingAbility = false;
+                    currentAbility = null;
+
+                    // Wenn die Fähigkeit durch eine Karte gespielt wird, wird die Karte am Ende der Fähigkeit auf den Ablagestapel gelegt.
+                    if (isCardPending)
+                    {
+                        HandlePlayedCard();
+                        isCardPending = false;
+                    }
                 }
             }
             // Bei Mausrad wird für Flächenschaden der Indikator gedreht
-            else if (Input.mouseScrollDelta.y > 0) if (currentTokenAbility.myTargetType == PlayerTokenAbilityPrefab.TargetType.MultiTarget) currentTokenAbility.RotateMultiTargetShape(90);
-            else if (Input.mouseScrollDelta.y < 0) if (currentTokenAbility.myTargetType == PlayerTokenAbilityPrefab.TargetType.MultiTarget) currentTokenAbility.RotateMultiTargetShape(-90);
+            else if (Input.mouseScrollDelta.y > 0) if (currentAbility.myTargetType == PlayerTokenAbilityPrefab.TargetType.MultiTarget) currentAbility.RotateMultiTargetShape(90);
+            else if (Input.mouseScrollDelta.y < 0) if (currentAbility.myTargetType == PlayerTokenAbilityPrefab.TargetType.MultiTarget) currentAbility.RotateMultiTargetShape(-90);
             return;
         }
 
@@ -142,11 +157,10 @@ public class MouseClickAndGrabManager : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                currentTokenAbility = raycastResults[0].gameObject.GetComponent<AbilitySelectionButton>().myAbilityObject.GetComponent<PlayerTokenAbilityPrefab>();
-                if (currentTokenAbility.StartUsingAbility())
+                currentAbility = raycastResults[0].gameObject.GetComponent<AbilitySelectionButton>().myAbilityObject.GetComponent<PlayerTokenAbilityPrefab>();
+                if (currentAbility.StartUsingAbility())
                 {
-                    isPlayingTokenAbility = true;
-
+                    isPlayingAbility = true;
                     tokenSelectionMenue.SetActive(false);
                 }
             }
@@ -185,7 +199,6 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
         if (rayHit && rayHit.transform.gameObject.tag == "PlayerUnitSlot" && rayHit.transform.Find("PlayerToken") != null)
         {
-
             myGrabbedItem = rayHit.transform.Find("PlayerToken").gameObject;
             originPosition = myGrabbedItem.transform.localPosition;
             originRotation = myGrabbedItem.transform.localEulerAngles;
@@ -227,25 +240,39 @@ public class MouseClickAndGrabManager : MonoBehaviour
         pendingCardOriginRotation = originRotation;
         isCardPending = true;
 
-        if (myCard.createsPlayerToken) // Eine Karte die ein Token generiert wurde gespielt
+        if (myCard.myCardToken.cardTypeString == "Unit" || myCard.myCardToken.cardTypeString == "Building") // Eine Karte die ein Token generiert wurde gespielt
         {
             originPosition = new Vector3(0, 0, 0);
             originRotation = new Vector3(0, 0, 0);
 
             GameObject newToken = Instantiate(tokenPrefab);
             newToken.name = "PlayerToken";
-            newToken.GetComponent<PlayerToken>().SetToken(myCard.myPlayerTokenScriptable);
+            newToken.GetComponent<PlayerToken>().SetToken((PlayerTokenScriptable)myCard.myCardToken);
 
-            if (myCard.myPlayerTokenScriptable.cardTypeString == "Building") newToken.transform.localScale *= 2;
+            if (myCard.myCardToken.cardTypeString == "Building") newToken.transform.localScale *= 2;
 
             myGrabbedItem = newToken;
             myGrabbedItem.transform.position = (Vector2)mainCam.ScreenToWorldPoint(Input.mousePosition);
+        }
+
+        else if (myCard.myCardToken.cardTypeString == "Ability")
+        {
+            string abilityName = ((AbilityCardScriptable)myCard.myCardToken).abilityName;
+            currentAbility = ListOfAllAbilityCardAbilities.instance.transform.Find(abilityName).GetComponent<PlayerTokenAbilityPrefab>();
+            currentAbility.isAbilityCard = true;
+
+            if (currentAbility.StartUsingAbility())
+            {
+                myGrabbedItem = null;
+                isPlayingAbility = true;
+                tokenSelectionMenue.SetActive(false);
+            }
         }
     }
 
     void HandlePlayedCard()
     {
-        CardManager.instance.AddCardToDiscardPile(pendingCard.GetComponent<MainCardScript>().myPlayerTokenScriptable);
+        CardManager.instance.AddCardToDiscardPile(pendingCard.GetComponent<MainCardScript>().myCardToken);
         HandCardScript.instance.RemoveCard(pendingCard);
         Destroy(pendingCard);
         pendingCard = null;
@@ -317,11 +344,12 @@ public class MouseClickAndGrabManager : MonoBehaviour
         if (myGrabbedItem != null && myGrabbedItem.gameObject.tag != "Card")
         {
             Destroy(myGrabbedItem);
-            myGrabbedItem = pendingCard;
-            originPosition = pendingCardOriginPosition;
-            originRotation = pendingCardOriginRotation;
-
-            isCardPending = false;
         }
+
+        myGrabbedItem = pendingCard;
+        originPosition = pendingCardOriginPosition;
+        originRotation = pendingCardOriginRotation;
+
+        isCardPending = false;
     }
 }
