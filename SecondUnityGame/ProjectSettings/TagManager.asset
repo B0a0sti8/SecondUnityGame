@@ -8,6 +8,8 @@ TagManager:
   - PlayerSlot
   - EnemySlot
   - SelectionButton
+  - PlayerUnitSlot
+  - PlayerBuildingSlot
   layers:
   - Default
   - TransparentFX
@@ -16,9 +18,9 @@ TagManager:
   - Water
   - UI
   - EnemySlots
-  - PlayerSlots
+  - PlayerUnitSlots
+  - PlayerBuildingSlots
   - RangeIndicator
-  - 
   - 
   - 
   - 

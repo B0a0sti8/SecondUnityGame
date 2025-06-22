@@ -1,21 +1,20 @@
 using UnityEngine;
 
-public class Ability_DoubleArrow : PlayerTokenAbilityPrefab
+public class Ability_CanonShot : PlayerTokenAbilityPrefab
 {
     protected override void Start()
     {
-        isSingleTarget = true;
         base.Start();
-        energyCost = 1;
+        energyCost = 2;
         abilityCheckPoints = 0;
-        range = 10;
-
-        abilityCheckPointsMax = 2;
+        range = 12;
+        myTargetType = TargetType.MultiTarget;
+        abilityCheckPointsMax = 1;
 
         skillDamageBaseModifier = 0.7f;
 
-        abilityName = "Double Arrow";
-        abilityDescription = "Shoots two arrows to arbitrary enemies";
+        abilityName = "Canon shot";
+        abilityDescription = "Shoots his canon to attack a whole area.";
     }
 
     public override void ApplyAbilityEffect()

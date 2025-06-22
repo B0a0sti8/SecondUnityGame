@@ -4,17 +4,18 @@ using UnityEngine.UI;
 
 public class PlayerToken : DefaultToken
 {
-    private PlayerTokenScriptable myToken;
+    public PlayerTokenScriptable myToken;
     [SerializeField] private Transform listOfAllAbilities;
 
     // Eigenschafte und Werte für Kampf
     public int maxEnergy;
-
     public int attackRange;
 
     private void Start()
     {
         healthBar = transform.Find("Canvas").Find("Healthbar").Find("Health").gameObject;
+        if (myToken.cardTypeString == "Building") healthBar.transform.parent.gameObject.SetActive(false);
+
         listOfAllAbilities = GameObject.Find("Systems").transform.Find("ListOfAllPlayerTokenAbilities");
 
         foreach (string ab in myToken.tokenAbilities)
@@ -31,6 +32,12 @@ public class PlayerToken : DefaultToken
         UpdatePlayerToken();
 
         currentLife = maxLife;
+    }
+
+    public override void UpdateHealthbar()
+    {
+        if (myToken.cardTypeString == "Building") return;
+        base.UpdateHealthbar();
     }
 
     void UpdatePlayerToken()

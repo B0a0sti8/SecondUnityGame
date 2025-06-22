@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Canoneer
   description: Shoots with explosives
-  unitTypeString: Military Unit
+  cardTypeString: Unit
   woodCost: 2
   stoneCost: 1
   manaCost: 0
   cardSprite: {fileID: 113114651607312398, guid: 54e12afbebffd434995ce08e07172f8a, type: 3}
+  cardTypeSprite: {fileID: 0}
   tokenSprite: {fileID: 113114651607312398, guid: a412a40b8cea894419fbe78a8bb36727, type: 3}
-  unitTypeSprite: {fileID: 3700915101788899469, guid: 643c49b89cf9f22409f523664a69e91c, type: 3}
   maxEnergy: 5
   maxLife: 5
   attackValue: 10

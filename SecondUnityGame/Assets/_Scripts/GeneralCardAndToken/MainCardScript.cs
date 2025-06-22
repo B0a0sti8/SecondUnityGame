@@ -80,11 +80,11 @@ public class MainCardScript : MonoBehaviour
     {
         cardName = myPlayerTokenScriptable.cardName;
         cardDescription = myPlayerTokenScriptable.description;
-        myCardType = myPlayerTokenScriptable.unitTypeString;
+        myCardType = myPlayerTokenScriptable.cardTypeString;
 
         cardPicture = myPlayerTokenScriptable.cardSprite;
         tokenPicture = myPlayerTokenScriptable.tokenSprite;
-        typePicture = myPlayerTokenScriptable.unitTypeSprite;
+        typePicture = myPlayerTokenScriptable.cardTypeSprite;
 
         maxCardLife = myPlayerTokenScriptable.maxLife;
         maxCardEnergy = myPlayerTokenScriptable.maxEnergy;

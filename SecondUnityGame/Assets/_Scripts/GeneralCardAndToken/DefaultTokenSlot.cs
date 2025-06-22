@@ -7,7 +7,7 @@ public class DefaultTokenSlot : MonoBehaviour
     public GameObject myBackground;
     public GameObject myIsMarkedObject;
     public int markedCount;
-
+    public bool isBuildingSlot;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

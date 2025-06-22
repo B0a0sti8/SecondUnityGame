@@ -15,9 +15,17 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
     public int abilityCheckPointsMax;
     public float skillDamageBaseModifier;
 
+    public enum TargetType
+    {
+        SingleTarget,
+        MultiTarget,
+        NoTargetNeeded
+    }
+
+    public TargetType myTargetType;
+
     public List<GameObject> potentialTargets;
     public List<GameObject> currentTargets;
-    public bool isSingleTarget;
     [SerializeField] Sprite multTargetShapeSprite;
 
     [SerializeField] GameObject multiTargetShape;
@@ -69,7 +77,7 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
         abilityPreviewObject.transform.Find("AbilityIcon").GetComponent<Image>().sprite = abilityIcon;
         abilityPreviewObject.transform.Find("TargetCount").GetComponent<TextMeshProUGUI>().text = "Target count: 0 / " + abilityCheckPointsMax.ToString();
 
-        if (!isSingleTarget)
+        if (myTargetType == TargetType.MultiTarget)
         {
             for (int i = 0; i < multiTargetShape.transform.childCount; i++)
             {
@@ -89,12 +97,12 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
     public void UseAbility()
     {
         // Für single-Target Fähigkeiten
-        if (isSingleTarget)
+        if (myTargetType == TargetType.SingleTarget)
         {
             Vector3 myWorldposition = mainCam.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D rayHit = Physics2D.Raycast((Vector2)myWorldposition, new Vector3(0, 0, 1));
+            RaycastHit2D rayHit = Physics2D.Raycast((Vector2)myWorldposition, new Vector3(0, 0, 1), 10, (1 << LayerMask.NameToLayer("EnemySlots")) | (1 << LayerMask.NameToLayer("PlayerUnitSlots")));
 
-            if (rayHit && (rayHit.transform.gameObject.tag == "PlayerSlot" || rayHit.transform.gameObject.tag == "EnemySlot") )
+            if (rayHit && (rayHit.transform.gameObject.tag == "PlayerUnitSlot" || rayHit.transform.gameObject.tag == "EnemySlot") )
             {
                 if (potentialTargets.Contains(rayHit.transform.gameObject)) 
                 {
@@ -111,8 +119,8 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
             }
         }
 
-        // Für nicht single-Target Fähigkeiten
-        else
+        // Für Multi-Target Fähigkeiten
+        else if (myTargetType == TargetType.MultiTarget)
         {
             // Schau, ob Maus beim Platzieren in der range ist.
             Vector2 posit = (Vector2)mainCam.ScreenToWorldPoint(Input.mousePosition);
@@ -122,8 +130,7 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
                 List<GameObject> myTargets = GetTargetsFromMultiTargetShape();
                 currentTargets.AddRange(myTargets);
 
-                GameObject newPlacedShape = Instantiate(multiTargetShape);
-                newPlacedShape.transform.position = activeMultiTargetShape.transform.position;
+                GameObject newPlacedShape = Instantiate(activeMultiTargetShape);
                 placedMultiTargetShapes.Add(newPlacedShape);
 
                 abilityCheckPoints += 1;
@@ -131,10 +138,18 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
                 if (abilityCheckPoints == abilityCheckPointsMax) RemoveMultShape();
             }
         }
+
+        // Für Fähigkeiten ohne Target
+        else if (myTargetType == TargetType.NoTargetNeeded)
+        {
+            abilityCheckPoints += 1;
+            abilityPreviewObject.transform.Find("TargetCount").GetComponent<TextMeshProUGUI>().text = "Target count: " + abilityCheckPoints + " / " + abilityCheckPointsMax.ToString();
+        }
     }
 
     public void RotateMultiTargetShape(float angle)
     {
+        if (activeMultiTargetShape == null) return;
         activeMultiTargetShape.transform.eulerAngles += new Vector3(0, 0, angle);
         for (int i = 0; i < activeMultiTargetShape.transform.childCount; i++)
         {
@@ -178,7 +193,7 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
         currentTargets.Clear();
         potentialTargets.Clear();
 
-        if (!isSingleTarget)
+        if (myTargetType == TargetType.MultiTarget)
         {
             foreach (GameObject placedShape in placedMultiTargetShapes) Destroy(placedShape);
             placedMultiTargetShapes.Clear();
@@ -191,7 +206,7 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
     {
         List<GameObject> listOfMatches = new List<GameObject>();
 
-        Collider2D[] hit = Physics2D.OverlapCircleAll(circleCenter, circleRadius, (1 << LayerMask.NameToLayer("EnemySlots")) | (1 << LayerMask.NameToLayer("PlayerSlots")));
+        Collider2D[] hit = Physics2D.OverlapCircleAll(circleCenter, circleRadius, (1 << LayerMask.NameToLayer("EnemySlots")) | (1 << LayerMask.NameToLayer("PlayerUnitSlots")));
         foreach (Collider2D coll in hit)
         {
 
@@ -212,9 +227,9 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
         for (int i = 0; i < activeMultiTargetShape.transform.childCount; i++)
         {
             Transform shapePart = activeMultiTargetShape.transform.GetChild(i);
-            RaycastHit2D rayHit = Physics2D.Raycast((Vector2)shapePart.position, new Vector3(0, 0, 1), (1 << LayerMask.NameToLayer("EnemySlots")) | (1 << LayerMask.NameToLayer("PlayerSlots")));
+            RaycastHit2D rayHit = Physics2D.Raycast((Vector2)shapePart.position, new Vector3(0, 0, 1), 10, (1 << LayerMask.NameToLayer("EnemySlots")) | (1 << LayerMask.NameToLayer("PlayerUnitSlots")));
 
-            if (rayHit && (rayHit.transform.gameObject.tag == "PlayerSlot" || rayHit.transform.gameObject.tag == "EnemySlot"))
+            if (rayHit && (rayHit.transform.gameObject.tag == "PlayerUnitSlot" || rayHit.transform.gameObject.tag == "EnemySlot"))
             {
                 //Debug.Log("Found something at: " + (Vector2)shapePart.position);
                 if (rayHit.transform.GetComponentInChildren<DefaultToken>() != null) listOfMatches.Add(rayHit.transform.gameObject);

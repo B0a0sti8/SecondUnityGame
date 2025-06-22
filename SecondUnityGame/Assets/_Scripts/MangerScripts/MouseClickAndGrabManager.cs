@@ -56,8 +56,8 @@ public class MouseClickAndGrabManager : MonoBehaviour
                 }
             }
             // Bei Mausrad wird für Flächenschaden der Indikator gedreht
-            else if (Input.mouseScrollDelta.y > 0) if (!currentTokenAbility.isSingleTarget) currentTokenAbility.RotateMultiTargetShape(90);
-            else if (Input.mouseScrollDelta.y < 0) if (!currentTokenAbility.isSingleTarget) currentTokenAbility.RotateMultiTargetShape(-90);
+            else if (Input.mouseScrollDelta.y > 0) if (currentTokenAbility.myTargetType == PlayerTokenAbilityPrefab.TargetType.MultiTarget) currentTokenAbility.RotateMultiTargetShape(90);
+            else if (Input.mouseScrollDelta.y < 0) if (currentTokenAbility.myTargetType == PlayerTokenAbilityPrefab.TargetType.MultiTarget) currentTokenAbility.RotateMultiTargetShape(-90);
             return;
         }
 
@@ -107,7 +107,7 @@ public class MouseClickAndGrabManager : MonoBehaviour
         Vector3 myWorldposition = mainCam.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D rayHit = Physics2D.Raycast((Vector2)myWorldposition, new Vector3(0, 0, 1));
 
-        if (rayHit && rayHit.transform.gameObject.tag == "PlayerSlot")
+        if (rayHit && (rayHit.transform.gameObject.tag == "PlayerUnitSlot" || rayHit.transform.gameObject.tag == "PlayerBuildingSlot"))
         {
             if (rayHit.transform.gameObject.GetComponentInChildren<PlayerToken>() != null)
             {
@@ -183,10 +183,10 @@ public class MouseClickAndGrabManager : MonoBehaviour
         Vector3 myWorldposition = mainCam.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D rayHit = Physics2D.Raycast((Vector2)myWorldposition, new Vector3(0, 0, 1));
 
-        if (rayHit && rayHit.transform.gameObject.tag == "PlayerSlot" && rayHit.transform.Find("PlayerToken") != null)
+        if (rayHit && rayHit.transform.gameObject.tag == "PlayerUnitSlot" && rayHit.transform.Find("PlayerToken") != null)
         {
 
-            myGrabbedItem = rayHit.transform.Find("PlayerToken").gameObject;//
+            myGrabbedItem = rayHit.transform.Find("PlayerToken").gameObject;
             originPosition = myGrabbedItem.transform.localPosition;
             originRotation = myGrabbedItem.transform.localEulerAngles;
             originalParent = rayHit.transform;
@@ -236,6 +236,8 @@ public class MouseClickAndGrabManager : MonoBehaviour
             newToken.name = "PlayerToken";
             newToken.GetComponent<PlayerToken>().SetToken(myCard.myPlayerTokenScriptable);
 
+            if (myCard.myPlayerTokenScriptable.cardTypeString == "Building") newToken.transform.localScale *= 2;
+
             myGrabbedItem = newToken;
             myGrabbedItem.transform.position = (Vector2)mainCam.ScreenToWorldPoint(Input.mousePosition);
         }
@@ -251,11 +253,12 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
     bool TryPlaceToken()
     {
+        // Dieser ist der Part für Einheiten
         // Hier checken ob ein Tokenslot getroffen wird. Wenn ja --> Schauen ob ein Token drinnen ist. Entsprechend Token / legen tauschen 
         Vector3 myWorldposition = mainCam.ScreenToWorldPoint(Input.mousePosition);
         RaycastHit2D rayHit = Physics2D.Raycast((Vector2)myWorldposition, new Vector3(0, 0, 1));
 
-        if (rayHit && rayHit.transform.gameObject.tag == "PlayerSlot") // Wir haben einen Tokenslot
+        if (rayHit && rayHit.transform.gameObject.tag == "PlayerUnitSlot" && myGrabbedItem.GetComponent<PlayerToken>().myToken.cardTypeString == "Unit") // Wir haben einen Unit Tokenslot und eine Unit in der Hand
         {
             Transform targetTokSlot = rayHit.transform;
 
@@ -285,6 +288,24 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
                     return true;
                 }
+            }
+        }
+
+        // Dieser ist der Part für Gebäude
+        else if (rayHit && rayHit.transform.gameObject.tag == "PlayerBuildingSlot" && myGrabbedItem.GetComponent<PlayerToken>().myToken.cardTypeString == "Building") // Wir haben einen Building Tokenslot und eine Building in der Hand
+        {
+            Transform targetTokSlot = rayHit.transform;
+
+            if (targetTokSlot.Find("PlayerToken") == null) // Der TokenSlot ist leer
+            {
+                myGrabbedItem.transform.parent = targetTokSlot;
+                myGrabbedItem.transform.localPosition = originPosition;
+                myGrabbedItem.transform.localEulerAngles = originRotation;
+
+                myGrabbedItem = null;
+                isCardPending = false;
+
+                return true;
             }
         }
 

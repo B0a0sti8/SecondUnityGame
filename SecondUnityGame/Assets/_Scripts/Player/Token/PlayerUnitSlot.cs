@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class PlayerSlot : DefaultTokenSlot
+public class PlayerUnitSlot : DefaultTokenSlot
 {
     //public bool hasToken = false;
     //public List<GameObject> potentialTargetSlots;

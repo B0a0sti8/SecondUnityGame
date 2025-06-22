@@ -21,7 +21,7 @@ public class DefaultToken : MonoBehaviour
         if (currentLife <= 0) Die();
     }
 
-    public void UpdateHealthbar()
+    public virtual void UpdateHealthbar()
     {
         healthBar.GetComponent<Image>().fillAmount = (float)currentLife / (float)maxLife;
     }
