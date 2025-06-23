@@ -233,6 +233,12 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
         // Hier müssen noch Ressourcen und sontige Voraussetzungen geklärt werden.
 
+        if(!RessourceManager.instance.HasRessources(myCard.woodCost, myCard.stoneCost, myCard.foodCost, myCard.reagentCost))
+        {
+            Debug.Log("Can't pay for card");
+            return;
+        }
+
         pendingCard = myCard.gameObject;
         pendingCard.transform.position = new Vector2(1800, 500);
         pendingCard.transform.SetParent(HandCardScript.instance.transform.parent);

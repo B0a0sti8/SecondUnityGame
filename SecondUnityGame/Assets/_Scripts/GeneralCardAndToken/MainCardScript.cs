@@ -22,8 +22,12 @@ public class MainCardScript : MonoBehaviour
     float maxCardEnergy;
     float currentCardEnergy;
 
-    float woodCost;
-    float stoneCost;
+    public int woodCost;
+    public int stoneCost;
+    public int foodCost;
+    public int reagentCost;
+
+
     float manaCost;
 
     Image myCardImage;

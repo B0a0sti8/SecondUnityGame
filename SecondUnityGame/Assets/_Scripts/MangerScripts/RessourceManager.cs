@@ -56,4 +56,14 @@ public class RessourceManager : MonoBehaviour
 
         UpdateHealthBar();
     }
+
+    public bool HasRessources(int woodCost = 0, int stoneCost = 0, int foodCost = 0, int reagentCost = 0)
+    {
+        if (woodCost > woodAmount) return false;
+        if (stoneCost > stoneAmount) return false;
+        if (foodCost > foodAmount) return false;
+        if (reagentCost > reagentsAmount) return false;
+
+        return true;
+    }
 }
