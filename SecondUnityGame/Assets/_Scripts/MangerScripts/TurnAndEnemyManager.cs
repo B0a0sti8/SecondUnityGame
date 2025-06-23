@@ -103,6 +103,8 @@ public class TurnAndEnemyManager : MonoBehaviour
                 allEnemySlotsWithTokens.Add(allEnemySlots[i]);
             }
         }
+
+        StartEnemyTurn();
     }
 
     public void EndEnemyTurn()
@@ -115,6 +117,18 @@ public class TurnAndEnemyManager : MonoBehaviour
         isPlayerTurn = true;
         turnIndicatorText.text = "Player Turn";
         Debug.Log("Ended Enemy Turn");
+
+        StartPlayerTurn();
+    }
+
+    void StartEnemyTurn()
+    {
+
+    }
+
+    void StartPlayerTurn()
+    {
+        CardManager.instance.DrawNextCardFromDeck();
     }
 
     void PlayEnemyTurn(GameObject enemyTokenSlot)

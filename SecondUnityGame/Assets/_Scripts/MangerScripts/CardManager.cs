@@ -14,28 +14,18 @@ public class CardManager : MonoBehaviour
     [SerializeField] GameObject lastDiscardedCard;
     List<DefaultCardScriptable> discardPile = new List<DefaultCardScriptable>();
 
-    List<DefaultCardScriptable> cardDeck1 = new List<DefaultCardScriptable>();
-    List<DefaultCardScriptable> cardDeck2 = new List<DefaultCardScriptable>();
-    List<DefaultCardScriptable> cardDeck3 = new List<DefaultCardScriptable>();
+    [SerializeField] List<DefaultCardScriptable> cardDeck1;
+
     Dictionary<int, GameObject> handCards;
 
-    Dictionary<int, List<DefaultCardScriptable>> allDeckList = new Dictionary<int, List<DefaultCardScriptable>>();
-
     // UI Stuff
-    [SerializeField] RawImage deck1Image, deck2Image, deck3Image, discardPileImage;
-    Dictionary<int, RawImage> allDeckImages = new Dictionary<int, RawImage>();
+    [SerializeField] RawImage deck1Image, discardPileImage;
     [SerializeField] GameObject mySimpleCardPrefab;
 
     Dictionary<int, Texture> deckBackImages = new Dictionary<int, Texture>();
     [SerializeField] Texture deckBackImage1, deckBackImage2, deckBackImage3, deckBackImage4, deckBackImage5;
 
-    #region Liste aller Karten
-    //[SerializeField] PlayerTokenScriptable Archer;
-    //[SerializeField] PlayerTokenScriptable Solder;
-
     [SerializeField] List<DefaultCardScriptable> listOfAllCards = new List<DefaultCardScriptable>();
-
-    #endregion
 
     private void Awake()
     {
@@ -55,19 +45,7 @@ public class CardManager : MonoBehaviour
         deckBackImages.Add(4, deckBackImage4);
         deckBackImages.Add(5, deckBackImage5);
 
-        allDeckList.Add(1, cardDeck1);
-        allDeckList.Add(2, cardDeck2);
-        allDeckList.Add(3, cardDeck3);
-
-        allDeckImages.Add(1, deck1Image);
-        allDeckImages.Add(2, deck2Image);
-        allDeckImages.Add(3, deck3Image);
-
-        for (int i = 0; i < 3; i++)
-        {
-            UpdateDeckUI(i + 1);
-        }
-
+        UpdateDeckUI();
         UpdateDiscardPileUI();
     }
 
@@ -78,31 +56,26 @@ public class CardManager : MonoBehaviour
         HandCardScript.instance.AddCard(newCard);
     }
 
-    public void AddCardToDeckForDebugging(int deckNumber)
+    public void AddCardToDeckForDebugging()
     {
-        AddCardToDeck(listOfAllCards[Random.Range(0, listOfAllCards.Count)], deckNumber);
+        AddCardToDeck(listOfAllCards[Random.Range(0, listOfAllCards.Count)]);
     }
 
-    public void DrawCardFromDeckForDebugging(int decknumber)
+    public void AddCardToDeck(DefaultCardScriptable cardScript)
     {
-        int deckSize = allDeckList[decknumber].Count;
-        if (deckSize == 0) return;
-
-        DrawCardFromDeck(allDeckList[decknumber][Random.Range(0, deckSize)], decknumber);
+        cardDeck1.Add(cardScript);
+        UpdateDeckUI();
     }
 
-    public void DrawCardFromDeck(DefaultCardScriptable cardScript, int decknumber)
+    public void DrawNextCardFromDeck()
     {
+        if (cardDeck1.Count == 0) return;
+
+        DefaultCardScriptable cardScript = cardDeck1[0];
         GameObject newHandCard = mySimpleCardPrefab;
         newHandCard.GetComponent<MainCardScript>().myCardToken = cardScript;
         bool hasAddedCard = HandCardScript.instance.AddCard(newHandCard);
-        if (hasAddedCard) RemoveCardFromDeck(cardScript, decknumber);
-    }
-
-    public void AddCardToDeck(DefaultCardScriptable cardScript, int decknumber)
-    {
-        allDeckList[decknumber].Add(cardScript);
-        UpdateDeckUI(decknumber);
+        if (hasAddedCard) RemoveCardFromDeck(0);
     }
 
     public void AddCardToDiscardPile(DefaultCardScriptable cardScript)
@@ -123,10 +96,16 @@ public class CardManager : MonoBehaviour
         UpdateDiscardPileUI();
     }
 
-    public void RemoveCardFromDeck(DefaultCardScriptable cardScript, int decknumber)
+    public void RemoveCardFromDeck(int index)
     {
-        allDeckList[decknumber].Remove(cardScript);
-        UpdateDeckUI(decknumber);
+        cardDeck1.RemoveAt(index);
+        UpdateDeckUI();
+    }
+
+    public void RemoveCardFromDeck(DefaultCardScriptable cardScript)
+    {
+        cardDeck1.Remove(cardScript);
+        UpdateDeckUI();
     }
 
     public void ShowAndHideDiscardPile()
@@ -154,14 +133,14 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    public void ShowAndHideDeck(int deckNumber)
+    public void ShowAndHideDeck()
     {
         if (!deckAndDiscardPileViewer.activeSelf)
         {
             deckAndDiscardPileViewer.SetActive(true);
 
-            List<DefaultCardScriptable> shuffledDeck = allDeckList[deckNumber];
-            int maxCount = shuffledDeck.Count;
+            List<DefaultCardScriptable> shuffledDeck = cardDeck1;
+            int maxCount = cardDeck1.Count;
 
             for (int k = 0; k < maxCount - 1; k++)
             {
@@ -176,7 +155,7 @@ public class CardManager : MonoBehaviour
                 deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).gameObject.SetActive(false);
             }
 
-            for (int i = 0; i < allDeckList[deckNumber].Count; i++)
+            for (int i = 0; i < maxCount; i++)
             {
                 deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).gameObject.SetActive(true);
                 deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).GetComponent<MainCardScript>().myCardToken = shuffledDeck[i];
@@ -190,21 +169,18 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    void UpdateDeckUI(int decknumber)
+    void UpdateDeckUI()
     {
-        if (allDeckList[decknumber].Count == 0)
-        {
-            allDeckImages[decknumber].gameObject.SetActive(false);
-        }
+        if (cardDeck1.Count == 0) deck1Image.gameObject.SetActive(false);
 
-        if (allDeckList[decknumber].Count >= 1)
+        if (cardDeck1.Count >= 1)
         {
-            allDeckImages[decknumber].texture = deckBackImages[Mathf.Clamp(allDeckList[decknumber].Count, 0, 5)];
-            allDeckImages[decknumber].gameObject.SetActive(true);
+            deck1Image.texture = deckBackImages[Mathf.Clamp(cardDeck1.Count, 0, 5)];
+            deck1Image.gameObject.SetActive(true);
         }
     }
 
-    private void UpdateDiscardPileUI()
+    void UpdateDiscardPileUI()
     {
         if (discardPile.Count == 0)
         {
@@ -221,11 +197,11 @@ public class CardManager : MonoBehaviour
             //lastDiscardedCard.GetComponent<CanvasGroup>().blocksRaycasts = false;
 
             discardPileImage.texture = deckBackImages[Mathf.Clamp(discardPile.Count, 0, 5)];
-            discardPileImage.gameObject.SetActive(true);
+
 
             if (discardPile.Count >= 2)
             {
-
+                discardPileImage.gameObject.SetActive(true);
             }
         }
     }

@@ -33,9 +33,21 @@ public class MainCardScript : MonoBehaviour
     TextMeshProUGUI myLifeText;
     TextMeshProUGUI myEnergyText;
 
+    [SerializeField] Material myMat;
+    Material myBaseMat;
+
+    float dissolveDuration = 1f;
+    public bool isDissolving = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        myBaseMat = transform.Find("Content").Find("Picture").GetComponent<Image>().material;
+        myMat = Instantiate(myBaseMat);
+        transform.Find("Content").Find("Picture").GetComponent<Image>().material = myMat;
+        transform.Find("Content").GetComponent<Image>().material = myMat;
+        transform.GetComponent<Image>().material = myMat;
+
         FetchFields();
         LoadDataFromScriptableObject();
         UpdateCardUI();
@@ -91,5 +103,27 @@ public class MainCardScript : MonoBehaviour
         woodCost = myCardToken.woodCost;
         stoneCost = myCardToken.stoneCost;
         manaCost = myCardToken.manaCost;
+    }
+
+    public void DestroyCard()
+    {
+        isDissolving = true;
+    }
+
+    private void Update()
+    {
+        if (isDissolving)
+        {
+            dissolveDuration -= Time.deltaTime;
+            if (dissolveDuration >= 0)
+            {
+                myMat.SetFloat("_Fade", dissolveDuration);
+            }
+        }
+
+        if (dissolveDuration < 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }

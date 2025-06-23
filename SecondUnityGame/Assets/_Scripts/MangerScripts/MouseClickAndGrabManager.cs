@@ -235,6 +235,7 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
         pendingCard = myCard.gameObject;
         pendingCard.transform.position = new Vector2(1800, 500);
+        pendingCard.transform.SetParent(HandCardScript.instance.transform.parent);
 
         pendingCardOriginPosition = originPosition;
         pendingCardOriginRotation = originRotation;
@@ -274,7 +275,7 @@ public class MouseClickAndGrabManager : MonoBehaviour
     {
         CardManager.instance.AddCardToDiscardPile(pendingCard.GetComponent<MainCardScript>().myCardToken);
         HandCardScript.instance.RemoveCard(pendingCard);
-        Destroy(pendingCard);
+        pendingCard.GetComponent<MainCardScript>().DestroyCard();
         pendingCard = null;
     }
 
@@ -347,6 +348,7 @@ public class MouseClickAndGrabManager : MonoBehaviour
         }
 
         myGrabbedItem = pendingCard;
+        pendingCard.transform.SetParent(HandCardScript.instance.transform);
         originPosition = pendingCardOriginPosition;
         originRotation = pendingCardOriginRotation;
 
