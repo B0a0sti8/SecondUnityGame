@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 //[CreateAssetMenu(fileName = "DefaultCardScriptable", menuName = "Scriptable Objects/DefaultCardScriptable")]
@@ -9,6 +10,10 @@ public class DefaultCardScriptable : ScriptableObject
 
     public int woodCost;
     public int stoneCost;
+
+    public int foodCost;
+    public int reagentCost;
+
     public int manaCost;
 
     public Sprite cardSprite;

@@ -34,6 +34,7 @@ public class DefaultToken : MonoBehaviour
     IEnumerator RemoveToken(float time)
     {
         yield return new WaitForSeconds(time);
+        if (TurnAndEnemyManager.instance.allPlayerSlotsWithTokens.Contains(gameObject)) TurnAndEnemyManager.instance.allPlayerSlotsWithTokens.Remove(gameObject);
         Destroy(gameObject);
     }
 }

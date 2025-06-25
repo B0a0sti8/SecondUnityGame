@@ -12,6 +12,7 @@ public class PlayerTokenScriptable : DefaultCardScriptable
     public int attackRange;
 
     public List<string> tokenAbilities = new List<string>();
+    public List<string> tokenPassiveTriggerAbilities = new List<string>();
 
     public PlayerTokenScriptable Clone()
     {

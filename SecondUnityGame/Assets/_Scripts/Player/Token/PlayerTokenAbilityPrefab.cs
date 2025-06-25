@@ -17,6 +17,8 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
     public int abilityCheckPointsMax;
     public float skillDamageBaseModifier;
 
+    public bool isPassiveTriggerAbility = false;
+
     public enum TargetType
     {
         SingleTarget,
@@ -35,9 +37,9 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
     List<GameObject> placedMultiTargetShapes = new List<GameObject>();
 
     // UI Stuff
-    [SerializeField] protected string abilityName;
-    [SerializeField] protected string abilityDescription;
-    [SerializeField] protected Sprite abilityIcon;
+    [SerializeField] public string abilityName;
+    [SerializeField] public string abilityDescription;
+    [SerializeField] public Sprite abilityIcon;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
@@ -168,6 +170,11 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
     public virtual void ApplyAbilityEffect()
     {
         AbilityCleanUp();
+    }
+
+    public virtual void ApplyPassiveTriggerEffect()
+    {
+        
     }
 
     public void CancelAbility()

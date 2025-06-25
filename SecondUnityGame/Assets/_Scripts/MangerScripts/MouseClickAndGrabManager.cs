@@ -34,6 +34,8 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
     void Update()
     {
+        if (!TurnAndEnemyManager.instance.isPlayerTurn) return;
+
         // Wenn momentan eine Fähigkeit aktiv ist, können keine Karten gespielt werden oder ähnliches.
         if (isPlayingAbility)
         {
@@ -129,15 +131,41 @@ public class MouseClickAndGrabManager : MonoBehaviour
                 GameObject myToken = rayHit.transform.gameObject.GetComponentInChildren<PlayerToken>().gameObject;
                 tokenSelectionMenue.SetActive(true);
                 tokenSelectionMenue.transform.position = rayHit.transform.position;
-                for (int i = 0; i < myToken.transform.Find("Abilities").childCount; i++)
+                //for (int i = 0; i < myToken.transform.Find("Abilities").childCount; i++)
+                //{
+                //    if (i < 6)
+                //    {
+                //        tokenSelectionMenue.transform.GetChild(i).gameObject.SetActive(true);
+                //        tokenSelectionMenue.transform.GetChild(i).Find("Text (TMP)").GetComponent<TextMeshProUGUI>().text = myToken.transform.Find("Abilities").GetChild(i).name;
+                //        tokenSelectionMenue.transform.GetChild(i).GetComponent<AbilitySelectionButton>().myAbilityObject = myToken.transform.Find("Abilities").GetChild(i).gameObject;
+                //        tokenSelectionMenue.transform.GetChild(i).GetComponent<AbilitySelectionButton>().isPassiveAbility = myToken.transform.Find("Abilities").GetChild(i).GetComponent<PlayerTokenAbilityPrefab>().isPassiveTriggerAbility;
+                //    }
+                //}
+
+                for (int i = 0; i < myToken.GetComponent<PlayerToken>().myAbilities.Count; i++)
                 {
-                    if (i < 6)
+                    if (i < 2)
                     {
+                        string abName = myToken.GetComponent<PlayerToken>().myAbilities[i].name;
                         tokenSelectionMenue.transform.GetChild(i).gameObject.SetActive(true);
-                        tokenSelectionMenue.transform.GetChild(i).Find("Text (TMP)").GetComponent<TextMeshProUGUI>().text = myToken.transform.Find("Abilities").GetChild(i).name;
-                        tokenSelectionMenue.transform.GetChild(i).GetComponent<AbilitySelectionButton>().myAbilityObject = myToken.transform.Find("Abilities").GetChild(i).gameObject;
+                        tokenSelectionMenue.transform.GetChild(i).Find("Text (TMP)").GetComponent<TextMeshProUGUI>().text = myToken.transform.Find("Abilities").Find(abName).name;
+                        tokenSelectionMenue.transform.GetChild(i).GetComponent<AbilitySelectionButton>().myAbilityObject = myToken.transform.Find("Abilities").Find(abName).gameObject;
+                        tokenSelectionMenue.transform.GetChild(i).GetComponent<AbilitySelectionButton>().isPassiveAbility = myToken.transform.Find("Abilities").Find(abName).GetComponent<PlayerTokenAbilityPrefab>().isPassiveTriggerAbility;
                     }
                 }
+
+                for (int i = 0; i < myToken.GetComponent<PlayerToken>().myPassiveTriggerAbilities.Count; i++)
+                {
+                    if (i < 2)
+                    {
+                        string abName = myToken.GetComponent<PlayerToken>().myPassiveTriggerAbilities[i].name;
+                        tokenSelectionMenue.transform.GetChild(i+3).gameObject.SetActive(true);
+                        tokenSelectionMenue.transform.GetChild(i+3).Find("Text (TMP)").GetComponent<TextMeshProUGUI>().text = myToken.transform.Find("Abilities").Find(abName).name;
+                        tokenSelectionMenue.transform.GetChild(i+3).GetComponent<AbilitySelectionButton>().myAbilityObject = myToken.transform.Find("Abilities").Find(abName).gameObject;
+                        tokenSelectionMenue.transform.GetChild(i+3).GetComponent<AbilitySelectionButton>().isPassiveAbility = myToken.transform.Find("Abilities").Find(abName).GetComponent<PlayerTokenAbilityPrefab>().isPassiveTriggerAbility;
+                    }
+                }
+
 
                 return;
             }
@@ -233,8 +261,9 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
         // Hier müssen noch Ressourcen und sontige Voraussetzungen geklärt werden.
 
-        if(!RessourceManager.instance.HasRessources(myCard.woodCost, myCard.stoneCost, myCard.foodCost, myCard.reagentCost))
+        if(!RessourceManager.instance.HasResources(myCard.woodCost, myCard.stoneCost, myCard.foodCost, myCard.reagentCost))
         {
+            // Hier noch einfügen dass man Karten bei Resourcen-Mangel auch durch Mana casten kann.
             Debug.Log("Can't pay for card");
             return;
         }
@@ -279,6 +308,8 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
     void HandlePlayedCard()
     {
+        MainCardScript myC = pendingCard.GetComponent<MainCardScript>();
+        RessourceManager.instance.AddOrRemoveResources(-myC.woodCost, -myC.stoneCost, -myC.foodCost, -myC.reagentCost);
         CardManager.instance.AddCardToDiscardPile(pendingCard.GetComponent<MainCardScript>().myCardToken);
         HandCardScript.instance.RemoveCard(pendingCard);
         pendingCard.GetComponent<MainCardScript>().DestroyCard();

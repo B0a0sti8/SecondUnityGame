@@ -106,6 +106,9 @@ public class MainCardScript : MonoBehaviour
 
         woodCost = myCardToken.woodCost;
         stoneCost = myCardToken.stoneCost;
+        foodCost = myCardToken.foodCost;
+        reagentCost = myCardToken.reagentCost;
+
         manaCost = myCardToken.manaCost;
     }
 

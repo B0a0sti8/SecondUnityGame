@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class TurnAndEnemyManager : MonoBehaviour
 {
-    bool isPlayerTurn = true;
+    public bool isPlayerTurn = true;
     [SerializeField] TextMeshProUGUI turnIndicatorText;
     float enemyTurnTimer_Debug = 1f;
 
@@ -20,6 +20,7 @@ public class TurnAndEnemyManager : MonoBehaviour
     int enemySpawnAmountPerTurn;
 
     List<GameObject> allEnemySlotsWithTokens;
+    public List<GameObject> allPlayerSlotsWithTokens;
 
     public static TurnAndEnemyManager instance;
 
@@ -129,6 +130,11 @@ public class TurnAndEnemyManager : MonoBehaviour
     void StartPlayerTurn()
     {
         CardManager.instance.DrawNextCardFromDeck();
+
+        foreach (GameObject playerToken in allPlayerSlotsWithTokens)
+        {
+            playerToken.GetComponent<PlayerToken>().TriggerPassiveAbilities();
+        }
     }
 
     void PlayEnemyTurn(GameObject enemyTokenSlot)

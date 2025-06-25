@@ -17,6 +17,8 @@ MonoBehaviour:
   cardTypeString: Building
   woodCost: 3
   stoneCost: 3
+  foodCost: 0
+  reagentCost: 0
   manaCost: 2
   cardSprite: {fileID: -8250535549744966332, guid: 85b75de00ffc03544b960b29aa9f8782, type: 3}
   cardTypeSprite: {fileID: 0}
@@ -27,3 +29,5 @@ MonoBehaviour:
   attackRange: 0
   tokenAbilities:
   - RemoveBuilding
+  tokenPassiveTriggerAbilities:
+  - GenerateWood

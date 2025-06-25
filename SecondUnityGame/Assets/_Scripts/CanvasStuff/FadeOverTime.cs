@@ -6,10 +6,12 @@ public class FadeOverTime : MonoBehaviour
     public float myDuration = 1f;
     float elapsed = 0f;
     public Color myTextColor;
+    TextMeshProUGUI myTextField;
 
     private void Start()
     {
-        //myTextColor = GetComponent<TextMeshProUGUI>().color;
+        myTextField = GetComponent<TextMeshProUGUI>();
+        if (myTextField == null) myTextField = GetComponentInChildren<TextMeshProUGUI>();
     }
 
     void Update()
@@ -17,8 +19,7 @@ public class FadeOverTime : MonoBehaviour
         transform.position += new Vector3(0, 10 * Time.deltaTime / myDuration, 0);
         elapsed += Time.deltaTime;
         //myTextColor.a = (1 - elapsed / myDuration);
-        GetComponent<TextMeshProUGUI>().color = myTextColor;
-
+        myTextField.color = myTextColor;
 
         if (elapsed > myDuration) Destroy(gameObject);
     }
