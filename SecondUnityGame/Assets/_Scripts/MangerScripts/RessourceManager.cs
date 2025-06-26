@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 
 public class RessourceManager : MonoBehaviour
 {
@@ -80,6 +81,8 @@ public class RessourceManager : MonoBehaviour
 
     public void AddOrRemoveResources(int woodCost = 0, int stoneCost = 0, int foodCost = 0, int reagentCost = 0, GameObject source = null)
     {
+        float myTime = 0;
+
         woodAmount += woodCost;
         stoneAmount += stoneCost;
         foodAmount += foodCost;
@@ -87,22 +90,33 @@ public class RessourceManager : MonoBehaviour
 
         if (source != null)
         {
-            GameObject myRes = Instantiate(resourcePopUpObject, myLevelVisuals);
-            Vector3 randPos = new Vector3(Random.Range(0, 2f), Random.Range(0, 2f), 0);
-            myRes.transform.position = source.transform.position + new Vector3(0, 3, 0) + randPos;
-            myRes.transform.Find("ResourceSprite").GetComponent<Image>().sprite = woodSprite;
-            
-            if (woodCost >= 0) 
-            {
-                myRes.GetComponent<FadeOverTime>().myTextColor = Color.green;
-                myRes.transform.Find("Amount").GetComponent<TextMeshProUGUI>().text = "+ " + woodCost.ToString();
-            } 
-            else
-            {
-                myRes.GetComponent<FadeOverTime>().myTextColor = Color.red;
-                myRes.transform.Find("Amount").GetComponent<TextMeshProUGUI>().text = "+ " + woodCost.ToString();
-            }
+            if (woodCost != 0) { StartCoroutine(SpawnResourceToolTip(myTime, source, woodCost, woodSprite)); myTime += 0.35f; }
+            if (stoneCost != 0) { StartCoroutine(SpawnResourceToolTip(myTime, source, stoneCost, stoneSprite)); myTime += 0.35f; }
+            if (foodCost != 0) { StartCoroutine(SpawnResourceToolTip(myTime, source, foodCost, foodSprite)); myTime += 0.35f; }
+            if (reagentCost != 0) { StartCoroutine(SpawnResourceToolTip(myTime, source, reagentCost, reagentSprite)); myTime += 0.35f; }
         }
         UpdateResourceUI();
+    }
+
+
+    IEnumerator SpawnResourceToolTip(float waitTime, GameObject source, float amount, Sprite resSpr)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        GameObject myRes = Instantiate(resourcePopUpObject, myLevelVisuals);
+        Vector3 randPos = new Vector3(Random.Range(0, 2f), Random.Range(0, 2f), 0);
+        myRes.transform.position = source.transform.position + new Vector3(0, 3, 0) + randPos;
+        myRes.transform.Find("ResourceSprite").GetComponent<Image>().sprite = resSpr;
+
+        if (amount >= 0)
+        {
+            myRes.GetComponent<FadeOverTime>().myTextColor = Color.green;
+            myRes.transform.Find("Amount").GetComponent<TextMeshProUGUI>().text = "+ " + amount.ToString();
+        }
+        else
+        {
+            myRes.GetComponent<FadeOverTime>().myTextColor = Color.red;
+            myRes.transform.Find("Amount").GetComponent<TextMeshProUGUI>().text = "+ " + amount.ToString();
+        }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +8,9 @@ public class DefaultToken : MonoBehaviour
     public int maxLife;
     public int currentLife;
 
-    public int attackValue;
+    public float baseDmgHealVal;
+    public List<float> dmgHealModifiersAdd;
+    public List<float> dmgHealModifiersMult;
 
     public GameObject healthBar;
 
@@ -36,5 +39,10 @@ public class DefaultToken : MonoBehaviour
         yield return new WaitForSeconds(time);
         if (TurnAndEnemyManager.instance.allPlayerSlotsWithTokens.Contains(gameObject)) TurnAndEnemyManager.instance.allPlayerSlotsWithTokens.Remove(gameObject);
         Destroy(gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        if (TurnAndEnemyManager.instance.allPlayerSlotsWithTokens.Contains(gameObject)) TurnAndEnemyManager.instance.allPlayerSlotsWithTokens.Remove(gameObject);
     }
 }

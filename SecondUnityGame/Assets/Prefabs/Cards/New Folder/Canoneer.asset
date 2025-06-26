@@ -17,13 +17,16 @@ MonoBehaviour:
   cardTypeString: Unit
   woodCost: 2
   stoneCost: 1
+  foodCost: 0
+  reagentCost: 0
   manaCost: 0
   cardSprite: {fileID: 113114651607312398, guid: 54e12afbebffd434995ce08e07172f8a, type: 3}
   cardTypeSprite: {fileID: 0}
   tokenSprite: {fileID: 113114651607312398, guid: a412a40b8cea894419fbe78a8bb36727, type: 3}
-  maxEnergy: 5
-  maxLife: 5
-  attackValue: 10
+  maxEnergy: 10
+  maxLife: 35
+  baseDmgHealValue: 10
   attackRange: 7
   tokenAbilities:
   - CanonShot
+  tokenPassiveTriggerAbilities: []

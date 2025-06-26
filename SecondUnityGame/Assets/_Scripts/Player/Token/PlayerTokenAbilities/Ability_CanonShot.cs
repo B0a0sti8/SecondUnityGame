@@ -11,7 +11,7 @@ public class Ability_CanonShot : PlayerTokenAbilityPrefab
         myTargetType = TargetType.MultiTarget;
         abilityCheckPointsMax = 1;
 
-        skillDamageBaseModifier = 0.7f;
+        skillDmgHealModifier = 0.7f;
 
         abilityName = "Canon shot";
         abilityDescription = "Shoots his canon to attack a whole area.";
@@ -19,15 +19,20 @@ public class Ability_CanonShot : PlayerTokenAbilityPrefab
 
     public override void ApplyAbilityEffect()
     {
+        DealDamageHealing();
+        base.ApplyAbilityEffect();
+    }
+
+    public override void DealDamageHealing()
+    {
+        base.DealDamageHealing();
+
         foreach (GameObject curTar in currentTargets)
         {
             if (curTar.GetComponentInChildren<DefaultToken>() != null)
             {
-                float sourceDamage = skillDamageBaseModifier * transform.parent.parent.GetComponent<PlayerToken>().attackValue;
-                BattleManager.instance.DealDamage(curTar.GetComponentInChildren<DefaultToken>().gameObject, transform.parent.gameObject, sourceDamage);
+                BattleManager.instance.DealDamage(curTar.GetComponentInChildren<DefaultToken>().gameObject, transform.parent.gameObject, finalDamage);
             }
         }
-
-        base.ApplyAbilityEffect();
     }
 }

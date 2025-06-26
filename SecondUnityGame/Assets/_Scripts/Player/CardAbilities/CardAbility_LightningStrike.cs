@@ -11,7 +11,7 @@ public class CardAbility_LightningStrike : PlayerTokenAbilityPrefab
 
         abilityCheckPointsMax = 3;
 
-        skillDamageBaseModifier = 0.7f;
+        skillDmgHealModifier = 0.7f;
 
         abilityName = "Lightning Strike";
         abilityDescription = "Chooses Targets and deals damage";
@@ -19,17 +19,22 @@ public class CardAbility_LightningStrike : PlayerTokenAbilityPrefab
 
     public override void ApplyAbilityEffect()
     {
+        DealDamageHealing();
+        Debug.Log("Triggering Card Ability!");
+
+        base.ApplyAbilityEffect();
+    }
+
+    public override void DealDamageHealing()
+    {
+        base.DealDamageHealing();
+
         foreach (GameObject curTar in currentTargets)
         {
             if (curTar.GetComponentInChildren<DefaultToken>() != null)
             {
-                float sourceDamage = skillDamageBaseModifier * 80;
-                BattleManager.instance.DealDamage(curTar.GetComponentInChildren<DefaultToken>().gameObject, PlayerObject.instance.gameObject, sourceDamage);
+                BattleManager.instance.DealDamage(curTar.GetComponentInChildren<DefaultToken>().gameObject, PlayerObject.instance.gameObject, finalDamage);
             }
         }
-
-        Debug.Log("Triggering Card Ability!");
-
-        base.ApplyAbilityEffect();
     }
 }

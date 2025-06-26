@@ -9,13 +9,18 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
     GameObject rangeIndicator;
     GameObject abilityPreviewObject;
 
+    PlayerToken myToken;
+    PlayerObject myPlayer;
+
     public bool isAbilityCard;
 
     public int energyCost;
     public int range;
     public int abilityCheckPoints;
     public int abilityCheckPointsMax;
-    public float skillDamageBaseModifier;
+
+    public float skillDmgHealModifier;
+    protected float finalDamage;
 
     public bool isPassiveTriggerAbility = false;
 
@@ -49,6 +54,9 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
         abilityPreviewObject = MainCanvasSingleton.instance.transform.Find("PreviewSlot").Find("TokenAbilityPreview").gameObject;
         potentialTargets = new List<GameObject>();
         mainCam = Camera.main;
+
+        myPlayer = GameObject.Find("Systems").transform.Find("CameraStuff").Find("Target").GetComponent<PlayerObject>();
+        myToken = transform.parent.parent.GetComponent<PlayerToken>();
     }
 
     private void Update()
@@ -175,6 +183,32 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
     public virtual void ApplyPassiveTriggerEffect()
     {
         
+    }
+
+    public virtual void DealDamageHealing()
+    {
+        if (isAbilityCard)
+        {
+            float dmgHeal = myPlayer.baseDmgHealVal;        // Hole dir den Grundschaden
+
+            float myModAdd = 0f;
+            foreach (float modAdd in myPlayer.dmgHealModifiersAdd) myModAdd += modAdd; // Addiere alle additiven Modifikatoren
+            dmgHeal *= 1 + myModAdd;                                                            // Anwenden
+            foreach (float modMult in myPlayer.dmgHealModifiersMult) dmgHeal *= 1 + modMult; // Alle multiplikativen Modifikatoren anwenden
+
+            finalDamage = Mathf.Clamp(0, dmgHeal * skillDmgHealModifier, Mathf.Infinity);
+        }
+        else
+        {
+            float dmgHeal = myToken.baseDmgHealVal;        // Hole dir den Grundschaden
+
+            float myModAdd = 0f;
+            foreach (float modAdd in myToken.dmgHealModifiersAdd) myModAdd += modAdd; // Addiere alle additiven Modifikatoren
+            dmgHeal *= 1 + myModAdd;                                                            // Anwenden
+            foreach (float modMult in myToken.dmgHealModifiersMult) dmgHeal *= 1 + modMult; // Alle multiplikativen Modifikatoren anwenden
+
+            finalDamage = Mathf.Clamp(0, dmgHeal * skillDmgHealModifier, Mathf.Infinity);
+        }
     }
 
     public void CancelAbility()

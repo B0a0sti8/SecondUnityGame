@@ -57,7 +57,7 @@ public class PlayerToken : DefaultToken
         transform.Find("Picture").GetComponent<SpriteRenderer>().sprite = myToken.tokenSprite;
         maxLife = myToken.maxLife;
         maxEnergy = myToken.maxEnergy;
-        attackValue = myToken.attackValue;
+        baseDmgHealVal = myToken.baseDmgHealValue;
         attackRange = myToken.attackRange;
     }
 

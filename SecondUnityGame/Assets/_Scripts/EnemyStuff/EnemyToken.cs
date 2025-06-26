@@ -52,7 +52,7 @@ public class EnemyToken : DefaultToken
 
         if (potentialTargets.Count == 0)
         {
-            BattleManager.instance.DealDamageToPlayer(gameObject, attackValue);
+            BattleManager.instance.DealDamageToPlayer(gameObject, baseDmgHealVal);
             //Debug.Log("Dealing damage to player");
         }
         else

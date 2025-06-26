@@ -12,7 +12,7 @@ public class Ability_DoubleArrow : PlayerTokenAbilityPrefab
 
         abilityCheckPointsMax = 2;
 
-        skillDamageBaseModifier = 0.7f;
+        skillDmgHealModifier = 0.7f;
 
         abilityName = "Double Arrow";
         abilityDescription = "Shoots two arrows to arbitrary enemies";
@@ -20,15 +20,21 @@ public class Ability_DoubleArrow : PlayerTokenAbilityPrefab
 
     public override void ApplyAbilityEffect()
     {
+        DealDamageHealing();
+
+        base.ApplyAbilityEffect();
+    }
+
+    public override void DealDamageHealing()
+    {
+        base.DealDamageHealing();
+
         foreach (GameObject curTar in currentTargets)
         {
             if (curTar.GetComponentInChildren<DefaultToken>() != null)
             {
-                float sourceDamage = skillDamageBaseModifier * transform.parent.parent.GetComponent<PlayerToken>().attackValue;
-                BattleManager.instance.DealDamage(curTar.GetComponentInChildren<DefaultToken>().gameObject, transform.parent.gameObject, sourceDamage);
+                BattleManager.instance.DealDamage(curTar.GetComponentInChildren<DefaultToken>().gameObject, transform.parent.gameObject, finalDamage);
             }
         }
-
-        base.ApplyAbilityEffect();
     }
 }

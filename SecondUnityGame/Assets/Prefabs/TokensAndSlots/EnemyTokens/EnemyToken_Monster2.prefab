@@ -47,9 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5adcb922a68f5624db19d7f34fa26573, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxLife: 20
+  maxLife: 50
   currentLife: 0
-  attackValue: 3
+  baseDmgHealValue: 10
   healthBar: {fileID: 0}
   cardName: 
   description: 

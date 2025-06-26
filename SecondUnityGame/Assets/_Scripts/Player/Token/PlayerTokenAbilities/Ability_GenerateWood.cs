@@ -13,7 +13,7 @@ public class Ability_GenerateWood : PlayerTokenAbilityPrefab
 
         abilityCheckPointsMax = 0;
 
-        skillDamageBaseModifier = 0f;
+        skillDmgHealModifier = 0f;
 
         abilityName = "Generate Wood";
         abilityDescription = "Generates a small amount of wood each turn";
@@ -23,6 +23,6 @@ public class Ability_GenerateWood : PlayerTokenAbilityPrefab
     {
         base.ApplyPassiveTriggerEffect();
         Debug.Log("Generating Wood");
-        RessourceManager.instance.AddOrRemoveResources(2, 0, 0, 0, transform.parent.gameObject);
+        RessourceManager.instance.AddOrRemoveResources(2, 2, 2, 2, transform.parent.gameObject);
     }
 }
