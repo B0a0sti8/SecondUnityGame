@@ -14,6 +14,8 @@ public class DefaultToken : MonoBehaviour
 
     public GameObject healthBar;
 
+    public List<Buff> myCurrentBuffs;
+
     public virtual void TakeDamageOrHealing(int DamageAmount)
     {
         currentLife -= DamageAmount;
