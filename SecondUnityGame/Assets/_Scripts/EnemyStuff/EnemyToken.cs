@@ -17,16 +17,20 @@ public class EnemyToken : DefaultToken
 
     EnemyTokenSlot mySlot;
     public GameObject currentMainTarget;
-    List<EnemySkillPrefab> mySkillList = new List<EnemySkillPrefab>();
+    public List<EnemySkillPrefab> myActiveSkillList = new List<EnemySkillPrefab>();
+    public List<EnemySkillPrefab> myPassiveSkillList = new List<EnemySkillPrefab>();
 
-    private void Start()
+    public override void Start()
     {
+        base.Start();
+
         currentLife = maxLife;
 
         mySlot = transform.parent.GetComponent<EnemyTokenSlot>();
         for (int i = 0; i < transform.Find("EnemySkills").childCount; i++)
         {
-            mySkillList.Add(transform.Find("EnemySkills").GetChild(i).GetComponent<EnemySkillPrefab>());
+            if (transform.Find("EnemySkills").GetChild(i).GetComponent<EnemySkillPrefab>().isPassive) myPassiveSkillList.Add(transform.Find("EnemySkills").GetChild(i).GetComponent<EnemySkillPrefab>());
+            else myActiveSkillList.Add(transform.Find("EnemySkills").GetChild(i).GetComponent<EnemySkillPrefab>());
         }
 
         healthBar = transform.Find("Canvas").Find("Healthbar").Find("Health").gameObject;
@@ -62,10 +66,10 @@ public class EnemyToken : DefaultToken
             //if (potentialTargets.Count > 0) Debug.Log("Found viable target!!");
 
             //Debug.Log("Habe so viele Skills: " + mySkillList.Count);
-            if (mySkillList.Count > 0)
+            if (myActiveSkillList.Count > 0)
             {
-                int skillChoice = Random.Range(0, mySkillList.Count);
-                mySkillList[skillChoice].UseSkill();
+                int skillChoice = Random.Range(0, myActiveSkillList.Count);
+                myActiveSkillList[skillChoice].UseSkill();
             }
 
         }

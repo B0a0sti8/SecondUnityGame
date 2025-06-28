@@ -12,10 +12,13 @@ public class PlayerToken : DefaultToken
 
     // Eigenschafte und Werte für Kampf
     public int maxEnergy;
+    public int currentEnergy;
     public int attackRange;
 
-    private void Start()
+    public override void Start()
     {
+        base.Start();
+
         healthBar = transform.Find("Canvas").Find("Healthbar").Find("Health").gameObject;
         if (myToken.cardTypeString == "Building") healthBar.transform.parent.gameObject.SetActive(false);
 
@@ -34,6 +37,9 @@ public class PlayerToken : DefaultToken
             ability.name = ab;
             myPassiveTriggerAbilities.Add(ability.transform);
         }
+
+        tokenName = myToken.cardName;
+        tokenDescription = myToken.description;
     }
 
     public void SetToken(PlayerTokenScriptable newToken)

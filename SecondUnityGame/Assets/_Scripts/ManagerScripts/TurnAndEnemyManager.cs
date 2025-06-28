@@ -97,6 +97,15 @@ public class TurnAndEnemyManager : MonoBehaviour
         turnIndicatorText.text = "Enemy Turn";
         Debug.Log("Ended Player Turn");
 
+        // Update die Buffs für alle Player Tokens
+        for (int i = 0; i < allPlayerSlotsWithTokens.Count; i++)
+        {
+            if (allPlayerSlotsWithTokens[i].GetComponentInChildren<DefaultToken>() != null)
+            {
+                allPlayerSlotsWithTokens[i].GetComponentInChildren<DefaultToken>().UpdateBuffs();
+            }
+        }
+
         for (int i = 0; i < allEnemySlots.Count; i++)
         {
             if (allEnemySlots[i].GetComponentInChildren<EnemyToken>() != null)
@@ -110,10 +119,22 @@ public class TurnAndEnemyManager : MonoBehaviour
 
     public void EndEnemyTurn()
     {
+        // Update die Buffs für alle Enemy Tokens
+        for (int i = 0; i < allEnemySlotsWithTokens.Count; i++)
+        {
+            if (allEnemySlotsWithTokens[i].GetComponentInChildren<DefaultToken>() != null)
+            {
+                allEnemySlotsWithTokens[i].GetComponentInChildren<DefaultToken>().UpdateBuffs();
+            }
+        }
+
         allEnemySlotsWithTokens.Clear();
         enemyTurnTimer_Debug = 1f;
         enemyActionCounter = 0;
         enemySpawnCounter = 0;
+
+
+
 
         isPlayerTurn = true;
         turnIndicatorText.text = "Player Turn";
@@ -154,7 +175,8 @@ public class TurnAndEnemyManager : MonoBehaviour
             if (allEnemySlots[i].GetComponentInChildren<DefaultToken>() == null) emptySlots.Add(allEnemySlots[i]);
         }
 
-        return emptySlots[Random.Range(0, emptySlots.Count)];
+        if (emptySlots.Count == 0) return null;
+        else return emptySlots[Random.Range(0, emptySlots.Count)];
     }
 
     void SpawnRandomEnemyInRandomSlot()
@@ -162,6 +184,7 @@ public class TurnAndEnemyManager : MonoBehaviour
         GameObject mySlot = FindEmptyEnemySlot();
         GameObject myToken = allEnemiesInLevel[Random.Range(0, allEnemiesInLevel.Count)];
 
-        Instantiate(myToken, mySlot.transform);
+        if (mySlot != null && myToken != null) Instantiate(myToken, mySlot.transform);
+
     }
 }

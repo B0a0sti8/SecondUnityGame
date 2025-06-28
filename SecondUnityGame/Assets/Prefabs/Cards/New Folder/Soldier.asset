@@ -27,5 +27,6 @@ MonoBehaviour:
   maxLife: 50
   baseDmgHealValue: 10
   attackRange: 2
-  tokenAbilities: []
+  tokenAbilities:
+  - DefensiveStrike
   tokenPassiveTriggerAbilities: []

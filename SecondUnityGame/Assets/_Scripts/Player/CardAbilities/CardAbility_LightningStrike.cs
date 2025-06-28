@@ -33,7 +33,7 @@ public class CardAbility_LightningStrike : PlayerTokenAbilityPrefab
         {
             if (curTar.GetComponentInChildren<DefaultToken>() != null)
             {
-                BattleManager.instance.DealDamage(curTar.GetComponentInChildren<DefaultToken>().gameObject, PlayerObject.instance.gameObject, finalDamage);
+                BattleManager.instance.DealDamageOrHealing(curTar.GetComponentInChildren<DefaultToken>().gameObject, PlayerObject.instance.gameObject, finalDamage);
             }
         }
     }

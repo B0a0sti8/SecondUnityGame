@@ -33,7 +33,7 @@ public class Ability_DoubleArrow : PlayerTokenAbilityPrefab
         {
             if (curTar.GetComponentInChildren<DefaultToken>() != null)
             {
-                BattleManager.instance.DealDamage(curTar.GetComponentInChildren<DefaultToken>().gameObject, transform.parent.gameObject, finalDamage);
+                BattleManager.instance.DealDamageOrHealing(curTar.GetComponentInChildren<DefaultToken>().gameObject, transform.parent.gameObject, finalDamage);
             }
         }
     }

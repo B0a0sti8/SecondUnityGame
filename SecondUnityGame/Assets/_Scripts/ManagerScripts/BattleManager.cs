@@ -8,6 +8,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] GameObject skillEffectSprite;
     GameObject combatVisualObject;
     [SerializeField] GameObject damageIndicatorObject;
+    Transform listOfAllBuffs;
 
     private void Awake()
     {
@@ -17,13 +18,11 @@ public class BattleManager : MonoBehaviour
     private void Start()
     {
         combatVisualObject = skillEffectSprite.transform.parent.gameObject;
+        listOfAllBuffs = GameObject.Find("Systems").transform.Find("ListOfAllBuffs");
     }
 
-    public void DealDamage(GameObject target, GameObject source, float damageAmount)
+    public void DealDamageOrHealing(GameObject target, GameObject source, float damageAmount)
     {
-        //Debug.Log(source + " deals damage to " + target);
-
-        // Check if target is Playertoken
         if (target.GetComponentInChildren<DefaultToken>() != null)
         {
             target.GetComponentInChildren<DefaultToken>().TakeDamageOrHealing((int)damageAmount);
@@ -32,15 +31,22 @@ public class BattleManager : MonoBehaviour
         ShowDamageHealingIndicator((int)damageAmount, false, true, target.transform.position);
     }
 
-    public void DealHealing()
-    {
-
-    }
-
     public void DealDamageToPlayer(GameObject source, float damageAmount)
     {
         RessourceManager.instance.TakeDamageOrHealing_Player((int)damageAmount);
     }
+
+    public void ApplyBuffToTarget(GameObject target, GameObject source, Buff myBuff, Sprite buffSprite, int buffDuration)
+    {
+        if (target.GetComponent<DefaultToken>() == null) return;
+
+        Buff newBuff = myBuff.Clone();
+        newBuff.StartBuffEffect(target.GetComponent<DefaultToken>(), buffDuration, buffSprite, myBuff.buffName);
+        target.GetComponent<DefaultToken>().UpdateBuffUI();
+    }
+
+
+    // Ab hier kommt hauptsächlich UI stuff
 
     public void ShowSkillEffect(Sprite skillSprite, Vector2 position, float scalingFactor, float duration) 
     {
@@ -61,7 +67,6 @@ public class BattleManager : MonoBehaviour
 
         if (isDamage) myDamagePopUp.GetComponent<FadeOverTime>().myTextColor = Color.red;
         else myDamagePopUp.GetComponent<FadeOverTime>().myTextColor = Color.green;
-
     }
 
     IEnumerator SetSkillEffectSpriteInactive(float time)

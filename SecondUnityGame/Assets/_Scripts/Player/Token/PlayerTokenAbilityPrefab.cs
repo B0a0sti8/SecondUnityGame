@@ -14,6 +14,8 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
 
     public bool isAbilityCard;
 
+    [SerializeField] public Buff myBuff;
+
     public int energyCost;
     public int range;
     public int abilityCheckPoints;

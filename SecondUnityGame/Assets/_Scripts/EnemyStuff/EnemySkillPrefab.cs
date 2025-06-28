@@ -2,10 +2,15 @@ using UnityEngine;
 
 public class EnemySkillPrefab : MonoBehaviour
 {
-    [SerializeField] protected Sprite skillSprite;
+    public Sprite abilitySprite;
+    public string abilityName;
+    public string abilityDescription;
+
     protected EnemyToken myEnemyToken;
     public float skillDmgHealModifier;
     public float finalDamage;
+
+    public bool isPassive = false;
 
     protected virtual void Start()
     {

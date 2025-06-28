@@ -1,25 +1,27 @@
 using UnityEngine;
 
-public class Ability_CanonShot : PlayerTokenAbilityPrefab
+public class Ability_DefensiveStrike : PlayerTokenAbilityPrefab
 {
     protected override void Start()
     {
+        myTargetType = TargetType.SingleTarget;
         base.Start();
-        energyCost = 2;
+        energyCost = 1;
         abilityCheckPoints = 0;
-        range = 12;
-        myTargetType = TargetType.MultiTarget;
+        range = 10;
+
         abilityCheckPointsMax = 1;
 
         skillDmgHealModifier = 0.7f;
 
-        abilityName = "Canon shot";
-        abilityDescription = "Shoots his canon to attack a whole area.";
+        abilityName = "Defensive Strike";
+        abilityDescription = "Strikes one target and reduces its damage for 2 turns";
     }
 
     public override void ApplyAbilityEffect()
     {
         DealDamageHealing();
+
         base.ApplyAbilityEffect();
     }
 
@@ -32,6 +34,7 @@ public class Ability_CanonShot : PlayerTokenAbilityPrefab
             if (curTar.GetComponentInChildren<DefaultToken>() != null)
             {
                 BattleManager.instance.DealDamageOrHealing(curTar.GetComponentInChildren<DefaultToken>().gameObject, transform.parent.gameObject, finalDamage);
+                BattleManager.instance.ApplyBuffToTarget(curTar.GetComponentInChildren<DefaultToken>().gameObject, transform.parent.gameObject, myBuff, abilityIcon, 3);
             }
         }
     }
