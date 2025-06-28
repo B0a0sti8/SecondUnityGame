@@ -15,13 +15,14 @@ MonoBehaviour:
   cardName: Soldier
   description: Hits stuff
   cardTypeString: Unit
+  maxCardAmount: 5
   woodCost: 1
   stoneCost: 1
   foodCost: 0
   reagentCost: 0
   manaCost: 0
   cardSprite: {fileID: 1472101351656793931, guid: 5c3c1af9f68f65140a34690c1d007009, type: 3}
-  cardTypeSprite: {fileID: 0}
+  cardTypeSprite: {fileID: 3700915101788899469, guid: 643c49b89cf9f22409f523664a69e91c, type: 3}
   tokenSprite: {fileID: 1472101351656793931, guid: 6b57ef184d8bb2343b9eb40634b9bdeb, type: 3}
   maxEnergy: 5
   maxLife: 50

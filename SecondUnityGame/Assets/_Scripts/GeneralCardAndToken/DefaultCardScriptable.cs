@@ -7,6 +7,7 @@ public class DefaultCardScriptable : ScriptableObject
     public string cardName;
     public string description;
     public string cardTypeString; // "Unit", "Building", oder "Ability"
+    public int maxCardAmount;
 
     public int woodCost;
     public int stoneCost;

@@ -51,6 +51,9 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
+        if (GameObject.Find("Level") == null) return;
+        Debug.Log(GameObject.Find("Level"));
+
         rangeIndicator = GameObject.Find("Level").transform.Find("CombatVisuals").Find("RangeIndicator").gameObject;
 
         abilityPreviewObject = MainCanvasSingleton.instance.transform.Find("PreviewSlot").Find("TokenAbilityPreview").gameObject;
@@ -63,6 +66,7 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
 
     private void Update()
     {
+        if (GameObject.Find("Level") == null) return;
         // Falls die Zielauswahl für Flächenschaden aktiv ist, folgt sie der Maus.
         if (activeMultiTargetShape != null) SnapMultiTargetShapeIntoGrid(activeMultiTargetShape);
     }

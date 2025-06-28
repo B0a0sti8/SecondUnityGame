@@ -15,8 +15,11 @@ MonoBehaviour:
   cardName: Lightning Strike
   description: '"Chooses Targets and deals damage"'
   cardTypeString: Ability
+  maxCardAmount: 5
   woodCost: 0
   stoneCost: 0
+  foodCost: 0
+  reagentCost: 0
   manaCost: 10
   cardSprite: {fileID: -861939439238418533, guid: b486a40a70999f44084c399987873ca4, type: 3}
   cardTypeSprite: {fileID: 8494857361488865779, guid: bc1b440e6b516e44f9cbf3a9715f8cc1, type: 3}

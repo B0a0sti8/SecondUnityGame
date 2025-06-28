@@ -15,17 +15,18 @@ MonoBehaviour:
   cardName: Woodcutter's Hut
   description: Generates wood at beginning of Turn
   cardTypeString: Building
+  maxCardAmount: 5
   woodCost: 3
   stoneCost: 3
   foodCost: 0
   reagentCost: 0
   manaCost: 2
   cardSprite: {fileID: -8250535549744966332, guid: 85b75de00ffc03544b960b29aa9f8782, type: 3}
-  cardTypeSprite: {fileID: 0}
+  cardTypeSprite: {fileID: -4328897322714555828, guid: 51a9137d47d12e244bc0fcbe2d7e463e, type: 3}
   tokenSprite: {fileID: -8250535549744966332, guid: ed790659a72c89440b36db5d416b8f78, type: 3}
   maxEnergy: 0
   maxLife: 1
-  attackValue: 0
+  baseDmgHealValue: 0
   attackRange: 0
   tokenAbilities:
   - RemoveBuilding

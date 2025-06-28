@@ -589,7 +589,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 17.25
+  m_fontSize: 2
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -670,7 +670,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 19.5431, y: -257.413}
-  m_SizeDelta: {x: 146.6476, y: 219.6661}
+  m_SizeDelta: {x: 147, y: 22}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3131089520929098279
 CanvasRenderer:
@@ -725,6 +725,12 @@ MonoBehaviour:
   createsPlayerToken: 1
   myCardToken: {fileID: 0}
   tokenPicture: {fileID: -739385909, guid: cdd3d7cb81987f14f801a63dc5fcae63, type: 3}
+  woodCost: 0
+  stoneCost: 0
+  foodCost: 0
+  reagentCost: 0
+  myMat: {fileID: 0}
+  isDissolving: 0
 --- !u!1 &8582857612988528848
 GameObject:
   m_ObjectHideFlags: 0
