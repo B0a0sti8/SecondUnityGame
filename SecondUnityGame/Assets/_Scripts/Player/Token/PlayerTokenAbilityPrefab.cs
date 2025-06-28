@@ -52,7 +52,6 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
     protected virtual void Start()
     {
         if (GameObject.Find("Level") == null) return;
-        Debug.Log(GameObject.Find("Level"));
 
         rangeIndicator = GameObject.Find("Level").transform.Find("CombatVisuals").Find("RangeIndicator").gameObject;
 

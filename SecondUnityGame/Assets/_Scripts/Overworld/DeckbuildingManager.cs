@@ -116,6 +116,10 @@ public class DeckbuildingManager : MonoBehaviour
 
     public void OpenClose()
     {
+        if (gameObject.activeSelf)
+        {
+            ListOfAllCards.instance.myDeckList = deckList;
+        }
         gameObject.SetActive(!gameObject.activeSelf);
     }
 }

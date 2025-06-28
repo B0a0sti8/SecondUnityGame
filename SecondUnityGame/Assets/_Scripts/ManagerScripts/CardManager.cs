@@ -38,7 +38,14 @@ public class CardManager : MonoBehaviour
     }
 
     private void Start()
-    { 
+    {
+        Debug.Log("ListOFCards: " + ListOfAllCards.instance);
+        if (ListOfAllCards.instance != null)
+        {
+            LoadDeck();
+
+        }
+
         deckBackImages.Add(1, deckBackImage1);
         deckBackImages.Add(2, deckBackImage2);
         deckBackImages.Add(3, deckBackImage3);
@@ -47,6 +54,17 @@ public class CardManager : MonoBehaviour
 
         UpdateDeckUI();
         UpdateDiscardPileUI();
+    }
+
+    public void LoadDeck()
+    {
+        cardDeck1.Clear();
+        foreach (KeyValuePair<DefaultCardScriptable, int> keyVal in ListOfAllCards.instance.myDeckList)
+        {
+            for (int i = 0; i < keyVal.Value; i++) cardDeck1.Add(keyVal.Key);
+        }
+
+        ShuffleDeck();
     }
 
     public void AddSimpleCardToHandForDebugging()
@@ -131,6 +149,22 @@ public class CardManager : MonoBehaviour
         {
             deckAndDiscardPileViewer.SetActive(false);
         }
+    }
+
+    public void ShuffleDeck()
+    {
+        List<DefaultCardScriptable> shuffledDeck = cardDeck1;
+        int maxCount = cardDeck1.Count;
+
+        for (int k = 0; k < maxCount - 1; k++)
+        {
+            var r = Random.Range(k, maxCount);
+            var tmp = shuffledDeck[k];
+            shuffledDeck[k] = shuffledDeck[r];
+            shuffledDeck[r] = tmp;
+        }
+
+        cardDeck1 = shuffledDeck;
     }
 
     public void ShowAndHideDeck()

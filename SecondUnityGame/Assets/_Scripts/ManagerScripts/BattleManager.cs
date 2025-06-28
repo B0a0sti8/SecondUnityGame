@@ -18,7 +18,9 @@ public class BattleManager : MonoBehaviour
     private void Start()
     {
         combatVisualObject = skillEffectSprite.transform.parent.gameObject;
-        listOfAllBuffs = GameObject.Find("Systems").transform.Find("ListOfAllBuffs");
+
+        if (GameObject.Find("MainSystems") == null) listOfAllBuffs = GameObject.Find("Systems").transform.Find("ListOfAllBuffs");
+        else listOfAllBuffs = GameObject.Find("MainSystems").transform.Find("ListOfAllBuffs");
     }
 
     public void DealDamageOrHealing(GameObject target, GameObject source, float damageAmount)

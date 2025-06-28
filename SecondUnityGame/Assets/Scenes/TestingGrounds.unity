@@ -37239,10 +37239,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 51794503}
         m_TargetAssemblyTypeName: CardManager, Assembly-CSharp
         m_MethodName: ShowAndHideDeck
-        m_Mode: 3
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -50792,13 +50792,14 @@ GameObject:
   - component: {fileID: 1546493720}
   - component: {fileID: 1546493719}
   - component: {fileID: 1546493718}
+  - component: {fileID: 1546493721}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1546493718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50860,6 +50861,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1225366721}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1546493721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546493717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef848444ffc2ac04ca47a40b31fd72ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1577515185
 PrefabInstance:
   m_ObjectHideFlags: 0
