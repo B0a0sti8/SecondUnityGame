@@ -120,6 +120,16 @@ public class DeckbuildingManager : MonoBehaviour
         {
             ListOfAllCards.instance.myDeckList = deckList;
         }
+        else
+        {
+            deckList = ListOfAllCards.instance.myDeckList;
+            UpdateDeckUI();
+
+            foreach (KeyValuePair<DefaultCardScriptable, GameObject> carSl in allAvailableCardSlots)
+            {
+                carSl.Value.GetComponent<DeckbuilderCardSlot>().UpdateCardAmountInDeck();
+            }
+        }
         gameObject.SetActive(!gameObject.activeSelf);
     }
 }

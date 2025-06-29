@@ -56,7 +56,13 @@ public class EnemyToken : DefaultToken
 
         if (potentialTargets.Count == 0)
         {
-            BattleManager.instance.DealDamageToPlayer(gameObject, baseDmgHealVal);
+            float dmgHeal = baseDmgHealVal;              // Hole dir den Grundschaden
+            float myModAdd = 0f;
+            foreach (float modAdd in dmgHealModifiersAdd) myModAdd += modAdd; // Addiere alle additiven Modifikatoren
+            dmgHeal *= 1 + myModAdd;                                                            // Anwenden
+            foreach (float modMult in dmgHealModifiersMult) dmgHeal *= 1 + modMult; // Alle multiplikativen Modifikatoren anwenden
+
+            BattleManager.instance.DealDamageToPlayer(gameObject, dmgHeal);
             //Debug.Log("Dealing damage to player");
         }
         else

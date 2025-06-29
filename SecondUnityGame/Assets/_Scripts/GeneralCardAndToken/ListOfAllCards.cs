@@ -16,12 +16,26 @@ public class ListOfAllCards : MonoBehaviour
         myDeckList = new Dictionary<DefaultCardScriptable, int>();
         instance = this;
         ownedCards = new Dictionary<DefaultCardScriptable, int>();
-        allCardsList = new List<DefaultCardScriptable>();
+        //allCardsList = new List<DefaultCardScriptable>();
     }
 
     private void Start()
     {
         Debug.Log("I AM List: " + ListOfAllCards.instance);
         Debug.Log(myDeckList.Count);
+    }
+
+
+    public DefaultCardScriptable FindCardByName(string myCardName)
+    {
+        foreach (DefaultCardScriptable card in allCardsList)
+        {
+            if (card.cardName == myCardName)
+            {
+                Debug.Log("Treffer!: " + card.name + " && " + myCardName);
+                return card;
+            }
+        }
+        return null;
     }
 }

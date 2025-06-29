@@ -51,7 +51,7 @@ MonoBehaviour:
   tokenDescription: Scratches and bites. Weak enemy.
   maxLife: 50
   currentLife: 0
-  baseDmgHealVal: 0
+  baseDmgHealVal: 5
   dmgHealModifiersAdd: []
   dmgHealModifiersMult: []
   resistanceModifiersAdd: []
@@ -65,6 +65,8 @@ MonoBehaviour:
   tokenSprite: {fileID: -344693628, guid: 038d7fedafa835940aef8b55a2b0a65a, type: 3}
   maxEnergy: 0
   currentMainTarget: {fileID: 0}
+  myActiveSkillList: []
+  myPassiveSkillList: []
 --- !u!1 &1706630787442597625
 GameObject:
   m_ObjectHideFlags: 0
@@ -1167,6 +1169,7 @@ MonoBehaviour:
   abilityDescription: 
   skillDmgHealModifier: 0
   finalDamage: 0
+  isPassive: 0
 --- !u!1 &8767523528013226616
 GameObject:
   m_ObjectHideFlags: 0
