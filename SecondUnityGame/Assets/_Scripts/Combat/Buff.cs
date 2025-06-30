@@ -6,12 +6,15 @@ public class Buff : MonoBehaviour
     public string buffName;
     public string buffDescription;
 
-    DefaultToken myToken;
+    public DefaultToken myToken;
     public int remainingDuration;
     public bool hasTurnEffect;
 
-    public virtual void StartBuffEffect(DefaultToken newTok, int turnDuration, Sprite newSprite, string newName)
+    public float myBuffStrengthMod;
+
+    public virtual void StartBuffEffect(DefaultToken newTok, int turnDuration, Sprite newSprite, string newName, float buffStrengthMod)
     {
+        myBuffStrengthMod = buffStrengthMod;
         myToken = newTok;
         remainingDuration = turnDuration;
         buffSprite = newSprite;

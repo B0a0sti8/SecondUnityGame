@@ -39,7 +39,7 @@ public class CardManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("ListOFCards: " + ListOfAllCards.instance);
+        //Debug.Log("ListOFCards: " + ListOfAllCards.instance);
         if (ListOfAllCards.instance != null)
         {
             LoadDeck();

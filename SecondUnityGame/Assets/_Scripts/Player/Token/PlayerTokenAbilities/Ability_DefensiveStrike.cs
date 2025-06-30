@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Ability_DefensiveStrike : PlayerTokenAbilityPrefab
 {
+    float myBaseBuffStrengthMod;
+
     protected override void Start()
     {
         myTargetType = TargetType.SingleTarget;
@@ -16,6 +18,8 @@ public class Ability_DefensiveStrike : PlayerTokenAbilityPrefab
 
         abilityName = "Defensive Strike";
         abilityDescription = "Strikes one target and reduces its damage for 2 turns";
+
+        myBaseBuffStrengthMod = -2f;
     }
 
     public override void ApplyAbilityEffect()
@@ -29,12 +33,14 @@ public class Ability_DefensiveStrike : PlayerTokenAbilityPrefab
     {
         base.DealDamageHealing();
 
+        float myBuffStrengthMod = myBaseBuffStrengthMod;
+
         foreach (GameObject curTar in currentTargets)
         {
             if (curTar.GetComponentInChildren<DefaultToken>() != null)
             {
                 BattleManager.instance.DealDamageOrHealing(curTar.GetComponentInChildren<DefaultToken>().gameObject, transform.parent.gameObject, finalDamage);
-                BattleManager.instance.ApplyBuffToTarget(curTar.GetComponentInChildren<DefaultToken>().gameObject, transform.parent.gameObject, myBuff, abilityIcon, 3);
+                BattleManager.instance.ApplyBuffToTarget(curTar.GetComponentInChildren<DefaultToken>().gameObject, transform.parent.gameObject, myBuff, abilityIcon, 3, myBuffStrengthMod);
             }
         }
     }

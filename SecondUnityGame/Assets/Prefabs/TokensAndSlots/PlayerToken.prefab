@@ -175,7 +175,7 @@ MonoBehaviour:
     m_Bottom: 0
   m_ChildAlignment: 3
   m_Spacing: 5
-  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
@@ -734,7 +734,7 @@ GameObject:
   - component: {fileID: 9136460114392962873}
   - component: {fileID: 7361518990527484876}
   m_Layer: 5
-  m_Name: Health
+  m_Name: Energy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -995,6 +995,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a634d59fe73ec72458b16a5f51188935, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tokenName: 
+  tokenDescription: 
   maxLife: 0
   currentLife: 0
   baseDmgHealVal: 0
@@ -1010,6 +1012,7 @@ MonoBehaviour:
   myPassiveTriggerAbilities: []
   myAbilities: []
   maxEnergy: 0
+  currentEnergy: 0
   attackRange: 0
 --- !u!1 &5665093197126759383
 GameObject:

@@ -51,7 +51,7 @@ public class DefaultTokenSlot : MonoBehaviour
         tokenPreviewWindow.gameObject.SetActive(setActive);
     }
 
-    void OnMouseOver()
+    public virtual void OnMouseOver()
     {
 
         if (GetComponentInChildren<DefaultToken>() == null) return;
@@ -176,7 +176,7 @@ public class DefaultTokenSlot : MonoBehaviour
         ShowTokenPreview(true);
     }
 
-    void OnMouseExit()
+    public virtual void OnMouseExit()
     {
         ShowTokenPreview(false);
         isPreviewUpdated = false;

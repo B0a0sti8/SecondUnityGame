@@ -73,6 +73,14 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
     public bool StartUsingAbility()
     {
         // Checke Ressourcen usw. Wenn verfügbar, return true; Wenn nicht, return false
+        if (!isAbilityCard)
+        {
+            if (myToken.currentEnergy < energyCost)
+            {
+                Debug.Log("Nicht genügend Energy");
+                return false;
+            }
+        }
 
         potentialTargets.Clear();
 
@@ -183,6 +191,7 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
     public virtual void ApplyAbilityEffect()
     {
         AbilityCleanUp();
+        if (!isAbilityCard) myToken.ManageEnergy(energyCost);
     }
 
     public virtual void ApplyPassiveTriggerEffect()

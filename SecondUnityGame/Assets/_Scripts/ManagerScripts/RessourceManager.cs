@@ -35,6 +35,8 @@ public class RessourceManager : MonoBehaviour
 
         woodAmount = 20;
         stoneAmount = 20;
+        foodAmount = 20;
+        reagentsAmount = 20;
 
         UpdateResourceUI();
     }

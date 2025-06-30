@@ -10,6 +10,8 @@ public class PlayerToken : DefaultToken
     public List<Transform> myPassiveTriggerAbilities = new List<Transform>();
     public List<Transform> myAbilities = new List<Transform>();
 
+    GameObject energyBar;
+
     // Eigenschafte und Werte für Kampf
     public int maxEnergy;
     public int currentEnergy;
@@ -20,6 +22,8 @@ public class PlayerToken : DefaultToken
         base.Start();
 
         healthBar = transform.Find("Canvas").Find("Healthbar").Find("Health").gameObject;
+        energyBar = transform.Find("Canvas").Find("EnergyBar").Find("Energy").gameObject;
+        transform.Find("Canvas").Find("EnergyBar").gameObject.SetActive(false);
         if (myToken.cardTypeString == "Building") healthBar.transform.parent.gameObject.SetActive(false);
 
         listOfAllAbilities = GameObject.Find("Systems").transform.Find("ListOfAllPlayerTokenAbilities");
@@ -50,12 +54,26 @@ public class PlayerToken : DefaultToken
         UpdatePlayerToken();
 
         currentLife = maxLife;
+        currentEnergy = maxEnergy;
     }
 
     public override void UpdateHealthbar()
     {
         if (myToken.cardTypeString == "Building") return;
         base.UpdateHealthbar();
+    }
+
+    public void UpdateEnergybar()
+    {
+        energyBar.GetComponent<Image>().fillAmount = (float)currentEnergy / (float)maxEnergy;
+    }
+
+    public void ManageEnergy(int energy)
+    {
+        currentEnergy -= energy;
+
+        Debug.Log("Paying " + energy + ". Remaining: " + currentEnergy);
+        UpdateEnergybar();
     }
 
     void UpdatePlayerToken()

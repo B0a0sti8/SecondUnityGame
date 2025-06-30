@@ -579,6 +579,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8944c20c013c48b478143bb9ad98d09f, type: 2}
   - {fileID: 11400000, guid: 336c589c173db994aaa1b188c4f4764f, type: 2}
   - {fileID: 11400000, guid: af9a4d18bd0d1d644b0a506e0022261c, type: 2}
+  - {fileID: 11400000, guid: 1a4a86a5eceef33439c63a56922c52b2, type: 2}
+  - {fileID: 11400000, guid: b5745b565c2aa5b4db349441df4fdcc4, type: 2}
 --- !u!4 &51794504
 Transform:
   m_ObjectHideFlags: 0
@@ -10491,7 +10493,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAbilityCard: 0
   myBuff: {fileID: 0}
-  energyCost: 0
+  energyCost: 4
   range: 0
   abilityCheckPoints: 0
   abilityCheckPointsMax: 0
@@ -12482,7 +12484,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAbilityCard: 0
   myBuff: {fileID: 759996125}
-  energyCost: 0
+  energyCost: 2
   range: 0
   abilityCheckPoints: 0
   abilityCheckPointsMax: 0
@@ -34005,7 +34007,7 @@ GameObject:
   - component: {fileID: 759996124}
   - component: {fileID: 759996125}
   m_Layer: 0
-  m_Name: ReduceDamage
+  m_Name: ModifyDamageMult
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34041,8 +34043,10 @@ MonoBehaviour:
   buffSprite: {fileID: 0}
   buffName: 
   buffDescription: 
+  myToken: {fileID: 0}
   remainingDuration: 0
   hasTurnEffect: 0
+  myBuffStrengthMod: 0
 --- !u!1 &761468785
 GameObject:
   m_ObjectHideFlags: 0
@@ -35746,6 +35750,67 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myAbilityObject: {fileID: 0}
   isPassiveAbility: 0
+--- !u!1 &880354888
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 880354889}
+  - component: {fileID: 880354890}
+  m_Layer: 0
+  m_Name: BattleCry
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &880354889
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 880354888}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2080702468}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &880354890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 880354888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57641526d84c9bc469049f67febc7139, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAbilityCard: 0
+  myBuff: {fileID: 759996125}
+  energyCost: 0
+  range: 0
+  abilityCheckPoints: 0
+  abilityCheckPointsMax: 0
+  skillDmgHealModifier: 0
+  isPassiveTriggerAbility: 0
+  myTargetType: 0
+  potentialTargets: []
+  currentTargets: []
+  multTargetShapeSprite: {fileID: 0}
+  multiTargetShape: {fileID: 0}
+  activeMultiTargetShape: {fileID: 0}
+  abilityName: 
+  abilityDescription: 
+  abilityIcon: {fileID: 7914691148776593926, guid: 58f713be1d88390448a50f469092d185, type: 3}
 --- !u!1 &881638450 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1572549451560340193, guid: 83b197af1d34218429482a246605537f, type: 3}
@@ -54509,7 +54574,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAbilityCard: 0
   myBuff: {fileID: 0}
-  energyCost: 1
+  energyCost: 2
   range: 10
   abilityCheckPoints: 2
   abilityCheckPointsMax: 0
@@ -56059,7 +56124,7 @@ PrefabInstance:
     - target: {fileID: 3536459736174722704, guid: 14dade0d8ca15dc46b65c1bd441ba935, type: 3}
       propertyPath: myCardToken
       value: 
-      objectReference: {fileID: 11400000, guid: 8944c20c013c48b478143bb9ad98d09f, type: 2}
+      objectReference: {fileID: 11400000, guid: b5745b565c2aa5b4db349441df4fdcc4, type: 2}
     - target: {fileID: 3536459736174722704, guid: 14dade0d8ca15dc46b65c1bd441ba935, type: 3}
       propertyPath: createsPlayerToken
       value: 1
@@ -59245,6 +59310,7 @@ Transform:
   m_Children:
   - {fileID: 1705751775}
   - {fileID: 576652835}
+  - {fileID: 880354889}
   m_Father: {fileID: 1225366721}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2080702469

@@ -3,13 +3,26 @@ using System.Collections.Generic;
 
 public class PlayerUnitSlot : DefaultTokenSlot
 {
-    //public bool hasToken = false;
-    //public List<GameObject> potentialTargetSlots;
+    GameObject energyBar;
 
-
-    // Update is called once per frame
-    void Update()
+    public override void Start()
     {
+        base.Start();
+    }
 
+    public override void OnMouseOver()
+    {
+        base.OnMouseOver();
+        if (transform.GetComponentInChildren<PlayerToken>() == null) return;
+
+        transform.GetComponentInChildren<PlayerToken>().transform.Find("Canvas").Find("EnergyBar").gameObject.SetActive(true);
+    }
+
+    public override void OnMouseExit()
+    {
+        base.OnMouseOver();
+
+        if (transform.GetComponentInChildren<PlayerToken>() == null) return;
+        transform.GetComponentInChildren<PlayerToken>().transform.Find("Canvas").Find("EnergyBar").gameObject.SetActive(false);
     }
 }

@@ -38,12 +38,12 @@ public class BattleManager : MonoBehaviour
         RessourceManager.instance.TakeDamageOrHealing_Player((int)damageAmount);
     }
 
-    public void ApplyBuffToTarget(GameObject target, GameObject source, Buff myBuff, Sprite buffSprite, int buffDuration)
+    public void ApplyBuffToTarget(GameObject target, GameObject source, Buff myBuff, Sprite buffSprite, int buffDuration, float buffStrengthMod)
     {
         if (target.GetComponent<DefaultToken>() == null) return;
 
         Buff newBuff = myBuff.Clone();
-        newBuff.StartBuffEffect(target.GetComponent<DefaultToken>(), buffDuration, buffSprite, myBuff.buffName);
+        newBuff.StartBuffEffect(target.GetComponent<DefaultToken>(), buffDuration, buffSprite, myBuff.buffName, buffStrengthMod);
         target.GetComponent<DefaultToken>().UpdateBuffUI();
     }
 
