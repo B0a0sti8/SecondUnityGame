@@ -1,0 +1,542 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &657605564451516240
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5975999836192086991}
+  - component: {fileID: 6730787633832256035}
+  m_Layer: 0
+  m_Name: DefensiveStrike
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5975999836192086991
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657605564451516240}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6274880248181112032}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6730787633832256035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657605564451516240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 477ae68766d1bfe45b2bb8bfab3a68a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAbilityCard: 0
+  myBuff: {fileID: 0}
+  energyCost: 2
+  range: 0
+  abilityCheckPoints: 0
+  abilityCheckPointsMax: 0
+  skillDmgHealModifier: 0
+  isPassiveTriggerAbility: 0
+  myTargetType: 0
+  potentialTargets: []
+  currentTargets: []
+  multTargetShapeSprite: {fileID: 0}
+  multiTargetShape: {fileID: 0}
+  activeMultiTargetShape: {fileID: 0}
+  abilityName: 
+  abilityDescription: 
+  abilityIcon: {fileID: 2925714604541461279, guid: c85ef07aff9dc324d9a2e419661d5d98, type: 3}
+--- !u!1 &2264407455970529194
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 162044993220266359}
+  - component: {fileID: 7730166872207225037}
+  m_Layer: 0
+  m_Name: GenerateReagents
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &162044993220266359
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2264407455970529194}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6274880248181112032}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7730166872207225037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2264407455970529194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89219e73acbdd4b4fbb9cd6e20e0f9a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAbilityCard: 0
+  myBuff: {fileID: 0}
+  energyCost: 0
+  range: 0
+  abilityCheckPoints: 0
+  abilityCheckPointsMax: 0
+  skillDmgHealModifier: 0
+  isPassiveTriggerAbility: 0
+  myTargetType: 0
+  potentialTargets: []
+  currentTargets: []
+  multTargetShapeSprite: {fileID: 0}
+  multiTargetShape: {fileID: 0}
+  activeMultiTargetShape: {fileID: 0}
+  abilityName: 
+  abilityDescription: 
+  abilityIcon: {fileID: 0}
+--- !u!1 &3272280833696388766
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1059162497648229598}
+  - component: {fileID: 7594088113915480947}
+  m_Layer: 0
+  m_Name: GenerateStone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1059162497648229598
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3272280833696388766}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6274880248181112032}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7594088113915480947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3272280833696388766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ae8b18b882e3c748a495653d20722f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAbilityCard: 0
+  myBuff: {fileID: 0}
+  energyCost: 0
+  range: 0
+  abilityCheckPoints: 0
+  abilityCheckPointsMax: 0
+  skillDmgHealModifier: 0
+  isPassiveTriggerAbility: 0
+  myTargetType: 0
+  potentialTargets: []
+  currentTargets: []
+  multTargetShapeSprite: {fileID: 0}
+  multiTargetShape: {fileID: 0}
+  activeMultiTargetShape: {fileID: 0}
+  abilityName: 
+  abilityDescription: 
+  abilityIcon: {fileID: 0}
+--- !u!1 &3828785179104479959
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 56818478434844634}
+  - component: {fileID: 5067927049869088226}
+  m_Layer: 0
+  m_Name: RemoveBuilding
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &56818478434844634
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3828785179104479959}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6274880248181112032}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5067927049869088226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3828785179104479959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5a4d6dc097196543ba4768fb45855ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAbilityCard: 0
+  myBuff: {fileID: 0}
+  energyCost: 0
+  range: 0
+  abilityCheckPoints: 0
+  abilityCheckPointsMax: 0
+  skillDmgHealModifier: 0
+  isPassiveTriggerAbility: 0
+  myTargetType: 2
+  potentialTargets: []
+  currentTargets: []
+  multTargetShapeSprite: {fileID: 0}
+  multiTargetShape: {fileID: 0}
+  activeMultiTargetShape: {fileID: 0}
+  abilityName: 
+  abilityDescription: 
+  abilityIcon: {fileID: 1994583252446353965, guid: 73491a8e9e98f444692a787976142cde, type: 3}
+--- !u!1 &4561489132641879543
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6692507361023776441}
+  - component: {fileID: 6074335971257521186}
+  m_Layer: 0
+  m_Name: GenerateFood
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6692507361023776441
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4561489132641879543}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6274880248181112032}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6074335971257521186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4561489132641879543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82d33ec7e3827cd4da698d448a601a11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAbilityCard: 0
+  myBuff: {fileID: 0}
+  energyCost: 0
+  range: 0
+  abilityCheckPoints: 0
+  abilityCheckPointsMax: 0
+  skillDmgHealModifier: 0
+  isPassiveTriggerAbility: 0
+  myTargetType: 0
+  potentialTargets: []
+  currentTargets: []
+  multTargetShapeSprite: {fileID: 0}
+  multiTargetShape: {fileID: 0}
+  activeMultiTargetShape: {fileID: 0}
+  abilityName: 
+  abilityDescription: 
+  abilityIcon: {fileID: 0}
+--- !u!1 &5157397807167401714
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2394189207491132618}
+  - component: {fileID: 7267049043892091917}
+  m_Layer: 0
+  m_Name: CanonShot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2394189207491132618
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5157397807167401714}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6274880248181112032}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7267049043892091917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5157397807167401714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37d7cd2181e48de4799fd59f98d48d03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAbilityCard: 0
+  myBuff: {fileID: 0}
+  energyCost: 4
+  range: 0
+  abilityCheckPoints: 0
+  abilityCheckPointsMax: 0
+  skillDmgHealModifier: 0
+  isPassiveTriggerAbility: 0
+  myTargetType: 1
+  potentialTargets: []
+  currentTargets: []
+  multTargetShapeSprite: {fileID: 8771974364427024036, guid: 0f87b1097041b1544bcc7dfe607dc29d, type: 3}
+  multiTargetShape: {fileID: 4034010509785220885, guid: 182739f6c58dda343842e9390bc14907, type: 3}
+  activeMultiTargetShape: {fileID: 0}
+  abilityName: 
+  abilityDescription: 
+  abilityIcon: {fileID: 8771974364427024036, guid: 3d723746eaad0cd46aafb2b133b34979, type: 3}
+--- !u!1 &5615268097288499549
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 28432487299539865}
+  - component: {fileID: 8601410083751240521}
+  m_Layer: 0
+  m_Name: GenerateWood
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &28432487299539865
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5615268097288499549}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6274880248181112032}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8601410083751240521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5615268097288499549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3546857dac4562343bcb694dc62e8c73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAbilityCard: 0
+  myBuff: {fileID: 0}
+  energyCost: 0
+  range: 0
+  abilityCheckPoints: 0
+  abilityCheckPointsMax: 0
+  skillDmgHealModifier: 0
+  isPassiveTriggerAbility: 1
+  myTargetType: 0
+  potentialTargets: []
+  currentTargets: []
+  multTargetShapeSprite: {fileID: 0}
+  multiTargetShape: {fileID: 0}
+  activeMultiTargetShape: {fileID: 0}
+  abilityName: 
+  abilityDescription: 
+  abilityIcon: {fileID: 21300000, guid: b374dcb68923d0f43bec938ba1441126, type: 2}
+--- !u!1 &8012729503949550037
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6274880248181112032}
+  - component: {fileID: 8088922527437217066}
+  m_Layer: 0
+  m_Name: ListOfAllPlayerTokenAbilities
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6274880248181112032
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8012729503949550037}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1874557359087892507}
+  - {fileID: 2394189207491132618}
+  - {fileID: 56818478434844634}
+  - {fileID: 28432487299539865}
+  - {fileID: 5975999836192086991}
+  - {fileID: 6692507361023776441}
+  - {fileID: 1059162497648229598}
+  - {fileID: 162044993220266359}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8088922527437217066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8012729503949550037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b691844726da7846913594e7365966f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &8519519592765087733
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1874557359087892507}
+  - component: {fileID: 6259540161425237573}
+  m_Layer: 0
+  m_Name: DoubleArrow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1874557359087892507
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8519519592765087733}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6274880248181112032}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6259540161425237573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8519519592765087733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75fa99d8c6fbc074d958161c84b7b7bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAbilityCard: 0
+  myBuff: {fileID: 0}
+  energyCost: 2
+  range: 10
+  abilityCheckPoints: 2
+  abilityCheckPointsMax: 0
+  skillDmgHealModifier: 0
+  isPassiveTriggerAbility: 0
+  myTargetType: 0
+  potentialTargets: []
+  currentTargets: []
+  multTargetShapeSprite: {fileID: 0}
+  multiTargetShape: {fileID: 0}
+  activeMultiTargetShape: {fileID: 0}
+  abilityName: 
+  abilityDescription: 
+  abilityIcon: {fileID: -4544722015627719991, guid: ca96f9650f67007448b35b8420d97524, type: 3}

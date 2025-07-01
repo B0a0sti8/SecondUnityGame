@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Ability_GenerateWood : PlayerTokenAbilityPrefab
+public class Ability_GenerateFood : PlayerTokenAbilityPrefab
 {
     protected override void Start()
     {
@@ -15,13 +15,13 @@ public class Ability_GenerateWood : PlayerTokenAbilityPrefab
 
         skillDmgHealModifier = 0f;
 
-        abilityName = "Generate Wood";
-        abilityDescription = "Generates a small amount of wood each turn";
+        abilityName = "Generate Food";
+        abilityDescription = "Generates a small amount of food each turn";
     }
 
     public override void ApplyPassiveTriggerEffect()
     {
         base.ApplyPassiveTriggerEffect();
-        RessourceManager.instance.AddOrRemoveResources(2, 0, 0, 0, transform.parent.gameObject);
+        RessourceManager.instance.AddOrRemoveResources(0, 0, 2, 0, transform.parent.gameObject);
     }
 }

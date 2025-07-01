@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4883e82f3bbaa9b4d9f3d5a33b87ff29, type: 3}
+  m_Name: Sawmill
+  m_EditorClassIdentifier: 
+  cardName: Sawmill
+  description: Generates wood at beginning of Turn
+  cardTypeString: Building
+  maxCardAmount: 5
+  cardRank: 0
+  woodCost: 6
+  stoneCost: 3
+  foodCost: 2
+  reagentCost: 0
+  manaCost: 2
+  cardSprite: {fileID: -8250535549744966332, guid: 85b75de00ffc03544b960b29aa9f8782, type: 3}
+  cardTypeSprite: {fileID: -4328897322714555828, guid: 51a9137d47d12e244bc0fcbe2d7e463e, type: 3}
+  tokenSprite: {fileID: -8250535549744966332, guid: ed790659a72c89440b36db5d416b8f78, type: 3}
+  maxEnergy: 0
+  maxLife: 1
+  baseDmgHealValue: 0
+  attackRange: 0
+  tokenAbilities:
+  - RemoveBuilding
+  tokenPassiveTriggerAbilities:
+  - GenerateWood

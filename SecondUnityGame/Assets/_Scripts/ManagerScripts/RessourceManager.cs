@@ -69,6 +69,11 @@ public class RessourceManager : MonoBehaviour
         currentPlayerLife -= damage;
 
         UpdateHealthBar();
+
+        if (currentPlayerLife <= 0)
+        {
+            LevelGameManager.instance.FinishLevelDefeat();
+        }
     }
 
     public bool HasResources(float woodCost = 0, float stoneCost = 0, float foodCost = 0, float reagentCost = 0)

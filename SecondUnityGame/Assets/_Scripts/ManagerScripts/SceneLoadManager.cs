@@ -6,7 +6,7 @@ public class SceneLoadManager : MonoBehaviour
     public enum MyScene
     {
         TestingGrounds,
-
+        WorldMap,
     }
 
     public void LoadNewScene(MyScene myScene)
@@ -17,5 +17,10 @@ public class SceneLoadManager : MonoBehaviour
     public void LoadTestingGroundsScene()
     {
         LoadNewScene(MyScene.TestingGrounds);
+    }
+
+    public void LoadWorldMapScene()
+    {
+        LoadNewScene(MyScene.WorldMap);
     }
 }

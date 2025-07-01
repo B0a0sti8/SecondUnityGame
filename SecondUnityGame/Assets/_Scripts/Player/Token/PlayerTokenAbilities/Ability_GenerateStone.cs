@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Ability_GenerateWood : PlayerTokenAbilityPrefab
+public class Ability_GenerateStone : PlayerTokenAbilityPrefab
 {
     protected override void Start()
     {
@@ -15,13 +15,13 @@ public class Ability_GenerateWood : PlayerTokenAbilityPrefab
 
         skillDmgHealModifier = 0f;
 
-        abilityName = "Generate Wood";
-        abilityDescription = "Generates a small amount of wood each turn";
+        abilityName = "Generate Stone";
+        abilityDescription = "Generates a small amount of stone each turn";
     }
 
     public override void ApplyPassiveTriggerEffect()
     {
         base.ApplyPassiveTriggerEffect();
-        RessourceManager.instance.AddOrRemoveResources(2, 0, 0, 0, transform.parent.gameObject);
+        RessourceManager.instance.AddOrRemoveResources(0, 2, 0, 0, transform.parent.gameObject);
     }
 }

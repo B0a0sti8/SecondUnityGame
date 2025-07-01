@@ -96,6 +96,7 @@ MonoBehaviour:
   myBackground: {fileID: 0}
   myIsMarkedObject: {fileID: 0}
   markedCount: 0
+  isBuildingSlot: 0
 --- !u!1 &2447990884399242330
 GameObject:
   m_ObjectHideFlags: 0

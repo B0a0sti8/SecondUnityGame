@@ -27,6 +27,7 @@ public class SaveLoadManager : MonoBehaviour
             SaveData data = new SaveData();
 
             SaveCardData(data);
+            SaveCompletedLevelData(data);
 
             bf.Serialize(file, data);
 
@@ -59,6 +60,13 @@ public class SaveLoadManager : MonoBehaviour
         }
     }
 
+    private void SaveCompletedLevelData(SaveData data)
+    {
+        data.MyCompletedLevelData = new CompletedLevelData();
+        List<string> completedLevels = GameProgressManager.instance.GetListOfCompletedLevels();
+        foreach (string comLev in completedLevels) data.MyCompletedLevelData.completedLevels.Add(comLev);
+    }
+
     public void Load()
     {
         Debug.Log("Loading DeckList");
@@ -83,6 +91,7 @@ public class SaveLoadManager : MonoBehaviour
         }
 
         LoadCardData(data);
+        LoadCompletedLeveldata(data);
 
         Debug.Log("Anzahl der Karten im Deck: " + ListOfAllCards.instance.myDeckList.Count);
     }
@@ -106,5 +115,12 @@ public class SaveLoadManager : MonoBehaviour
 
         ListOfAllCards.instance.myDeckList = deckCards;
         ListOfAllCards.instance.ownedCards = ownedCards;
+    }
+
+    private void LoadCompletedLeveldata(SaveData data)
+    {
+        List<string> compLevels = new List<string>();
+        foreach (string compL in data.MyCompletedLevelData.completedLevels) if (compL != "") compLevels.Add(compL);
+        GameProgressManager.instance.LoadListOfCompletedLevels(compLevels);
     }
 }

@@ -12,7 +12,6 @@ public class ListOfAllCards : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("Awake Function");
         myDeckList = new Dictionary<DefaultCardScriptable, int>();
         instance = this;
         ownedCards = new Dictionary<DefaultCardScriptable, int>();
@@ -21,7 +20,6 @@ public class ListOfAllCards : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("I AM List: " + ListOfAllCards.instance);
         Debug.Log(myDeckList.Count);
     }
 
@@ -32,7 +30,6 @@ public class ListOfAllCards : MonoBehaviour
         {
             if (card.cardName == myCardName)
             {
-                Debug.Log("Treffer!: " + card.name + " && " + myCardName);
                 return card;
             }
         }

@@ -51,7 +51,7 @@ public class DefaultTokenSlot : MonoBehaviour
         tokenPreviewWindow.gameObject.SetActive(setActive);
     }
 
-    public virtual void OnMouseOver()
+    public void OnMouseOver()
     {
 
         if (GetComponentInChildren<DefaultToken>() == null) return;
@@ -174,11 +174,21 @@ public class DefaultTokenSlot : MonoBehaviour
         }
 
         ShowTokenPreview(true);
+
+        if (transform.GetComponentInChildren<PlayerToken>() != null)
+        {
+            transform.GetComponentInChildren<PlayerToken>().transform.Find("Canvas").Find("EnergyBar").gameObject.SetActive(true);
+        }
     }
 
-    public virtual void OnMouseExit()
+    public void OnMouseExit()
     {
         ShowTokenPreview(false);
         isPreviewUpdated = false;
+
+        if (transform.GetComponentInChildren<PlayerToken>() != null)
+        {
+            transform.GetComponentInChildren<PlayerToken>().transform.Find("Canvas").Find("EnergyBar").gameObject.SetActive(false);
+        }
     }
 }
