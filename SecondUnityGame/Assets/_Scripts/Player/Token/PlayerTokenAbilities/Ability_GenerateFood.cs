@@ -13,7 +13,7 @@ public class Ability_GenerateFood : PlayerTokenAbilityPrefab
 
         abilityCheckPointsMax = 0;
 
-        skillDmgHealModifier = 0f;
+        skillEffectModifier = 0f;
 
         abilityName = "Generate Food";
         abilityDescription = "Generates a small amount of food each turn";

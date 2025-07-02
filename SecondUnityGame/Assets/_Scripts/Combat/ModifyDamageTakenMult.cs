@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ModifyDamageMult : Buff
+public class ModifyDamageTakenMult : Buff
 {
     float myBaseEffekt;
     float myFinalEffekt;
@@ -9,13 +9,13 @@ public class ModifyDamageMult : Buff
     {
         if (buffStrengthMod > 0)
         {
-            buffName = "Increased Damage";
-            buffDescription = "Increases damage significantly";
+            buffName = "Reduced Damage Taken";
+            buffDescription = "Reduces damage taken significantly";
         }
         else
         {
-            buffName = "Reduced Damage";
-            buffDescription = "Reduces damage significantly";
+            buffName = "Increased Damage Taken";
+            buffDescription = "Increases damage taken significantly";
         }
 
         base.StartBuffEffect(newTok, turnDuration, newSprite, newName, buffStrengthMod);

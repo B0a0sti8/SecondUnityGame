@@ -11,7 +11,7 @@ public class CardAbility_LightningStrike : PlayerTokenAbilityPrefab
 
         abilityCheckPointsMax = 3;
 
-        skillDmgHealModifier = 0.7f;
+        skillEffectModifier = 0.7f;
 
         abilityName = "Lightning Strike";
         abilityDescription = "Chooses Targets and deals damage";

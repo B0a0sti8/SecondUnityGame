@@ -4,6 +4,7 @@ using System.Collections;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System;
 
 public class DefaultTokenSlot : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class DefaultTokenSlot : MonoBehaviour
     Transform tokenPreviewWindow;
     bool isPreviewUpdated;
 
+    public Sprite areaModifiedSprite;
+    public Buff areaModification;
+    public float areaModStrength;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public virtual void Start()
@@ -53,7 +57,6 @@ public class DefaultTokenSlot : MonoBehaviour
 
     public void OnMouseOver()
     {
-
         if (GetComponentInChildren<DefaultToken>() == null) return;
         if (isPreviewUpdated) return;
         isPreviewUpdated = true;
@@ -190,5 +193,51 @@ public class DefaultTokenSlot : MonoBehaviour
         {
             transform.GetComponentInChildren<PlayerToken>().transform.Find("Canvas").Find("EnergyBar").gameObject.SetActive(false);
         }
+    }
+
+    public void OnTokenRemove()
+    {
+        if (areaModification != null)
+        {
+            if (GetComponentInChildren<DefaultToken>() != null)
+            {
+                BattleManager.instance.RemoveBuffFromTarget(GetComponentInChildren<DefaultToken>().gameObject, areaModification);
+            }
+        }
+    }
+
+    public void OnTokenSet()
+    {
+        if (areaModification != null)
+        {
+            if (GetComponentInChildren<DefaultToken>() != null)
+            {
+                BattleManager.instance.ApplyBuffToTarget(GetComponentInChildren<DefaultToken>().gameObject, gameObject, areaModification, areaModifiedSprite, 100, areaModStrength);
+            }
+        }
+    }
+
+    public void SetAreaModification(Buff areaMod, Sprite areaModSpr, float areaModStr)
+    {
+
+        areaModification = areaMod;
+        areaModifiedSprite = areaModSpr;
+        areaModStrength = areaModStr;
+
+        transform.Find("AreaMod").GetComponent<SpriteRenderer>().sprite = areaModifiedSprite;
+        transform.Find("AreaMod").gameObject.SetActive(true);
+
+        OnTokenSet();
+    }
+
+    public void RemoveAreaModification()
+    {
+        OnTokenRemove();
+
+        areaModification = null;
+        areaModifiedSprite = null;
+        areaModStrength = 0;
+
+        transform.Find("AreaMod").gameObject.SetActive(false);
     }
 }

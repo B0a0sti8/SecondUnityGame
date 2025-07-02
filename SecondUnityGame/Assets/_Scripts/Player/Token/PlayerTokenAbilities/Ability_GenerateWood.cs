@@ -13,7 +13,7 @@ public class Ability_GenerateWood : PlayerTokenAbilityPrefab
 
         abilityCheckPointsMax = 0;
 
-        skillDmgHealModifier = 0f;
+        skillEffectModifier = 0f;
 
         abilityName = "Generate Wood";
         abilityDescription = "Generates a small amount of wood each turn";

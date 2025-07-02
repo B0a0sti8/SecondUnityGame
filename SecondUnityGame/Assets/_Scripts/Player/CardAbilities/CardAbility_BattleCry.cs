@@ -14,7 +14,7 @@ public class CardAbility_BattleCry : PlayerTokenAbilityPrefab
 
         abilityCheckPointsMax = 0;
 
-        skillDmgHealModifier = 0.0f;
+        skillEffectModifier = 0.0f;
         myBaseBuffStrengthMod = 1.5f;
 
         abilityName = "Battle Cry";

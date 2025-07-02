@@ -13,8 +13,6 @@ public class PlayerToken : DefaultToken
     GameObject energyBar;
 
     // Eigenschafte und Werte für Kampf
-    public int maxEnergy;
-    public int currentEnergy;
     public int attackRange;
 
     public override void Start()
@@ -53,8 +51,8 @@ public class PlayerToken : DefaultToken
         myToken = newToken;
         UpdatePlayerToken();
 
-        currentLife = maxLife;
-        currentEnergy = maxEnergy;
+        currentLife = maxLife.GetValue();
+        currentEnergy = (int)Mathf.Round(maxEnergy.GetValue());
     }
 
     public override void UpdateHealthbar()
@@ -65,7 +63,7 @@ public class PlayerToken : DefaultToken
 
     public void UpdateEnergybar()
     {
-        energyBar.GetComponent<Image>().fillAmount = (float)currentEnergy / (float)maxEnergy;
+        energyBar.GetComponent<Image>().fillAmount = (float)currentEnergy / maxEnergy.GetValue();
     }
 
     public void ManageEnergy(int energy)
@@ -79,9 +77,10 @@ public class PlayerToken : DefaultToken
     void UpdatePlayerToken()
     {
         transform.Find("Picture").GetComponent<SpriteRenderer>().sprite = myToken.tokenSprite;
-        maxLife = myToken.maxLife;
-        maxEnergy = myToken.maxEnergy;
-        baseDmgHealVal = myToken.baseDmgHealValue;
+        maxLife.baseValue = myToken.maxLife;
+        maxEnergy.baseValue = myToken.maxEnergy;
+        dmgHealVal.baseValue = myToken.baseDmgHealValue;
+        receiveDmgHealVal.baseValue = myToken.baseRecDmgHealValue;
         attackRange = myToken.attackRange;
     }
 

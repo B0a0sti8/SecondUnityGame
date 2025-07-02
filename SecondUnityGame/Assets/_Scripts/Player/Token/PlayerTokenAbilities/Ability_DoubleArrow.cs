@@ -12,7 +12,7 @@ public class Ability_DoubleArrow : PlayerTokenAbilityPrefab
 
         abilityCheckPointsMax = 2;
 
-        skillDmgHealModifier = 0.7f;
+        skillEffectModifier = 0.7f;
 
         abilityName = "Double Arrow";
         abilityDescription = "Shoots two arrows to arbitrary enemies";

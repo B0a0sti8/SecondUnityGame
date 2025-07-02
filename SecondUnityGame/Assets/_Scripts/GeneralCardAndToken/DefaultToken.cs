@@ -9,15 +9,25 @@ public class DefaultToken : MonoBehaviour
     public string tokenName;
     public string tokenDescription;
 
-    public int maxLife;
-    public int currentLife;
+    public Stat maxLife = new Stat();
+    public float maxLifeBase;
+    public float currentLife;
 
-    public float baseDmgHealVal;
-    public List<float> dmgHealModifiersAdd;
-    public List<float> dmgHealModifiersMult;
+    public Stat maxEnergy = new Stat();
+    public int maxEnergyBase;
+    public int currentEnergy;
 
-    public List<float> resistanceModifiersAdd;
-    public List<float> resistanceModifiersMult;
+    public Stat dmgHealVal = new Stat();
+    public int baseDmgHealVal;
+
+    public Stat receiveDmgHealVal = new Stat();
+    public int baseRecDmgHealVal = 1;
+
+    //public List<float> dmgHealModifiersAdd;
+    //public List<float> dmgHealModifiersMult;
+
+    //public List<float> resistanceModifiersAdd;
+    //public List<float> resistanceModifiersMult;
 
     public GameObject healthBar;
 
@@ -27,21 +37,30 @@ public class DefaultToken : MonoBehaviour
     public virtual void Start()
     {
         myBuffUI = transform.Find("Canvas").Find("Buffs").gameObject;
+        InitBaseStats();
+    }
+
+    void InitBaseStats()
+    {
+        if (this as EnemyToken != null)
+        {
+            maxLife.baseValue = maxLifeBase;
+            maxEnergy.baseValue = maxEnergyBase;
+            dmgHealVal.baseValue = baseDmgHealVal;
+            receiveDmgHealVal.baseValue = baseRecDmgHealVal;
+        }
     }
 
     public virtual void TakeDamageOrHealing(int DamageAmount)
     {
         currentLife -= DamageAmount;
         UpdateHealthbar();
-
-        //Debug.Log("currentlife = " + currentLife);
-
         if (currentLife <= 0) Die();
     }
 
     public virtual void UpdateHealthbar()
     {
-        healthBar.GetComponent<Image>().fillAmount = (float)currentLife / (float)maxLife;
+        healthBar.GetComponent<Image>().fillAmount = (float)currentLife / (float)maxLife.GetValue();
     }
 
     public void UpdateBuffUI()
@@ -95,12 +114,7 @@ public class DefaultToken : MonoBehaviour
 
     public int ReturnCurrentDamage()
     {
-        float dmgHeal = baseDmgHealVal;        // Hole dir den Grundschaden
-
-        float myModAdd = 0f;
-        foreach (float modAdd in dmgHealModifiersAdd) myModAdd += modAdd; // Addiere alle additiven Modifikatoren
-        dmgHeal *= 1 + myModAdd;                                                            // Anwenden
-        foreach (float modMult in dmgHealModifiersMult) dmgHeal *= 1 + modMult; // Alle multiplikativen Modifikatoren anwenden
+        float dmgHeal = dmgHealVal.GetValue();        // Hole dir den Grundschaden
 
         float finalDamage = Mathf.Clamp(0, dmgHeal, Mathf.Infinity);
         return (int)finalDamage;

@@ -49,13 +49,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tokenName: Crawler
   tokenDescription: Scratches and bites. Weak enemy.
-  maxLife: 50
+  maxLifeBase: 30
   currentLife: 0
+  maxEnergyBase: 5
+  currentEnergy: 0
   baseDmgHealVal: 5
-  dmgHealModifiersAdd: []
-  dmgHealModifiersMult: []
-  resistanceModifiersAdd: []
-  resistanceModifiersMult: []
   healthBar: {fileID: 0}
   myCurrentBuffs: []
   myBuffUI: {fileID: 0}
@@ -63,7 +61,6 @@ MonoBehaviour:
   description: 
   unitTypeSprite: {fileID: 0}
   tokenSprite: {fileID: -344693628, guid: 038d7fedafa835940aef8b55a2b0a65a, type: 3}
-  maxEnergy: 0
   currentMainTarget: {fileID: 0}
   myActiveSkillList: []
   myPassiveSkillList: []

@@ -13,7 +13,7 @@ public class Ability_GenerateReagents : PlayerTokenAbilityPrefab
 
         abilityCheckPointsMax = 0;
 
-        skillDmgHealModifier = 0f;
+        skillEffectModifier = 0f;
 
         abilityName = "Generate Reagents";
         abilityDescription = "Generates a small amount of reagents each turn";

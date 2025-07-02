@@ -9712,6 +9712,57 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5779777503296041470, guid: 14dade0d8ca15dc46b65c1bd441ba935, type: 3}
   m_PrefabInstance: {fileID: 543994709}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &558962643
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 558962644}
+  - component: {fileID: 558962645}
+  m_Layer: 0
+  m_Name: ModifyDamageTakenMult
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &558962644
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 558962643}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1105530602}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &558962645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 558962643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aab592013c8e36447abe3143f4963a56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buffSprite: {fileID: 7574037375969189122, guid: 16ea288b6f86d7b44a8542f1bbb150b2, type: 3}
+  buffName: 
+  buffDescription: 
+  myToken: {fileID: 0}
+  remainingDuration: 0
+  hasTurnEffect: 0
+  myBuffStrengthMod: 0
 --- !u!1001 &570684451
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10021,7 +10072,7 @@ MonoBehaviour:
   range: 0
   abilityCheckPoints: 0
   abilityCheckPointsMax: 0
-  skillDmgHealModifier: 0
+  skillEffectModifier: 0
   isPassiveTriggerAbility: 0
   myTargetType: 2
   potentialTargets: []
@@ -35989,7 +36040,7 @@ GameObject:
   - component: {fileID: 880354889}
   - component: {fileID: 880354890}
   m_Layer: 0
-  m_Name: BattleCry
+  m_Name: Battle Cry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36028,7 +36079,7 @@ MonoBehaviour:
   range: 0
   abilityCheckPoints: 0
   abilityCheckPointsMax: 0
-  skillDmgHealModifier: 0
+  skillEffectModifier: 0
   isPassiveTriggerAbility: 0
   myTargetType: 0
   potentialTargets: []
@@ -40710,6 +40761,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 759996124}
+  - {fileID: 558962644}
   m_Father: {fileID: 1225366721}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1108255821
@@ -50174,9 +50226,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3db54716927aa1b4e89d6fe69a9a0aba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseDmgHealVal: 0
-  dmgHealModifiersAdd: []
-  dmgHealModifiersMult: []
 --- !u!1001 &1489447901
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -51869,6 +51918,67 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1855057069153775720, guid: a7db92cd306beaa41afcdba2f5dd4a54, type: 3}
   m_PrefabInstance: {fileID: 1589904241}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1596087167
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1596087168}
+  - component: {fileID: 1596087169}
+  m_Layer: 0
+  m_Name: Fortify Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1596087168
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1596087167}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2080702468}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1596087169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1596087167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5851bf7f391412a47a43761482375840, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAbilityCard: 1
+  myBuff: {fileID: 558962645}
+  energyCost: 0
+  range: 30
+  abilityCheckPoints: 0
+  abilityCheckPointsMax: 0
+  skillEffectModifier: 0
+  isPassiveTriggerAbility: 0
+  myTargetType: 1
+  potentialTargets: []
+  currentTargets: []
+  multTargetShapeSprite: {fileID: 7574037375969189122, guid: 16ea288b6f86d7b44a8542f1bbb150b2, type: 3}
+  multiTargetShape: {fileID: 4034010509785220885, guid: be1b0b3caa61b924ba1009b7a23ab313, type: 3}
+  activeMultiTargetShape: {fileID: 0}
+  abilityName: 
+  abilityDescription: 
+  abilityIcon: {fileID: 7574037375969189122, guid: 16ea288b6f86d7b44a8542f1bbb150b2, type: 3}
 --- !u!1 &1610114513
 GameObject:
   m_ObjectHideFlags: 0
@@ -54083,7 +54193,7 @@ MonoBehaviour:
   range: 0
   abilityCheckPoints: 0
   abilityCheckPointsMax: 3
-  skillDmgHealModifier: 0
+  skillEffectModifier: 0
   isPassiveTriggerAbility: 0
   myTargetType: 2
   potentialTargets: []
@@ -56144,7 +56254,7 @@ PrefabInstance:
     - target: {fileID: 3536459736174722704, guid: 14dade0d8ca15dc46b65c1bd441ba935, type: 3}
       propertyPath: myCardToken
       value: 
-      objectReference: {fileID: 11400000, guid: e4053567be6b0ac4bb877ead61428409, type: 2}
+      objectReference: {fileID: 11400000, guid: d176110066228e94181d2f0c650b66b7, type: 2}
     - target: {fileID: 3536459736174722704, guid: 14dade0d8ca15dc46b65c1bd441ba935, type: 3}
       propertyPath: createsPlayerToken
       value: 1
@@ -59871,6 +59981,7 @@ Transform:
   - {fileID: 1705751775}
   - {fileID: 576652835}
   - {fileID: 880354889}
+  - {fileID: 1596087168}
   m_Father: {fileID: 1225366721}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2080702469

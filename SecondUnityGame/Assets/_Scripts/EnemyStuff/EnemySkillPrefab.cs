@@ -24,12 +24,7 @@ public class EnemySkillPrefab : MonoBehaviour
 
     public virtual void DealDamageHealing()
     {
-        float dmgHeal = myEnemyToken.baseDmgHealVal;              // Hole dir den Grundschaden
-        float myModAdd = 0f;
-        foreach (float modAdd in myEnemyToken.dmgHealModifiersAdd) myModAdd += modAdd; // Addiere alle additiven Modifikatoren
-        dmgHeal *= 1 + myModAdd;                                                            // Anwenden
-        foreach (float modMult in myEnemyToken.dmgHealModifiersMult) dmgHeal *= 1 + modMult; // Alle multiplikativen Modifikatoren anwenden
-
+        float dmgHeal = myEnemyToken.dmgHealVal.GetValue();              // Hole dir den Grundschaden
         finalDamage = Mathf.Clamp(0, dmgHeal * skillDmgHealModifier, Mathf.Infinity);
     }
 }

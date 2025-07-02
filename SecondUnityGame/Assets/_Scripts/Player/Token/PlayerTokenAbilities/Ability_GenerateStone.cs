@@ -13,7 +13,7 @@ public class Ability_GenerateStone : PlayerTokenAbilityPrefab
 
         abilityCheckPointsMax = 0;
 
-        skillDmgHealModifier = 0f;
+        skillEffectModifier = 0f;
 
         abilityName = "Generate Stone";
         abilityDescription = "Generates a small amount of stone each turn";

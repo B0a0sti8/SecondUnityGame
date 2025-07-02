@@ -4,9 +4,8 @@ using UnityEngine;
 public class PlayerObject : MonoBehaviour
 {
     public static PlayerObject instance;
-    public float baseDmgHealVal;
-    public List<float> dmgHealModifiersAdd;
-    public List<float> dmgHealModifiersMult;
+    public Stat dmgHealVal = new Stat();
+    public Stat buffEffectMod = new Stat();
 
     private void Awake()
     {
@@ -15,6 +14,19 @@ public class PlayerObject : MonoBehaviour
 
     private void Start()
     {
-        baseDmgHealVal = 50;
+        dmgHealVal.baseValue = 50;
+        buffEffectMod.baseValue = 1;
+    }
+
+    public float GetDamageHealValue()
+    {
+        float finalDamage = dmgHealVal.GetValue();
+        return finalDamage;
+    }
+
+    public float GetBuffEffektModifier()
+    {
+        float buffEffectM = buffEffectMod.GetValue();
+        return buffEffectM;
     }
 }

@@ -9,6 +9,7 @@ public class PlayerTokenScriptable : DefaultCardScriptable
     public int maxEnergy;
     public int maxLife;
     public float baseDmgHealValue;
+    public float baseRecDmgHealValue;
     public int attackRange;
 
     public List<string> tokenAbilities = new List<string>();

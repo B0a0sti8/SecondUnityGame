@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
 
 public class BattleManager : MonoBehaviour
 {
@@ -45,6 +46,19 @@ public class BattleManager : MonoBehaviour
         Buff newBuff = myBuff.Clone();
         newBuff.StartBuffEffect(target.GetComponent<DefaultToken>(), buffDuration, buffSprite, myBuff.buffName, buffStrengthMod);
         target.GetComponent<DefaultToken>().UpdateBuffUI();
+    }
+
+    public void RemoveBuffFromTarget(GameObject target, Buff myBuff)
+    {
+        if (target.GetComponent<DefaultToken>() == null) return;
+
+        Buff newBuff = myBuff.Clone();
+        List<Buff> currentBuffs = target.GetComponent<DefaultToken>().myCurrentBuffs;
+        foreach (Buff buf in currentBuffs)
+        {
+            if (buf.name == newBuff.name) buf.EndBuffEffect();
+            target.GetComponent<DefaultToken>().UpdateBuffUI();
+        }
     }
 
 

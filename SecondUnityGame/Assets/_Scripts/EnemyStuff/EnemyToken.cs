@@ -9,11 +9,7 @@ public class EnemyToken : DefaultToken
     public string cardName;
     public string description;
     public Sprite unitTypeSprite;
-
     public Sprite tokenSprite;
-
-    // Eigenschafte und Werte für Kampf
-    public int maxEnergy;
 
     EnemyTokenSlot mySlot;
     public GameObject currentMainTarget;
@@ -24,7 +20,7 @@ public class EnemyToken : DefaultToken
     {
         base.Start();
 
-        currentLife = maxLife;
+        currentLife = maxLife.GetValue();
 
         mySlot = transform.parent.GetComponent<EnemyTokenSlot>();
         for (int i = 0; i < transform.Find("EnemySkills").childCount; i++)
@@ -56,12 +52,7 @@ public class EnemyToken : DefaultToken
 
         if (potentialTargets.Count == 0)
         {
-            float dmgHeal = baseDmgHealVal;              // Hole dir den Grundschaden
-            float myModAdd = 0f;
-            foreach (float modAdd in dmgHealModifiersAdd) myModAdd += modAdd; // Addiere alle additiven Modifikatoren
-            dmgHeal *= 1 + myModAdd;                                                            // Anwenden
-            foreach (float modMult in dmgHealModifiersMult) dmgHeal *= 1 + modMult; // Alle multiplikativen Modifikatoren anwenden
-
+            float dmgHeal = dmgHealVal.GetValue();              // Hole dir den Schaden
             BattleManager.instance.DealDamageToPlayer(gameObject, dmgHeal);
             //Debug.Log("Dealing damage to player");
         }

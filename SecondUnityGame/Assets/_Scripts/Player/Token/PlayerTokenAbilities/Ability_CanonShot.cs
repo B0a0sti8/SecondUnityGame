@@ -11,7 +11,7 @@ public class Ability_CanonShot : PlayerTokenAbilityPrefab
         myTargetType = TargetType.MultiTarget;
         abilityCheckPointsMax = 1;
 
-        skillDmgHealModifier = 0.7f;
+        skillEffectModifier = 0.7f;
 
         abilityName = "Canon shot";
         abilityDescription = "Shoots his canon to attack a whole area.";

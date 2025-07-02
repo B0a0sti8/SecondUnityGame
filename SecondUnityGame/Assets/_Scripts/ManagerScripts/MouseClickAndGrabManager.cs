@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
+using System;
 
 public class MouseClickAndGrabManager : MonoBehaviour
 {
@@ -131,16 +132,6 @@ public class MouseClickAndGrabManager : MonoBehaviour
                 GameObject myToken = rayHit.transform.gameObject.GetComponentInChildren<PlayerToken>().gameObject;
                 tokenSelectionMenue.SetActive(true);
                 tokenSelectionMenue.transform.position = rayHit.transform.position;
-                //for (int i = 0; i < myToken.transform.Find("Abilities").childCount; i++)
-                //{
-                //    if (i < 6)
-                //    {
-                //        tokenSelectionMenue.transform.GetChild(i).gameObject.SetActive(true);
-                //        tokenSelectionMenue.transform.GetChild(i).Find("Text (TMP)").GetComponent<TextMeshProUGUI>().text = myToken.transform.Find("Abilities").GetChild(i).name;
-                //        tokenSelectionMenue.transform.GetChild(i).GetComponent<AbilitySelectionButton>().myAbilityObject = myToken.transform.Find("Abilities").GetChild(i).gameObject;
-                //        tokenSelectionMenue.transform.GetChild(i).GetComponent<AbilitySelectionButton>().isPassiveAbility = myToken.transform.Find("Abilities").GetChild(i).GetComponent<PlayerTokenAbilityPrefab>().isPassiveTriggerAbility;
-                //    }
-                //}
 
                 for (int i = 0; i < myToken.GetComponent<PlayerToken>().myAbilities.Count; i++)
                 {
@@ -165,8 +156,6 @@ public class MouseClickAndGrabManager : MonoBehaviour
                         tokenSelectionMenue.transform.GetChild(i+3).GetComponent<AbilitySelectionButton>().isPassiveAbility = myToken.transform.Find("Abilities").Find(abName).GetComponent<PlayerTokenAbilityPrefab>().isPassiveTriggerAbility;
                     }
                 }
-
-
                 return;
             }
         }
@@ -227,6 +216,7 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
         if (rayHit && rayHit.transform.gameObject.tag == "PlayerUnitSlot" && rayHit.transform.Find("PlayerToken") != null)
         {
+            rayHit.transform.GetComponent<DefaultTokenSlot>().OnTokenRemove();
             myGrabbedItem = rayHit.transform.Find("PlayerToken").gameObject;
             originPosition = myGrabbedItem.transform.localPosition;
             originRotation = myGrabbedItem.transform.localEulerAngles;
@@ -336,6 +326,8 @@ public class MouseClickAndGrabManager : MonoBehaviour
                 myGrabbedItem = null;
                 isCardPending = false;
 
+                targetTokSlot.GetComponent<DefaultTokenSlot>().OnTokenSet();
+
                 return true;
             }
 
@@ -343,6 +335,8 @@ public class MouseClickAndGrabManager : MonoBehaviour
             {
                 if (!isCardPending)
                 {
+                    targetTokSlot.GetComponent<DefaultTokenSlot>().OnTokenRemove();
+
                     GameObject newToken = targetTokSlot.Find("PlayerToken").gameObject;
                     myGrabbedItem.transform.parent = targetTokSlot;
                     myGrabbedItem.transform.localPosition = originPosition;
@@ -350,6 +344,8 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
                     myGrabbedItem = newToken;
                     myGrabbedItem.transform.parent = null;
+
+                    targetTokSlot.GetComponent<DefaultTokenSlot>().OnTokenSet();
 
                     return true;
                 }

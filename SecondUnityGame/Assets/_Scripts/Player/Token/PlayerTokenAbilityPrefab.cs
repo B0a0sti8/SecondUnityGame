@@ -21,7 +21,7 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
     public int abilityCheckPoints;
     public int abilityCheckPointsMax;
 
-    public float skillDmgHealModifier;
+    public float skillEffectModifier;
     protected float finalDamage;
 
     public bool isPassiveTriggerAbility = false;
@@ -203,25 +203,13 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
     {
         if (isAbilityCard)
         {
-            float dmgHeal = myPlayer.baseDmgHealVal;        // Hole dir den Grundschaden
-
-            float myModAdd = 0f;
-            foreach (float modAdd in myPlayer.dmgHealModifiersAdd) myModAdd += modAdd; // Addiere alle additiven Modifikatoren
-            dmgHeal *= 1 + myModAdd;                                                            // Anwenden
-            foreach (float modMult in myPlayer.dmgHealModifiersMult) dmgHeal *= 1 + modMult; // Alle multiplikativen Modifikatoren anwenden
-
-            finalDamage = Mathf.Clamp(0, dmgHeal * skillDmgHealModifier, Mathf.Infinity);
+            float dmgHeal = myPlayer.dmgHealVal.GetValue();        // Hole dir den Grundschaden
+            finalDamage = Mathf.Clamp(0, dmgHeal * skillEffectModifier, Mathf.Infinity);
         }
         else
         {
-            float dmgHeal = myToken.baseDmgHealVal;        // Hole dir den Grundschaden
-
-            float myModAdd = 0f;
-            foreach (float modAdd in myToken.dmgHealModifiersAdd) myModAdd += modAdd; // Addiere alle additiven Modifikatoren
-            dmgHeal *= 1 + myModAdd;                                                            // Anwenden
-            foreach (float modMult in myToken.dmgHealModifiersMult) dmgHeal *= 1 + modMult; // Alle multiplikativen Modifikatoren anwenden
-
-            finalDamage = Mathf.Clamp(0, dmgHeal * skillDmgHealModifier, Mathf.Infinity);
+            float dmgHeal = myToken.dmgHealVal.GetValue();        // Hole dir den Grundschaden
+            finalDamage = Mathf.Clamp(0, dmgHeal * skillEffectModifier, Mathf.Infinity);
         }
     }
 
@@ -267,11 +255,12 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
         foreach (Collider2D coll in hit)
         {
 
-            // Man muss sich überlegen ob man auch Slots markiert, die leer sind. Z.B. für Flächenschaden
+            // Man muss sich überlegen ob man auch Slots markiert, die leer sind. Z.B. für Flächenschaden --> ja?
             if (coll.gameObject.GetComponentInChildren<DefaultToken>() != null)
             {
-                listOfMatches.Add(coll.gameObject);
+                //listOfMatches.Add(coll.gameObject);
             }
+            listOfMatches.Add(coll.gameObject);
         }
 
         return listOfMatches;
@@ -289,7 +278,8 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
             if (rayHit && (rayHit.transform.gameObject.tag == "PlayerUnitSlot" || rayHit.transform.gameObject.tag == "EnemySlot"))
             {
                 //Debug.Log("Found something at: " + (Vector2)shapePart.position);
-                if (rayHit.transform.GetComponentInChildren<DefaultToken>() != null) listOfMatches.Add(rayHit.transform.gameObject);
+                if (rayHit.transform.GetComponentInChildren<DefaultToken>() != null) { }
+                listOfMatches.Add(rayHit.transform.gameObject);
             }
         }
         return listOfMatches;

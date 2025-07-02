@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c6ab18d1c9c2364cb73293cbb1ab13d, type: 3}
-  m_Name: AbilityCard_BattleCry
+  m_Name: AbilityCard_FortifyPosition
   m_EditorClassIdentifier: 
-  cardName: Battle Cry
-  description: Increases the damage of all units by 10 % for 2 turns. Gives 1 Energy
-    to each unit.
+  cardName: Fortify Position
+  description: Fortifies the target position. Units located at there, take significantly
+    less damage.
   cardTypeString: Ability
   maxCardAmount: 5
   cardRank: 0
   woodCost: 0
   stoneCost: 0
-  foodCost: 2
-  reagentCost: 2
-  manaCost: 0
-  cardSprite: {fileID: 7914691148776593926, guid: 030d6e06e3da34d42a57a1b4343b19cc, type: 3}
+  foodCost: 0
+  reagentCost: 0
+  manaCost: 10
+  cardSprite: {fileID: 7574037375969189122, guid: b0fc144e348979d4e8578078c5eb253b, type: 3}
   cardTypeSprite: {fileID: 8494857361488865779, guid: bc1b440e6b516e44f9cbf3a9715f8cc1, type: 3}
-  abilityName: Battle Cry
+  abilityName: Fortify Position

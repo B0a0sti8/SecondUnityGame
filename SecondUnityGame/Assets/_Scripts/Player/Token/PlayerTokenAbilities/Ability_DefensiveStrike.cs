@@ -14,7 +14,7 @@ public class Ability_DefensiveStrike : PlayerTokenAbilityPrefab
 
         abilityCheckPointsMax = 1;
 
-        skillDmgHealModifier = 0.7f;
+        skillEffectModifier = 0.7f;
 
         abilityName = "Defensive Strike";
         abilityDescription = "Strikes one target and reduces its damage for 2 turns";
