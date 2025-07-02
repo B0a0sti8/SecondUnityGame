@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 using System;
+using UnityEngine.SceneManagement;
 
 public class MouseClickAndGrabManager : MonoBehaviour
 {
@@ -28,9 +29,28 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
     private void Awake()
     {
+        SceneManager.sceneLoaded += InitRefs;
+        if (SceneManager.GetActiveScene().name == "WorldMap") gameObject.SetActive(false);
+        else gameObject.SetActive(true);
         instance = this;
         myGrabbedItem = null;
         mainCam = Camera.main;
+    }
+
+    private void Start()
+    {
+        tokenSelectionMenue = GameObject.Find("Level").transform.Find("CombatVisuals").Find("Canvas").Find("TokenMenue").gameObject;
+    }
+
+    public void InitRefs(Scene scene, LoadSceneMode mode)
+    {
+        if (SceneManager.GetActiveScene().name == "WorldMap") gameObject.SetActive(false);
+        else gameObject.SetActive(true);
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= InitRefs;
     }
 
     void Update()

@@ -19,7 +19,6 @@ public class Buff : MonoBehaviour
         remainingDuration = turnDuration;
         buffSprite = newSprite;
         myToken.myCurrentBuffs.Add(this);
-        Debug.Log(myToken.myCurrentBuffs[0].buffName);
         //buffName = newName;
     }
 

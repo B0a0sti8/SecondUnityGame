@@ -7,7 +7,12 @@ public class SystemManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (instance == null) instance = this;
+        else
+        {
+            Destroy(instance.gameObject);
+            instance = this;
+        }
         DontDestroyOnLoad(this.gameObject);
         SceneManager.sceneLoaded += EsKannNurEinenGeben;
     }

@@ -24,7 +24,9 @@ public class PlayerToken : DefaultToken
         transform.Find("Canvas").Find("EnergyBar").gameObject.SetActive(false);
         if (myToken.cardTypeString == "Building") healthBar.transform.parent.gameObject.SetActive(false);
 
-        listOfAllAbilities = GameObject.Find("Systems").transform.Find("ListOfAllPlayerTokenAbilities");
+
+
+        listOfAllAbilities = ListOfAllPlayerTokenAbilities.instance.gameObject.transform;
 
         foreach (string ab in myToken.tokenAbilities)
         {
@@ -80,7 +82,10 @@ public class PlayerToken : DefaultToken
         maxLife.baseValue = myToken.maxLife;
         maxEnergy.baseValue = myToken.maxEnergy;
         dmgHealVal.baseValue = myToken.baseDmgHealValue;
-        receiveDmgHealVal.baseValue = myToken.baseRecDmgHealValue;
+
+        if (myToken.baseRecDmgHealValue == 0) receiveDmgHealVal.baseValue = 1;
+        else receiveDmgHealVal.baseValue = myToken.baseRecDmgHealValue;
+
         attackRange = myToken.attackRange;
     }
 

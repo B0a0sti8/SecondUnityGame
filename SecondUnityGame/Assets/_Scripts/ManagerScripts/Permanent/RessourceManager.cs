@@ -2,16 +2,17 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class RessourceManager : MonoBehaviour
 {
-    [SerializeField] GameObject healthBar;
-    [SerializeField] GameObject manaBar;
+    GameObject healthBar;
+    GameObject manaBar;
 
     int currentPlayerMana, maxPlayerMana, currentPlayerLife, maxPlayerLife;
 
     public float woodAmount, stoneAmount, foodAmount, reagentsAmount, knowledgeAmount, coinAmount;
-    [SerializeField] TextMeshProUGUI woodText, stoneText, foodText, reagentsText, knowledgeText, coinText;
+    TextMeshProUGUI woodText, stoneText, foodText, reagentsText, knowledgeText, coinText;
 
     public static RessourceManager instance;
 
@@ -22,10 +23,36 @@ public class RessourceManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        SceneManager.sceneLoaded += InitRefs;
+        if (SceneManager.GetActiveScene().name == "WorldMap") gameObject.SetActive(false);
+        else gameObject.SetActive(true);
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= InitRefs;
+    }
+
+    public void InitRefs(Scene scene, LoadSceneMode mode)
+    {
+        if (SceneManager.GetActiveScene().name == "WorldMap") gameObject.SetActive(false);
+        else gameObject.SetActive(true);
     }
 
     private void Start()
     {
+        Transform statsAndRes = GameObject.Find("MainCanvas").transform.Find("StatsAndRessources");
+
+        healthBar = statsAndRes.Find("HealthBar").gameObject;
+        manaBar = statsAndRes.Find("ManaBar").gameObject;
+
+        woodText = statsAndRes.Find("RessourcePanel").Find("Wood").Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
+        stoneText = statsAndRes.Find("RessourcePanel").Find("Stone").Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
+        foodText = statsAndRes.Find("RessourcePanel").Find("Food").Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
+        reagentsText = statsAndRes.Find("RessourcePanel").Find("Reagents").Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
+        knowledgeText = statsAndRes.Find("RessourcePanel").Find("Knowledge").Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
+        coinText = statsAndRes.Find("RessourcePanel").Find("Coin").Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
+
         myLevelVisuals = GameObject.Find("Level").transform.Find("CombatVisuals").Find("Canvas");
 
         maxPlayerMana = 100;

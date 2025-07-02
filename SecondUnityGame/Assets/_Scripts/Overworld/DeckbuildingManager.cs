@@ -27,6 +27,14 @@ public class DeckbuildingManager : MonoBehaviour
 
     private void Start()
     {
+        InitReferences();
+        UpdateDeckUI();
+
+        gameObject.SetActive(false);
+    }
+
+    public void InitReferences()
+    {
         cardCounter = transform.Find("DeckViewer").Find("ForeGround").Find("CardCounter").GetComponent<TextMeshProUGUI>();
         deckObject = transform.Find("DeckViewer").Find("ForeGround").Find("CardsScroll").Find("Panel");
         allAvailableCardObject = transform.Find("AllCardPanel").Find("Content");
@@ -38,7 +46,6 @@ public class DeckbuildingManager : MonoBehaviour
             allAvailableCardSlots.Add(myCard, allAvailableCardObject.GetChild(i).gameObject);
         }
 
-        UpdateDeckUI();
     }
 
     public bool AddCardToDecklist(DefaultCardScriptable newCard)
@@ -119,9 +126,11 @@ public class DeckbuildingManager : MonoBehaviour
         if (gameObject.activeSelf)
         {
             ListOfAllCards.instance.myDeckList = deckList;
+            gameObject.SetActive(false);
         }
         else
         {
+            InitReferences();
             deckList = ListOfAllCards.instance.myDeckList;
             UpdateDeckUI();
 
@@ -129,7 +138,8 @@ public class DeckbuildingManager : MonoBehaviour
             {
                 carSl.Value.GetComponent<DeckbuilderCardSlot>().UpdateCardAmountInDeck();
             }
+
+            gameObject.SetActive(true);
         }
-        gameObject.SetActive(!gameObject.activeSelf);
     }
 }

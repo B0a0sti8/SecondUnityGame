@@ -69,6 +69,7 @@ public class MainCardScript : MonoBehaviour
 
     public void UpdateCardUI()
     {
+        FetchFields();
         LoadDataFromScriptableObject(); 
         myTitleField.text = cardName;
         myDescriptionField.text = cardDescription;

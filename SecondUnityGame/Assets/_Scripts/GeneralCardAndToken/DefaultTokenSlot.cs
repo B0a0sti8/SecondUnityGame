@@ -167,7 +167,6 @@ public class DefaultTokenSlot : MonoBehaviour
         {
             if (i < 9)
             {
-                Debug.Log(allMyBuffs[i].buffName);
                 tokenPreviewWindow.Find("Buffs").GetChild(i).gameObject.SetActive(true);
                 tokenPreviewWindow.Find("Buffs").GetChild(i).Find("BuffSprite").GetComponent<Image>().sprite = allMyBuffs[i].buffSprite;
                 tokenPreviewWindow.Find("Buffs").GetChild(i).Find("BuffName").GetComponent<TextMeshProUGUI>().text = allMyBuffs[i].buffName;
@@ -221,6 +220,7 @@ public class DefaultTokenSlot : MonoBehaviour
     {
 
         areaModification = areaMod;
+        areaModification.buffName = "Area " + areaModification.buffName;
         areaModifiedSprite = areaModSpr;
         areaModStrength = areaModStr;
 

@@ -47,11 +47,12 @@ public class DefaultToken : MonoBehaviour
             maxLife.baseValue = maxLifeBase;
             maxEnergy.baseValue = maxEnergyBase;
             dmgHealVal.baseValue = baseDmgHealVal;
-            receiveDmgHealVal.baseValue = baseRecDmgHealVal;
+            if (baseRecDmgHealVal == 0) receiveDmgHealVal.baseValue = 1;
+            else receiveDmgHealVal.baseValue = baseRecDmgHealVal;
         }
     }
 
-    public virtual void TakeDamageOrHealing(int DamageAmount)
+    public virtual void TakeDamageOrHealing(float DamageAmount)
     {
         currentLife -= DamageAmount;
         UpdateHealthbar();
@@ -76,7 +77,6 @@ public class DefaultToken : MonoBehaviour
             {
                 myBuffUI.transform.GetChild(i).gameObject.SetActive(true);
                 myBuffUI.transform.GetChild(i).Find("Image").GetComponent<Image>().sprite = myCurrentBuffs[i].buffSprite;
-                Debug.Log("my BuffName = " + myCurrentBuffs[i].buffName);
             }
         }
     }

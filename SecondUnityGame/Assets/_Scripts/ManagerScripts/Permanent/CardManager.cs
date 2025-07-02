@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class CardManager : MonoBehaviour
 {
@@ -9,17 +10,17 @@ public class CardManager : MonoBehaviour
 
     // Card Management Stuff
     public GameObject previewCard;
-    [SerializeField] GameObject deckAndDiscardPileViewer;
+    GameObject deckAndDiscardPileViewer;
 
-    [SerializeField] GameObject lastDiscardedCard;
+    GameObject lastDiscardedCard;
     List<DefaultCardScriptable> discardPile = new List<DefaultCardScriptable>();
 
     [SerializeField] List<DefaultCardScriptable> cardDeck1;
 
-    Dictionary<int, GameObject> handCards;
+    //Dictionary<int, GameObject> handCards;
 
     // UI Stuff
-    [SerializeField] RawImage deck1Image, discardPileImage;
+    RawImage deck1Image, discardPileImage;
     [SerializeField] GameObject mySimpleCardPrefab;
 
     Dictionary<int, Texture> deckBackImages = new Dictionary<int, Texture>();
@@ -30,21 +31,30 @@ public class CardManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        SceneManager.sceneLoaded += InitRefs;
+        if (SceneManager.GetActiveScene().name == "WorldMap") gameObject.SetActive(false);
+        else gameObject.SetActive(true);
+    }
+
+    private void Start()
+    {
+        Transform mCan = GameObject.Find("MainCanvas").transform;
+        previewCard = mCan.Find("PreviewSlot").gameObject;
+        deckAndDiscardPileViewer = mCan.Find("CardCanvas").Find("DeckAndPileView").Find("Scroll").gameObject;
+
+        lastDiscardedCard = mCan.Find("CardCanvas").Find("UsedCards").Find("DiscardPile").Find("SimpleCard").gameObject;
+
+        deck1Image = mCan.Find("CardCanvas").Find("Decks").Find("Deck1").GetComponent<RawImage>();
+        discardPileImage = mCan.Find("CardCanvas").Find("UsedCards").Find("DiscardPile").GetComponent<RawImage>();
+
+
         deckAndDiscardPileViewer.SetActive(false);
         for (int i = 0; i < deckAndDiscardPileViewer.transform.Find("Content").childCount; i++)
         {
             deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).gameObject.SetActive(false);
         }
-    }
 
-    private void Start()
-    {
-        //Debug.Log("ListOFCards: " + ListOfAllCards.instance);
-        if (ListOfAllCards.instance != null)
-        {
-            LoadDeck();
-
-        }
+        if (ListOfAllCards.instance != null) LoadDeck();
 
         deckBackImages.Add(1, deckBackImage1);
         deckBackImages.Add(2, deckBackImage2);
@@ -54,6 +64,17 @@ public class CardManager : MonoBehaviour
 
         UpdateDeckUI();
         UpdateDiscardPileUI();
+    }
+
+    public void InitRefs(Scene scene, LoadSceneMode mode)
+    {
+        if (SceneManager.GetActiveScene().name == "WorldMap") gameObject.SetActive(false);
+        else gameObject.SetActive(true);
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= InitRefs;
     }
 
     public void LoadDeck()

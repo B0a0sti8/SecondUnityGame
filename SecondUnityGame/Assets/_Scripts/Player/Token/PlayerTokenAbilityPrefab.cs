@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerTokenAbilityPrefab : MonoBehaviour
 {
@@ -51,6 +52,7 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
+        SceneManager.sceneLoaded += InitRefs;
         if (GameObject.Find("Level") == null) return;
 
         rangeIndicator = GameObject.Find("Level").transform.Find("CombatVisuals").Find("RangeIndicator").gameObject;
@@ -59,8 +61,21 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
         potentialTargets = new List<GameObject>();
         mainCam = Camera.main;
 
-        myPlayer = GameObject.Find("Systems").transform.Find("CameraStuff").Find("Target").GetComponent<PlayerObject>();
+        myPlayer = PlayerObject.instance;
         myToken = transform.parent.parent.GetComponent<PlayerToken>();
+    }
+
+    public void InitRefs(Scene scene, LoadSceneMode mode)
+    {
+        myPlayer = PlayerObject.instance;
+
+        if (SceneManager.GetActiveScene().name != "WorldMap")
+        {
+            rangeIndicator = GameObject.Find("Level").transform.Find("CombatVisuals").Find("RangeIndicator").gameObject;
+            abilityPreviewObject = MainCanvasSingleton.instance.transform.Find("PreviewSlot").Find("TokenAbilityPreview").gameObject;
+        }
+        myToken = transform.parent.parent.GetComponent<PlayerToken>();
+        mainCam = Camera.main;
     }
 
     private void Update()
@@ -85,10 +100,12 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
         potentialTargets.Clear();
 
         rangeIndicator.SetActive(true);
+
+
         rangeIndicator.transform.position = transform.parent.parent.position;
         rangeIndicator.transform.localScale = new Vector3(10, 10, 10) * range;
 
-        potentialTargets = GetTargetsInCircleHelper(transform.parent.parent.position, range * 10);
+        potentialTargets = GetTargetsInCircleHelper(transform.parent.parent.position, range*5);// * 10
         for (int i = 0; i < potentialTargets.Count; i++)
         {
             Color myColor = potentialTargets[i].transform.Find("Background").GetComponent<SpriteRenderer>().color;
@@ -294,5 +311,10 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
 
         Vector2 currentGridPos = new Vector2(currentGridX, currentGridY);
         multiShape.transform.position = currentGridPos;
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= InitRefs;
     }
 }

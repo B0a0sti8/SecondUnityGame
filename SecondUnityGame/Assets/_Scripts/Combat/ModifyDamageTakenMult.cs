@@ -20,15 +20,16 @@ public class ModifyDamageTakenMult : Buff
 
         base.StartBuffEffect(newTok, turnDuration, newSprite, newName, buffStrengthMod);
 
-        myBaseEffekt = 0.1f;
+        myBaseEffekt = -0.1f;
         myFinalEffekt = myBaseEffekt * buffStrengthMod;
 
-        myToken.dmgHealVal.AddModifierMultiply(myFinalEffekt);
+        myToken.receiveDmgHealVal.AddModifierMultiply(myFinalEffekt);
+        Debug.Log("Adding damage reduction: " + myFinalEffekt);
     }
 
     public override void EndBuffEffect()
     {
-        myToken.dmgHealVal.RemoveModifierMultiply(myFinalEffekt);
+        myToken.receiveDmgHealVal.RemoveModifierMultiply(myFinalEffekt);
         base.EndBuffEffect();
     }
 }

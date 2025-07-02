@@ -2,33 +2,58 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager instance;
-    [SerializeField] GameObject skillEffectSprite;
+    GameObject skillEffectSprite;
     GameObject combatVisualObject;
     [SerializeField] GameObject damageIndicatorObject;
-    Transform listOfAllBuffs;
+    //Transform listOfAllBuffs;
 
     private void Awake()
     {
         instance = this;
+        SceneManager.sceneLoaded += InitRefs;
+        if (SceneManager.GetActiveScene().name == "WorldMap") gameObject.SetActive(false);
+        else gameObject.SetActive(true);
+    }
+
+    public void InitRefs(Scene scene, LoadSceneMode mode)
+    {
+        if (SceneManager.GetActiveScene().name == "WorldMap") gameObject.SetActive(false);
+        else gameObject.SetActive(true);
+    }
+
+        private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= InitRefs;
     }
 
     private void Start()
     {
+        skillEffectSprite = GameObject.Find("Level").transform.Find("CombatVisuals").Find("SkillEffektSprite").gameObject;
         combatVisualObject = skillEffectSprite.transform.parent.gameObject;
 
-        if (GameObject.Find("MainSystems") == null) listOfAllBuffs = GameObject.Find("Systems").transform.Find("ListOfAllBuffs");
-        else listOfAllBuffs = GameObject.Find("MainSystems").transform.Find("ListOfAllBuffs");
+        //if (GameObject.Find("MainSystems") == null) listOfAllBuffs = GameObject.Find("Systems").transform.Find("ListOfAllBuffs");
+        //else listOfAllBuffs = GameObject.Find("MainSystems").transform.Find("ListOfAllBuffs");
     }
+
+    // Hier kommt Schaden und Heilung
 
     public void DealDamageOrHealing(GameObject target, GameObject source, float damageAmount)
     {
         if (target.GetComponentInChildren<DefaultToken>() != null)
         {
-            target.GetComponentInChildren<DefaultToken>().TakeDamageOrHealing((int)damageAmount);
+            if (damageAmount > 0) // nimmt wirklich schaden und keine Heilung
+            {
+                Debug.Log("Dealing Damage: " + damageAmount + " Damage reduction: " + target.GetComponentInChildren<DefaultToken>().receiveDmgHealVal.GetValue());
+                damageAmount *= target.GetComponentInChildren<DefaultToken>().receiveDmgHealVal.GetValue();
+
+            }
+
+            target.GetComponentInChildren<DefaultToken>().TakeDamageOrHealing(damageAmount);
         }
 
         ShowDamageHealingIndicator((int)damageAmount, false, true, target.transform.position);
@@ -38,6 +63,8 @@ public class BattleManager : MonoBehaviour
     {
         RessourceManager.instance.TakeDamageOrHealing_Player((int)damageAmount);
     }
+
+    // Hier kommen die Buffs
 
     public void ApplyBuffToTarget(GameObject target, GameObject source, Buff myBuff, Sprite buffSprite, int buffDuration, float buffStrengthMod)
     {
@@ -54,13 +81,13 @@ public class BattleManager : MonoBehaviour
 
         Buff newBuff = myBuff.Clone();
         List<Buff> currentBuffs = target.GetComponent<DefaultToken>().myCurrentBuffs;
-        foreach (Buff buf in currentBuffs)
+        for (int i = currentBuffs.Count - 1; i >= 0; i--)
         {
-            if (buf.name == newBuff.name) buf.EndBuffEffect();
-            target.GetComponent<DefaultToken>().UpdateBuffUI();
-        }
-    }
+            if (currentBuffs[i].name == newBuff.name) currentBuffs[i].EndBuffEffect();
 
+        }
+        target.GetComponent<DefaultToken>().UpdateBuffUI();
+    }
 
     // Ab hier kommt hauptsächlich UI stuff
 
