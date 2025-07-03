@@ -17918,6 +17918,7 @@ MonoBehaviour:
   levelObject: {fileID: 240023865}
   allEnemiesInLevel:
   - {fileID: 943251746979475688, guid: a7db92cd306beaa41afcdba2f5dd4a54, type: 3}
+  isLevelFinished: 0
   allPlayerSlotsWithTokens: []
 --- !u!1001 &877719882
 PrefabInstance:
@@ -19443,6 +19444,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelFinishedObject: {fileID: 949887195}
+  neededKnowledgeAmount: 3
+  isBossLevel: 0
 --- !u!1 &973296406
 GameObject:
   m_ObjectHideFlags: 0

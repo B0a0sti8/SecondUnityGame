@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2051730565976038575}
+  - component: {fileID: 405001846351860792}
   m_Layer: 0
   m_Name: GameProgressManager
   m_TagString: Untagged
@@ -31,6 +32,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8621652593634284789}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &405001846351860792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1179715488359483830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d3975abf96159c4291c8f5c5a3effc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1954185992038377919
 GameObject:
   m_ObjectHideFlags: 0
@@ -668,13 +681,60 @@ MonoBehaviour:
   stoneAmount: 0
   foodAmount: 0
   reagentsAmount: 0
-  knowledgeAmount: 0
+  levelKnowledgeAmount: 0
   coinAmount: 0
+  permanentKnowledge: 0
   resourcePopUpObject: {fileID: 4510316511680887344, guid: 61f7062546f0ad14ca374088894ec012, type: 3}
   woodSprite: {fileID: 21300000, guid: b374dcb68923d0f43bec938ba1441126, type: 2}
   stoneSprite: {fileID: 21300000, guid: 74dc19b311c070748a7c6c212e96ecbe, type: 2}
   foodSprite: {fileID: 21300000, guid: 281d2c69d94f1a240af80d89264889d3, type: 2}
   reagentSprite: {fileID: 21300000, guid: 1a9b4f308ea988b40af135696c882097, type: 2}
+--- !u!1 &4931850097274464821
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 177898118801905844}
+  - component: {fileID: 7373312640418691755}
+  m_Layer: 0
+  m_Name: SkillTreeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &177898118801905844
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4931850097274464821}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8621652593634284789}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7373312640418691755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4931850097274464821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20ffe275ca71b244aa1dfd38fe2a0a9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillTreeObject: {fileID: 0}
+  isInWorldScene: 0
 --- !u!1 &5777834929714621297
 GameObject:
   m_ObjectHideFlags: 0
@@ -711,6 +771,7 @@ Transform:
   - {fileID: 6554130683348566277}
   - {fileID: 304503173440984440}
   - {fileID: 3198970819725770963}
+  - {fileID: 177898118801905844}
   m_Father: {fileID: 7154704163465984811}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6126087803829696846

@@ -6,6 +6,7 @@ using System;
 [Serializable]
 public class SaveData
 {
+    public SkillTreeData MySkillTreeData { get; set; }
     public CardData MyCardData { get; set; }
     public CompletedLevelData MyCompletedLevelData { get; set; }
 
@@ -16,6 +17,16 @@ public class SaveData
     }
 }
 
+[Serializable]
+public class SkillTreeData
+{
+    public int permanentKnowledgeAmount;
+
+    public SkillTreeData()
+    {
+
+    }
+}
 
 [Serializable]
 public class CardData

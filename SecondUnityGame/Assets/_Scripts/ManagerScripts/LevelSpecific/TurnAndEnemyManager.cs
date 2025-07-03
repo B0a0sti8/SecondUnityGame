@@ -13,6 +13,8 @@ public class TurnAndEnemyManager : MonoBehaviour
 
     [SerializeField] List<GameObject> allEnemiesInLevel = new List<GameObject>();
 
+    public bool isLevelFinished = false;
+
     float timeBetweenEnemies;
     float timeBetweenEnemiesElapsed;
     int enemyActionCounter;
@@ -47,6 +49,8 @@ public class TurnAndEnemyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isLevelFinished) return;
+
         if (!isPlayerTurn)
         {
             // Bei Rundenbeginn, warte etwas

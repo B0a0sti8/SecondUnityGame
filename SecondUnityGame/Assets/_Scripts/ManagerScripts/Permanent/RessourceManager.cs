@@ -11,8 +11,10 @@ public class RessourceManager : MonoBehaviour
 
     int currentPlayerMana, maxPlayerMana, currentPlayerLife, maxPlayerLife;
 
-    public float woodAmount, stoneAmount, foodAmount, reagentsAmount, knowledgeAmount, coinAmount;
+    public float woodAmount, stoneAmount, foodAmount, reagentsAmount, levelKnowledgeAmount, coinAmount;
     TextMeshProUGUI woodText, stoneText, foodText, reagentsText, knowledgeText, coinText;
+
+    public int permanentKnowledge;
 
     public static RessourceManager instance;
 
@@ -78,7 +80,7 @@ public class RessourceManager : MonoBehaviour
         stoneText.text = stoneAmount.ToString();
         foodText.text = foodAmount.ToString();
         reagentsText.text = reagentsAmount.ToString();
-        knowledgeText.text = knowledgeAmount.ToString();
+        knowledgeText.text = levelKnowledgeAmount.ToString();
         coinText.text = coinAmount.ToString();
     }
 
@@ -138,11 +140,14 @@ public class RessourceManager : MonoBehaviour
 
     public void AddKnowledge(int amount)
     {
-        knowledgeAmount += amount;
-
+        levelKnowledgeAmount += amount;
         UpdateResourceUI();
-    }
 
+        if (levelKnowledgeAmount >= LevelGameManager.instance.neededKnowledgeAmount)
+        {
+            if (!LevelGameManager.instance.isBossLevel) LevelGameManager.instance.FinishLevelSuccess();
+        }
+    }
 
     IEnumerator SpawnResourceToolTip(float waitTime, GameObject source, float amount, Sprite resSpr)
     {
@@ -163,5 +168,10 @@ public class RessourceManager : MonoBehaviour
             myRes.GetComponent<FadeOverTime>().myTextColor = Color.red;
             myRes.transform.Find("Amount").GetComponent<TextMeshProUGUI>().text = "+ " + amount.ToString();
         }
+    }
+
+    public void ManagePermanentKnowledge(int amount)
+    {
+        permanentKnowledge += amount;
     }
 }

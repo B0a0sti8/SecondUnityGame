@@ -39,13 +39,15 @@ public class DeckbuildingManager : MonoBehaviour
         deckObject = transform.Find("DeckViewer").Find("ForeGround").Find("CardsScroll").Find("Panel");
         allAvailableCardObject = transform.Find("AllCardPanel").Find("Content");
 
+        transform.Find("ExitButton").GetComponent<Button>().onClick.AddListener(() => OpenClose());
+        //transform.parent.Find("TaskBar").Find("DeckBuilding").Find("DeckBuilderButton").GetComponent<Button>().onClick.AddListener(() => OpenClose());
+
         allAvailableCardSlots = new Dictionary<DefaultCardScriptable, GameObject>();
         for (int i = 0; i < allAvailableCardObject.childCount; i++)
         {
             DefaultCardScriptable myCard = allAvailableCardObject.GetChild(i).Find("SimpleCard").GetComponent<MainCardScript>().myCardToken;
             allAvailableCardSlots.Add(myCard, allAvailableCardObject.GetChild(i).gameObject);
         }
-
     }
 
     public bool AddCardToDecklist(DefaultCardScriptable newCard)
@@ -130,7 +132,7 @@ public class DeckbuildingManager : MonoBehaviour
         }
         else
         {
-            InitReferences();
+            //InitReferences();
             deckList = ListOfAllCards.instance.myDeckList;
             UpdateDeckUI();
 

@@ -26,6 +26,7 @@ public class SaveLoadManager : MonoBehaviour
 
             SaveData data = new SaveData();
 
+            SaveSkillTreeData(data);
             SaveCardData(data);
             SaveCompletedLevelData(data);
 
@@ -40,6 +41,12 @@ public class SaveLoadManager : MonoBehaviour
         }
 
         Debug.Log("Anzahl der Karten im Deck: " + ListOfAllCards.instance.myDeckList.Count);
+    }
+
+    private void SaveSkillTreeData(SaveData data)
+    {
+        data.MySkillTreeData = new SkillTreeData();
+        data.MySkillTreeData.permanentKnowledgeAmount = RessourceManager.instance.permanentKnowledge;
     }
 
     private void SaveCardData(SaveData data)
@@ -90,10 +97,16 @@ public class SaveLoadManager : MonoBehaviour
             throw;
         }
 
+        LoadSkillTreeData(data);
         LoadCardData(data);
         LoadCompletedLeveldata(data);
 
         Debug.Log("Anzahl der Karten im Deck: " + ListOfAllCards.instance.myDeckList.Count);
+    }
+
+    private void LoadSkillTreeData(SaveData data)
+    {
+        RessourceManager.instance.permanentKnowledge = data.MySkillTreeData.permanentKnowledgeAmount;
     }
 
     private void LoadCardData(SaveData data)
