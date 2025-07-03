@@ -56,7 +56,7 @@ public class BattleManager : MonoBehaviour
             target.GetComponentInChildren<DefaultToken>().TakeDamageOrHealing(damageAmount);
         }
 
-        ShowDamageHealingIndicator((int)damageAmount, false, true, target.transform.position);
+        ShowDamageHealingIndicator((int)damageAmount, false, target.transform.position);
     }
 
     public void DealDamageToPlayer(GameObject source, float damageAmount)
@@ -100,15 +100,15 @@ public class BattleManager : MonoBehaviour
         StartCoroutine(SetSkillEffectSpriteInactive(duration));
     }
 
-    public void ShowDamageHealingIndicator(int amount, bool isCrit, bool isDamage, Vector3 position)
+    public void ShowDamageHealingIndicator(int amount, bool isCrit, Vector3 position)
     {
         GameObject myDamagePopUp = GameObject.Instantiate(damageIndicatorObject, combatVisualObject.transform.Find("Canvas"));
         Vector3 randomPosMod = new Vector3(Random.Range(0f, 3f), Random.Range(0f, 3f), 0);
         myDamagePopUp.transform.position = position + randomPosMod;
-        myDamagePopUp.GetComponent<TextMeshProUGUI>().text = amount.ToString();
+        myDamagePopUp.GetComponent<TextMeshProUGUI>().text = Mathf.Abs(amount).ToString();
         if (isCrit) myDamagePopUp.GetComponent<TextMeshProUGUI>().text += "!";
 
-        if (isDamage) myDamagePopUp.GetComponent<FadeOverTime>().myTextColor = Color.red;
+        if (amount >= 0) myDamagePopUp.GetComponent<FadeOverTime>().myTextColor = Color.red;
         else myDamagePopUp.GetComponent<FadeOverTime>().myTextColor = Color.green;
     }
 

@@ -20,6 +20,7 @@ public class DeckbuilderCardSlot : MonoBehaviour
 
     public void UpdateCardAmountInDeck()
     {
+        myCard = transform.Find("SimpleCard").GetComponent<MainCardScript>().myCardToken;
         for (int i = 0; i < transform.Find("CardAmount").childCount; i++)
         {
             transform.Find("CardAmount").GetChild(i).Find("Check").gameObject.SetActive(false);

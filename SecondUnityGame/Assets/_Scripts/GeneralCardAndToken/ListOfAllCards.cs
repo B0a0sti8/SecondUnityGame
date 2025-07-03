@@ -20,7 +20,7 @@ public class ListOfAllCards : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log(myDeckList.Count);
+
     }
 
 

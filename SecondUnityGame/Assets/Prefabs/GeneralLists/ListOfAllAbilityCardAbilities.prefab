@@ -94,7 +94,9 @@ Transform:
   - {fileID: 1350838447467719366}
   - {fileID: 5484338510862199564}
   - {fileID: 7455009675434103276}
+  - {fileID: 8796141683416033045}
   - {fileID: 4307454146502204098}
+  - {fileID: 5665853461336839167}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2667273140635192299
@@ -231,6 +233,67 @@ MonoBehaviour:
   abilityName: 
   abilityDescription: 
   abilityIcon: {fileID: 7493285346444964806, guid: 060d572660c8f5e41b0244a71ec10ea4, type: 3}
+--- !u!1 &8054013615820850408
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5665853461336839167}
+  - component: {fileID: 4117489399884490722}
+  m_Layer: 0
+  m_Name: Heal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5665853461336839167
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8054013615820850408}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7388408656258330211}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4117489399884490722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8054013615820850408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 772db46de54f02143ba846521e227f0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAbilityCard: 1
+  myBuff: {fileID: 0}
+  energyCost: 0
+  range: 0
+  abilityCheckPoints: 0
+  abilityCheckPointsMax: 0
+  skillEffectModifier: 0
+  isPassiveTriggerAbility: 0
+  myTargetType: 1
+  potentialTargets: []
+  currentTargets: []
+  multTargetShapeSprite: {fileID: -2094980008601213415, guid: e24f5d612565eab4e9bb541d96293fb7, type: 3}
+  multiTargetShape: {fileID: 4034010509785220885, guid: be1b0b3caa61b924ba1009b7a23ab313, type: 3}
+  activeMultiTargetShape: {fileID: 0}
+  abilityName: 
+  abilityDescription: 
+  abilityIcon: {fileID: -2094980008601213415, guid: e24f5d612565eab4e9bb541d96293fb7, type: 3}
 --- !u!1 &8797588540434293679
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,3 +355,64 @@ MonoBehaviour:
   abilityName: 
   abilityDescription: 
   abilityIcon: {fileID: 7914691148776593926, guid: 58f713be1d88390448a50f469092d185, type: 3}
+--- !u!1 &9071983218626332249
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8796141683416033045}
+  - component: {fileID: 2400354957551254864}
+  m_Layer: 0
+  m_Name: Gather Knowledge
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8796141683416033045
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9071983218626332249}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7388408656258330211}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2400354957551254864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9071983218626332249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60414720b31b405478f24e8d18018b76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAbilityCard: 1
+  myBuff: {fileID: 0}
+  energyCost: 0
+  range: 0
+  abilityCheckPoints: 0
+  abilityCheckPointsMax: 0
+  skillEffectModifier: 0
+  isPassiveTriggerAbility: 0
+  myTargetType: 2
+  potentialTargets: []
+  currentTargets: []
+  multTargetShapeSprite: {fileID: 0}
+  multiTargetShape: {fileID: 0}
+  activeMultiTargetShape: {fileID: 0}
+  abilityName: 
+  abilityDescription: 
+  abilityIcon: {fileID: 985285045342353061, guid: c11b84eb36c451d4bbd1d303b679c6a9, type: 3}

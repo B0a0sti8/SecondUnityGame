@@ -31,7 +31,7 @@ public class Ability_CanonShot : PlayerTokenAbilityPrefab
         {
             if (curTar.GetComponentInChildren<DefaultToken>() != null)
             {
-                BattleManager.instance.DealDamageOrHealing(curTar.GetComponentInChildren<DefaultToken>().gameObject, transform.parent.gameObject, finalDamage);
+                BattleManager.instance.DealDamageOrHealing(curTar.GetComponentInChildren<DefaultToken>().gameObject, transform.parent.gameObject, finalDmgHeal);
             }
         }
     }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CardAbility_LightningStrike : PlayerTokenAbilityPrefab
+public class CardAbility_Heal : PlayerTokenAbilityPrefab
 {
     protected override void Start()
     {
@@ -11,29 +11,30 @@ public class CardAbility_LightningStrike : PlayerTokenAbilityPrefab
 
         abilityCheckPointsMax = 3;
 
-        skillEffectModifier = 0.7f;
+        skillEffectModifier = 0.2f;
 
-        abilityName = "Lightning Strike";
-        abilityDescription = "Chooses Targets and deals damage";
+        abilityName = "Heal";
+        abilityDescription = "Heals a number of target units. ";
     }
 
     public override void ApplyAbilityEffect()
     {
+        Debug.Log("Ability Effekt");
         DealDamageHealing();
-        Debug.Log("Triggering Card Ability!");
-
         base.ApplyAbilityEffect();
     }
 
     public override void DealDamageHealing()
     {
         base.DealDamageHealing();
-
+        Debug.Log("Ability Effek2t");
         foreach (GameObject curTar in currentTargets)
         {
+            Debug.Log("Ability Effekt3");
             if (curTar.GetComponentInChildren<DefaultToken>() != null)
             {
-                BattleManager.instance.DealDamageOrHealing(curTar.GetComponentInChildren<DefaultToken>().gameObject, PlayerObject.instance.gameObject, finalDmgHeal);
+                BattleManager.instance.DealDamageOrHealing(curTar.GetComponentInChildren<DefaultToken>().gameObject, PlayerObject.instance.gameObject, -finalDmgHeal);
+                Debug.Log("Healing Target: " + -finalDmgHeal);
             }
         }
     }

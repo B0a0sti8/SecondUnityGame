@@ -39,13 +39,17 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
     private void Start()
     {
-        tokenSelectionMenue = GameObject.Find("Level").transform.Find("CombatVisuals").Find("Canvas").Find("TokenMenue").gameObject;
+        InitRefs(SceneManager.GetActiveScene(), LoadSceneMode.Additive);
     }
 
     public void InitRefs(Scene scene, LoadSceneMode mode)
     {
         if (SceneManager.GetActiveScene().name == "WorldMap") gameObject.SetActive(false);
-        else gameObject.SetActive(true);
+        else
+        {
+            gameObject.SetActive(true);
+            tokenSelectionMenue = GameObject.Find("Level").transform.Find("CombatVisuals").Find("Canvas").Find("TokenMenue").gameObject;
+        }
     }
 
     private void OnDestroy()

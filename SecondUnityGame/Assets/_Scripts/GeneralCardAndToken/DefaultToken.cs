@@ -57,11 +57,12 @@ public class DefaultToken : MonoBehaviour
         currentLife -= DamageAmount;
         UpdateHealthbar();
         if (currentLife <= 0) Die();
+        if (currentLife > maxLife.GetValue()) currentLife = maxLife.GetValue();
     }
 
     public virtual void UpdateHealthbar()
     {
-        healthBar.GetComponent<Image>().fillAmount = (float)currentLife / (float)maxLife.GetValue();
+        healthBar.GetComponent<Image>().fillAmount = (float)currentLife / (float)(maxLife.GetValue());
     }
 
     public void UpdateBuffUI()

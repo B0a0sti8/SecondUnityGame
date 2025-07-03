@@ -39,7 +39,7 @@ public class Ability_DefensiveStrike : PlayerTokenAbilityPrefab
         {
             if (curTar.GetComponentInChildren<DefaultToken>() != null)
             {
-                BattleManager.instance.DealDamageOrHealing(curTar.GetComponentInChildren<DefaultToken>().gameObject, transform.parent.gameObject, finalDamage);
+                BattleManager.instance.DealDamageOrHealing(curTar.GetComponentInChildren<DefaultToken>().gameObject, transform.parent.gameObject, finalDmgHeal);
                 BattleManager.instance.ApplyBuffToTarget(curTar.GetComponentInChildren<DefaultToken>().gameObject, transform.parent.gameObject, myBuff, abilityIcon, 3, myBuffStrengthMod);
             }
         }

@@ -36,36 +36,40 @@ public class RessourceManager : MonoBehaviour
     public void InitRefs(Scene scene, LoadSceneMode mode)
     {
         if (SceneManager.GetActiveScene().name == "WorldMap") gameObject.SetActive(false);
-        else gameObject.SetActive(true);
+        else
+        {
+            gameObject.SetActive(true);
+            Transform statsAndRes = GameObject.Find("MainCanvas").transform.Find("StatsAndRessources");
+
+            healthBar = statsAndRes.Find("HealthBar").gameObject;
+            manaBar = statsAndRes.Find("ManaBar").gameObject;
+
+            woodText = statsAndRes.Find("RessourcePanel").Find("Wood").Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
+            stoneText = statsAndRes.Find("RessourcePanel").Find("Stone").Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
+            foodText = statsAndRes.Find("RessourcePanel").Find("Food").Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
+            reagentsText = statsAndRes.Find("RessourcePanel").Find("Reagents").Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
+            knowledgeText = statsAndRes.Find("RessourcePanel").Find("Knowledge").Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
+            coinText = statsAndRes.Find("RessourcePanel").Find("Coin").Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
+
+            myLevelVisuals = GameObject.Find("Level").transform.Find("CombatVisuals").Find("Canvas");
+
+            maxPlayerMana = 100;
+            maxPlayerLife = 100;
+            currentPlayerLife = maxPlayerLife;
+            currentPlayerMana = maxPlayerMana;
+
+            woodAmount = 20;
+            stoneAmount = 20;
+            foodAmount = 20;
+            reagentsAmount = 20;
+
+            UpdateResourceUI();
+        }
     }
 
     private void Start()
     {
-        Transform statsAndRes = GameObject.Find("MainCanvas").transform.Find("StatsAndRessources");
-
-        healthBar = statsAndRes.Find("HealthBar").gameObject;
-        manaBar = statsAndRes.Find("ManaBar").gameObject;
-
-        woodText = statsAndRes.Find("RessourcePanel").Find("Wood").Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
-        stoneText = statsAndRes.Find("RessourcePanel").Find("Stone").Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
-        foodText = statsAndRes.Find("RessourcePanel").Find("Food").Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
-        reagentsText = statsAndRes.Find("RessourcePanel").Find("Reagents").Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
-        knowledgeText = statsAndRes.Find("RessourcePanel").Find("Knowledge").Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
-        coinText = statsAndRes.Find("RessourcePanel").Find("Coin").Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
-
-        myLevelVisuals = GameObject.Find("Level").transform.Find("CombatVisuals").Find("Canvas");
-
-        maxPlayerMana = 100;
-        maxPlayerLife = 100;
-        currentPlayerLife = maxPlayerLife;
-        currentPlayerMana = maxPlayerMana;
-
-        woodAmount = 20;
-        stoneAmount = 20;
-        foodAmount = 20;
-        reagentsAmount = 20;
-
-        UpdateResourceUI();
+        InitRefs(SceneManager.GetActiveScene(), LoadSceneMode.Additive);
     }
 
     void UpdateResourceUI()
@@ -129,6 +133,13 @@ public class RessourceManager : MonoBehaviour
             if (foodCost != 0) { StartCoroutine(SpawnResourceToolTip(myTime, source, foodCost, foodSprite)); myTime += 0.35f; }
             if (reagentCost != 0) { StartCoroutine(SpawnResourceToolTip(myTime, source, reagentCost, reagentSprite)); myTime += 0.35f; }
         }
+        UpdateResourceUI();
+    }
+
+    public void AddKnowledge(int amount)
+    {
+        knowledgeAmount += amount;
+
         UpdateResourceUI();
     }
 

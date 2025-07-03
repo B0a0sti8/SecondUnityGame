@@ -19,26 +19,13 @@ public class CardAbility_FortifyPosition : PlayerTokenAbilityPrefab
 
     public override void ApplyAbilityEffect()
     {
-        Debug.Log("Triggering Card Ability!");
-
         float buffStrength = PlayerObject.instance.buffEffectMod.GetValue() * skillEffectModifier;
 
         foreach (GameObject curTar in currentTargets)
         {
             curTar.GetComponent<DefaultTokenSlot>().SetAreaModification(myBuff, myBuff.buffSprite, buffStrength);
-            Debug.Log(curTar.GetComponent<DefaultTokenSlot>());
-            Debug.Log(curTar);
-            Debug.Log(myBuff);
             //Debug.Log(curTar);
         }
-
         base.ApplyAbilityEffect();
-    }
-
-    public override void DealDamageHealing()
-    {
-        base.DealDamageHealing();
-
-
     }
 }

@@ -74,13 +74,13 @@ public class DefaultTokenSlot : MonoBehaviour
         }
         else if (this as PlayerUnitSlot != null)
         {
-            tokenPreviewWindow.Find("HealthText").GetComponent<TextMeshProUGUI>().text = " Health: " + myT.currentLife.ToString() + " / " + myT.maxLife.ToString();
+            tokenPreviewWindow.Find("HealthText").GetComponent<TextMeshProUGUI>().text = " Health: " + myT.currentLife.ToString() + " / " + myT.maxLife.GetValue().ToString();
             tokenPreviewWindow.Find("DamageText").GetComponent<TextMeshProUGUI>().text = "Damage: " + myT.ReturnCurrentDamage().ToString() + " ";
-            tokenPreviewWindow.Find("EnergyText").GetComponent<TextMeshProUGUI>().text = "Energy: " + (myT as PlayerToken).currentEnergy.ToString() + " / " + (myT as PlayerToken).maxEnergy.ToString();
+            tokenPreviewWindow.Find("EnergyText").GetComponent<TextMeshProUGUI>().text = "Energy: " + (myT as PlayerToken).currentEnergy.ToString() + " / " + (myT as PlayerToken).maxEnergy.GetValue().ToString();
         }
         else // Enemy Token
         {
-            tokenPreviewWindow.Find("HealthText").GetComponent<TextMeshProUGUI>().text = " Health: " + myT.currentLife.ToString() + " / " + myT.maxLife.ToString();
+            tokenPreviewWindow.Find("HealthText").GetComponent<TextMeshProUGUI>().text = " Health: " + myT.currentLife.ToString() + " / " + myT.maxLife.GetValue().ToString();
             tokenPreviewWindow.Find("DamageText").GetComponent<TextMeshProUGUI>().text = "Damage: " + myT.ReturnCurrentDamage().ToString() + " ";
             tokenPreviewWindow.Find("EnergyText").GetComponent<TextMeshProUGUI>().text = "Energy: - ";
         }

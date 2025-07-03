@@ -10,7 +10,7 @@ public class EnemyToken : DefaultToken
     public string description;
     public Sprite unitTypeSprite;
     public Sprite tokenSprite;
-
+    
     EnemyTokenSlot mySlot;
     public GameObject currentMainTarget;
     public List<EnemySkillPrefab> myActiveSkillList = new List<EnemySkillPrefab>();

@@ -28,7 +28,6 @@ public class SceneLoadManager : MonoBehaviour
         {
             Transform myRegs = GameObject.Find("MainCanvas").transform.Find("WorldMap").Find("Regions");
             myRegs.Find("Region1").GetComponent<Button>().onClick.AddListener(() => LoadRegion1_Stage1());
-            Debug.Log("MyButton: " + myRegs.Find("Region1").GetComponent<Button>());
         }
 
     }
@@ -49,7 +48,6 @@ public class SceneLoadManager : MonoBehaviour
     }
     public void LoadRegion1_Stage1()
     {
-        Debug.Log("  asdasd ");
         LoadNewScene(MyScene.Region1_Stage1);
     }
 }

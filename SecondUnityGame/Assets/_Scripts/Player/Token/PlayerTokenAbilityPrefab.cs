@@ -23,7 +23,7 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
     public int abilityCheckPointsMax;
 
     public float skillEffectModifier;
-    protected float finalDamage;
+    protected float finalDmgHeal;
 
     public bool isPassiveTriggerAbility = false;
 
@@ -221,12 +221,12 @@ public class PlayerTokenAbilityPrefab : MonoBehaviour
         if (isAbilityCard)
         {
             float dmgHeal = myPlayer.dmgHealVal.GetValue();        // Hole dir den Grundschaden
-            finalDamage = Mathf.Clamp(0, dmgHeal * skillEffectModifier, Mathf.Infinity);
+            finalDmgHeal = Mathf.Clamp(0, dmgHeal * skillEffectModifier, Mathf.Infinity);
         }
         else
         {
             float dmgHeal = myToken.dmgHealVal.GetValue();        // Hole dir den Grundschaden
-            finalDamage = Mathf.Clamp(0, dmgHeal * skillEffectModifier, Mathf.Infinity);
+            finalDmgHeal = Mathf.Clamp(0, dmgHeal * skillEffectModifier, Mathf.Infinity);
         }
     }
 

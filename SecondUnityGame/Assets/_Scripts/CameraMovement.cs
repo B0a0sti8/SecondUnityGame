@@ -1,10 +1,13 @@
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class CameraMovement : MonoBehaviour
 {
     Transform cameraTarget;
+    Transform levelBorders;
+    Vector2 levelPosMin, levelPosMax;
     CinemachineCamera cinemachineCamera;
 
     bool useEdgeScrolling;
@@ -14,8 +17,6 @@ public class CameraMovement : MonoBehaviour
 
     float targetFieldOfView;
     float foVmin, foVmax;
-
-
 
     private void Start()
     {
@@ -28,13 +29,27 @@ public class CameraMovement : MonoBehaviour
         edgeScrollSize = 50;
 
         targetFieldOfView = 60f;
-        foVmin = 30f; foVmax = 70f;
+        foVmin = 20f; foVmax = 70f;
+        InitStuff(SceneManager.GetActiveScene(), LoadSceneMode.Additive);
+        SceneManager.sceneLoaded += InitStuff;
     }
 
     // Update is called once per frame
     void Update()
     {
         HandleCameraMovement();
+    }
+
+    public void InitStuff(Scene scene, LoadSceneMode mode)
+    {
+        if (SceneManager.GetActiveScene().name != "WorldMap") 
+        {
+            levelBorders = LevelMarker.instance.transform.Find("FogOfWar").Find("Corners");
+            levelPosMin = levelBorders.Find("LowerLeft").position;
+            levelPosMax = levelBorders.Find("UpperRight").position;
+
+            Debug.Log("Level Grenzen: " + levelPosMin + " / " + levelPosMax);
+        }
     }
 
     public void HandleCameraZoom(float value)
@@ -47,7 +62,6 @@ public class CameraMovement : MonoBehaviour
         targetFieldOfView = Mathf.Clamp(targetFieldOfView, foVmin, foVmax);
 
         cinemachineCamera.Lens.OrthographicSize = targetFieldOfView;
-
     }
 
     void HandleCameraMovement()
@@ -76,6 +90,12 @@ public class CameraMovement : MonoBehaviour
 
         // Bewegen des Kamera Targets --> Kamera läuft automatisch hinterher (siehe Cinemachine)
         Vector3 movementDir = cameraSpeed * Time.deltaTime * inputDir;
-        cameraTarget.position += movementDir;
+
+        Vector3 newPosition = cameraTarget.position += movementDir;
+        Vector3 finalPosition = new Vector3(0, 0, 0);
+        finalPosition.x = Mathf.Clamp(newPosition.x, levelPosMin.x + cinemachineCamera.Lens.OrthographicSize * 1.8f,  levelPosMax.x - cinemachineCamera.Lens.OrthographicSize * 1.8f);
+        finalPosition.y = Mathf.Clamp(newPosition.y, levelPosMin.y + cinemachineCamera.Lens.OrthographicSize, levelPosMax.y - cinemachineCamera.Lens.OrthographicSize);
+        finalPosition.z = 0;
+        cameraTarget.position = finalPosition;
     }
 }

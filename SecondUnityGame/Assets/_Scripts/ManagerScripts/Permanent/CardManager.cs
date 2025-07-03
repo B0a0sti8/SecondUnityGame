@@ -38,15 +38,7 @@ public class CardManager : MonoBehaviour
 
     private void Start()
     {
-        Transform mCan = GameObject.Find("MainCanvas").transform;
-        previewCard = mCan.Find("PreviewSlot").gameObject;
-        deckAndDiscardPileViewer = mCan.Find("CardCanvas").Find("DeckAndPileView").Find("Scroll").gameObject;
-
-        lastDiscardedCard = mCan.Find("CardCanvas").Find("UsedCards").Find("DiscardPile").Find("SimpleCard").gameObject;
-
-        deck1Image = mCan.Find("CardCanvas").Find("Decks").Find("Deck1").GetComponent<RawImage>();
-        discardPileImage = mCan.Find("CardCanvas").Find("UsedCards").Find("DiscardPile").GetComponent<RawImage>();
-
+        InitRefs(SceneManager.GetActiveScene(), LoadSceneMode.Additive);
 
         deckAndDiscardPileViewer.SetActive(false);
         for (int i = 0; i < deckAndDiscardPileViewer.transform.Find("Content").childCount; i++)
@@ -69,7 +61,21 @@ public class CardManager : MonoBehaviour
     public void InitRefs(Scene scene, LoadSceneMode mode)
     {
         if (SceneManager.GetActiveScene().name == "WorldMap") gameObject.SetActive(false);
-        else gameObject.SetActive(true);
+        else
+        {
+            Transform mCan = GameObject.Find("MainCanvas").transform;
+            previewCard = mCan.Find("PreviewSlot").gameObject;
+            deckAndDiscardPileViewer = mCan.Find("CardCanvas").Find("DeckAndPileView").Find("Scroll").gameObject;
+
+            lastDiscardedCard = mCan.Find("CardCanvas").Find("UsedCards").Find("DiscardPile").Find("SimpleCard").gameObject;
+
+            deck1Image = mCan.Find("CardCanvas").Find("Decks").Find("Deck1").GetComponent<RawImage>();
+            discardPileImage = mCan.Find("CardCanvas").Find("UsedCards").Find("DiscardPile").GetComponent<RawImage>();
+
+            gameObject.SetActive(true);
+            deck1Image.gameObject.GetComponent<Button>().onClick.AddListener(() => ShowAndHideDeck());
+            discardPileImage.gameObject.GetComponent<Button>().onClick.AddListener(() => ShowAndHideDiscardPile());
+        }
     }
 
     private void OnDestroy()
@@ -91,7 +97,7 @@ public class CardManager : MonoBehaviour
     public void AddSimpleCardToHandForDebugging()
     {
         GameObject newCard = mySimpleCardPrefab;
-        newCard.GetComponent<MainCardScript>().myCardToken = listOfAllCards[Random.Range(0, listOfAllCards.Count)];
+        newCard.GetComponent<MainCardScript>().myCardToken = ListOfAllCards.instance.allCardsList[Random.Range(0, ListOfAllCards.instance.allCardsList.Count)];//listOfAllCards[Random.Range(0, listOfAllCards.Count)];
         HandCardScript.instance.AddCard(newCard);
     }
 
