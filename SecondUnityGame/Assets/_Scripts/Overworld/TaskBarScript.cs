@@ -10,17 +10,17 @@ public class TaskBarScript : MonoBehaviour
         mainCan = MainCanvasSingleton.instance.transform;
 
         transform.Find("DeckBuilding").Find("DeckBuilderButton").GetComponent<Button>().onClick.AddListener(() => OpenCloseDeckBuilder());
-        transform.Find("SkillTree").Find("SkillTreeButton").GetComponent<Button>().onClick.AddListener(() => OpenCloseSkillTree());
+        transform.Find("TalentTree").Find("TalentTreeButton").GetComponent<Button>().onClick.AddListener(() => OpenCloseSkillTree());
     }
 
 
     public void OpenCloseSkillTree()
     {
-        if (mainCan.Find("SkillTree").gameObject.activeSelf) SkillTreeManager.instance.OpenCloseSkillTree();
+        if (mainCan.Find("TalentTree").gameObject.activeSelf) TalentTreeManager.instance.OpenCloseSkillTree();
         else
         {
             CloseAllWindows();
-            SkillTreeManager.instance.OpenCloseSkillTree();
+            TalentTreeManager.instance.OpenCloseSkillTree();
         }
     }
 
@@ -37,6 +37,6 @@ public class TaskBarScript : MonoBehaviour
     public void CloseAllWindows()
     {
         if (mainCan.Find("DeckBuilding").gameObject.activeSelf) DeckbuildingManager.instance.OpenClose();
-        if (mainCan.Find("SkillTree").gameObject.activeSelf) SkillTreeManager.instance.OpenCloseSkillTree();
+        if (mainCan.Find("TalentTree").gameObject.activeSelf) TalentTreeManager.instance.OpenCloseSkillTree();
     }
 }

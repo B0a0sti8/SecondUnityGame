@@ -2,12 +2,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class SkillTreeManager : MonoBehaviour
+public class TalentTreeManager : MonoBehaviour
 {
     public Transform skillTreeObject;
     public bool isInWorldScene = false;
 
-    public static SkillTreeManager instance;
+    public static TalentTreeManager instance;
 
     private void Awake()
     {
@@ -19,9 +19,9 @@ public class SkillTreeManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "WorldMap")
         {
             isInWorldScene = true;
-            skillTreeObject = MainCanvasSingleton.instance.transform.Find("SkillTree");
+            skillTreeObject = MainCanvasSingleton.instance.transform.Find("TalentTree");
             //MainCanvasSingleton.instance.transform.Find("TaskBar").Find("SkillTree").Find("SkillTreeButton").GetComponent<Button>().onClick.AddListener(() => OpenCloseSkillTree());
-            MainCanvasSingleton.instance.transform.Find("SkillTree").Find("ExitButton").GetComponent<Button>().onClick.AddListener(() => OpenCloseSkillTree());
+            MainCanvasSingleton.instance.transform.Find("TalentTree").Find("AdditionalContent").Find("ExitButton").GetComponent<Button>().onClick.AddListener(() => OpenCloseSkillTree());
             skillTreeObject.gameObject.SetActive(false);
         }
         else
