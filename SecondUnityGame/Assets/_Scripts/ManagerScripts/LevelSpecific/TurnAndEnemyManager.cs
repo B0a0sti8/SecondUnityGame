@@ -9,7 +9,7 @@ public class TurnAndEnemyManager : MonoBehaviour
     float enemyTurnTimer_Debug = 1f;
 
     [SerializeField] GameObject levelObject;
-    List<GameObject> allEnemySlots = new List<GameObject>();
+    public List<GameObject> allEnemySlots = new List<GameObject>();
 
     [SerializeField] List<GameObject> allEnemiesInLevel = new List<GameObject>();
 
@@ -21,7 +21,7 @@ public class TurnAndEnemyManager : MonoBehaviour
     int enemySpawnCounter;
     int enemySpawnAmountPerTurn;
 
-    List<GameObject> allEnemySlotsWithTokens;
+    public List<GameObject> allEnemySlotsWithTokens;
     public List<GameObject> allPlayerSlotsWithTokens;
 
     public static TurnAndEnemyManager instance;
@@ -110,19 +110,14 @@ public class TurnAndEnemyManager : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < allEnemySlots.Count; i++)
-        {
-            if (allEnemySlots[i].GetComponentInChildren<EnemyToken>() != null)
-            {
-                allEnemySlotsWithTokens.Add(allEnemySlots[i]);
-            }
-        }
-
+        FindEnemyTokens();
         StartEnemyTurn();
     }
 
     public void EndEnemyTurn()
     {
+        FindEnemyTokens();
+
         // Update die Buffs für alle Enemy Tokens
         for (int i = 0; i < allEnemySlotsWithTokens.Count; i++)
         {
@@ -132,15 +127,15 @@ public class TurnAndEnemyManager : MonoBehaviour
             }
         }
 
+        CheckEnemyTargets();
+
         allEnemySlotsWithTokens.Clear();
         enemyTurnTimer_Debug = 1f;
         enemyActionCounter = 0;
         enemySpawnCounter = 0;
 
-
-
-
         isPlayerTurn = true;
+
         turnIndicatorText.text = "Player Turn";
         Debug.Log("Ended Enemy Turn");
 
@@ -156,6 +151,7 @@ public class TurnAndEnemyManager : MonoBehaviour
     {
         CardManager.instance.DrawNextCardFromDeck();
 
+
         foreach (GameObject playerToken in allPlayerSlotsWithTokens)
         {
             playerToken.GetComponent<PlayerToken>().TriggerPassiveAbilities();
@@ -168,6 +164,19 @@ public class TurnAndEnemyManager : MonoBehaviour
         enemyToken.EvaluateBuffsAndDebuffs();
         enemyToken.ChooseTargetsAndUseSkills();
     }
+
+    public void FindEnemyTokens()
+    {
+        allEnemySlotsWithTokens.Clear();
+        for (int i = 0; i < allEnemySlots.Count; i++)
+        {
+            if (allEnemySlots[i].GetComponentInChildren<EnemyToken>() != null)
+            {
+                allEnemySlotsWithTokens.Add(allEnemySlots[i]);
+            }
+        }
+    }
+
 
     GameObject FindEmptyEnemySlot()
     {
@@ -188,7 +197,19 @@ public class TurnAndEnemyManager : MonoBehaviour
         GameObject mySlot = FindEmptyEnemySlot();
         GameObject myToken = allEnemiesInLevel[Random.Range(0, allEnemiesInLevel.Count)];
 
-        if (mySlot != null && myToken != null) Instantiate(myToken, mySlot.transform);
+        if (mySlot != null && myToken != null)
+        {
+            GameObject newTok = Instantiate(myToken, mySlot.transform);
+            newTok.GetComponent<EnemyToken>().mySlot = mySlot.GetComponent<EnemyTokenSlot>();
+        }
+    }
 
+    public void CheckEnemyTargets()
+    {
+        foreach (GameObject enem in allEnemySlotsWithTokens)
+        {
+            if (enem.GetComponentInChildren<EnemyToken>() == null) continue;
+            enem.GetComponentInChildren<EnemyToken>().SearchTargetsAndShowWarning();
+        }
     }
 }

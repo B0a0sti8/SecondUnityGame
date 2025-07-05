@@ -181,6 +181,15 @@ public class DefaultTokenSlot : MonoBehaviour
         {
             transform.GetComponentInChildren<PlayerToken>().transform.Find("Canvas").Find("EnergyBar").gameObject.SetActive(true);
         }
+
+        if (this as EnemyTokenSlot != null)
+        {
+            EnemyTokenSlot enemSlot = (EnemyTokenSlot)this;
+            foreach (GameObject potTar in enemSlot.potentialTargetSlots)
+            {
+                potTar.GetComponent<PlayerUnitSlot>().HighlightBackground(true);
+            }
+        }
     }
 
     public void OnMouseExit()
@@ -191,6 +200,15 @@ public class DefaultTokenSlot : MonoBehaviour
         if (transform.GetComponentInChildren<PlayerToken>() != null)
         {
             transform.GetComponentInChildren<PlayerToken>().transform.Find("Canvas").Find("EnergyBar").gameObject.SetActive(false);
+        }
+
+        if (this as EnemyTokenSlot != null)
+        {
+            EnemyTokenSlot enemSlot = (EnemyTokenSlot)this;
+            foreach (GameObject potTar in enemSlot.potentialTargetSlots)
+            {
+                potTar.GetComponent<PlayerUnitSlot>().HighlightBackground(false);
+            }
         }
     }
 
@@ -205,7 +223,7 @@ public class DefaultTokenSlot : MonoBehaviour
         }
     }
 
-    public void OnTokenSet()
+    public virtual void OnTokenSet()
     {
         if (areaModification != null)
         {

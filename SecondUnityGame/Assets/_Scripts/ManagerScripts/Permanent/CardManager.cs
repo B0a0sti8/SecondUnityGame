@@ -40,6 +40,12 @@ public class CardManager : MonoBehaviour
     {
         InitRefs(SceneManager.GetActiveScene(), LoadSceneMode.Additive);
 
+        Transform addCardButton = MainCanvasSingleton.instance.transform.Find("Buttons").Find("AddCardToHandButton");
+        Transform removeCardButton = MainCanvasSingleton.instance.transform.Find("Buttons").Find("RemoveHandCard");
+
+        addCardButton?.GetComponent<Button>().onClick.AddListener(() => AddSimpleCardToHandForDebugging());
+        removeCardButton?.GetComponent<Button>().onClick.AddListener(() => HandCardScript.instance.RemoveRandomCard());
+
         deckAndDiscardPileViewer.SetActive(false);
         for (int i = 0; i < deckAndDiscardPileViewer.transform.Find("Content").childCount; i++)
         {

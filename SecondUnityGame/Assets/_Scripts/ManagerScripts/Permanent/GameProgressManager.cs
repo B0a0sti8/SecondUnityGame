@@ -10,6 +10,7 @@ public class GameProgressManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        listOfCompletedLevels = new List<string>();
     }
 
     public void LoadListOfCompletedLevels(List<string> newList)

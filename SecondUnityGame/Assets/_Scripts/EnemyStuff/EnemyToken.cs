@@ -11,10 +11,12 @@ public class EnemyToken : DefaultToken
     public Sprite unitTypeSprite;
     public Sprite tokenSprite;
     
-    EnemyTokenSlot mySlot;
+    public EnemyTokenSlot mySlot;
     public GameObject currentMainTarget;
     public List<EnemySkillPrefab> myActiveSkillList = new List<EnemySkillPrefab>();
     public List<EnemySkillPrefab> myPassiveSkillList = new List<EnemySkillPrefab>();
+
+    GameObject myNoTargetMarker;
 
     public override void Start()
     {
@@ -30,6 +32,7 @@ public class EnemyToken : DefaultToken
         }
 
         healthBar = transform.Find("Canvas").Find("Healthbar").Find("Health").gameObject;
+        myNoTargetMarker = transform.Find("NoTargetMarker").gameObject;
     }
 
     public void EvaluateBuffsAndDebuffs()
@@ -72,7 +75,23 @@ public class EnemyToken : DefaultToken
         }
     }
 
+    public void SearchTargetsAndShowWarning()
+    {
+        List<GameObject> potentialTargets = new List<GameObject>();
+        for (int i = 0; i < mySlot.potentialTargetSlots.Count; i++)
+        {
+            if (mySlot.potentialTargetSlots[i].GetComponentInChildren<PlayerToken>() != null)
+            {
+                potentialTargets.Add(mySlot.potentialTargetSlots[i]);
+            }
+        }
 
+        if (potentialTargets.Count == 0) myNoTargetMarker.SetActive(true);
+        else myNoTargetMarker.SetActive(false);
+    }
 
+    public void HighlightTargetSlots()
+    {
 
+    }
 }
