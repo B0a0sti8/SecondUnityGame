@@ -1,41 +1,30 @@
-using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class Talent : MonoBehaviour
 {
     public string talentName;
-    Button button;
-    Image sprite;
     public string talentDescription = "";
-    public string predecessor = " - ";
-    public GameObject myPredecessorTalent;
+    public Sprite talentIcon;
 
-    TalentTree myTalentTree;
-
-    [SerializeField] public int maxCount;
-    [SerializeField] public int pointCost=1;
-
+    public int maxCount;
+    public int pointCost = 1;
     public int currentCount = 0;
 
+    public List<Talent> myPredecessorTalents = new List<Talent>();
+    public List<GameObject> myDescendantConnections = new List<GameObject>();
+    public bool isUnlockedByDefault = false;
+
     private TextMeshProUGUI talentPointTextOwn;
+    TalentTree myTalentTree;
+    Button button;
+    Image talentImageObj, backgroundSprite;
 
     protected virtual void Start()
     {
-        UpdateTalent();
-        button.onClick.AddListener(OnTalentButtonClick);
-    }
-
-    public virtual void UpdateTalent()
-    {
-        button = GetComponent<Button>();
-        sprite = transform.Find("TalentImage").GetComponent<Image>();
-        talentPointTextOwn = transform.Find("Image").Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
-        myTalentTree = transform.parent.parent.parent.parent.parent.parent.GetComponent<TalentTree>();
-        if (maxCount == 0) maxCount = 5;
-        FindMyPredecessor();
+        InitRefs();
     }
 
     void OnTalentButtonClick()
@@ -43,68 +32,60 @@ public class Talent : MonoBehaviour
         myTalentTree.TryUseTalent(this);
     }
 
+    public virtual void InitRefs()
+    {
+        button = GetComponent<Button>();
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(OnTalentButtonClick);
+        talentImageObj = transform.Find("TalentImage").GetComponent<Image>();
+        talentImageObj.sprite = talentIcon;
+        backgroundSprite = transform.Find("Background").GetComponent<Image>();
+        talentPointTextOwn = transform.Find("Counter").Find("Text").GetComponent<TextMeshProUGUI>();
+        myTalentTree = transform.parent.parent.parent.parent.GetComponent<TalentTree>();
+    }
+
     public bool TryAllocateTalent()
     {
-        if (currentCount == maxCount)
-        {
-            Color32 myNewColor = transform.Find("Background").GetComponent<Image>().color;
-            myNewColor.a = 255;
-            transform.Find("Background").GetComponent<Image>().color = myNewColor;
-        }
-
+        bool isAlloc = false;
         if (currentCount < maxCount)
         {
             currentCount++;
-            UpdatePointCounterAndBackground();
-            ActiveTalentEffect();
-            return true;
+            ActivateTalentEffect();
+            isAlloc = true;
         }
-        else
-        {
-            return false;
-        }
+        UpdatePointCounterAndBackground();
+        return isAlloc;
     }
 
     public void Lock()
     {
-        if (button == null) button = GetComponent<Button>();
-        if (sprite == null) sprite = transform.Find("TalentImage").GetComponent<Image>();
-
         button.interactable = false;
-        Color32 newColor = sprite.color;
-        newColor.a = 175;
-        sprite.color = newColor;
-
-        //sprite.color = Color.grey;
+        Color newColor = talentImageObj.color;
+        newColor.a = 0.3f;
+        talentImageObj.color = newColor;
     }
 
     public void Unlock()
     {
-        if (button == null) button = GetComponent<Button>();
-        if (sprite == null) sprite = transform.Find("TalentImage").GetComponent<Image>();
-
         button.interactable = true;
-        Color32 newColor = sprite.color;
-        newColor.a = 255;
-        sprite.color = newColor;
-        //sprite.color = Color.white;
+        Color newColor = talentImageObj.color;
+        newColor.a = 2;
+        talentImageObj.color = newColor;
     }
 
     public void UpdatePointCounterAndBackground()
     {
-        if (talentPointTextOwn == null) talentPointTextOwn = transform.Find("Image").Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
+        float alphaStep = (255 - 70) * 1 / Mathf.Clamp(maxCount, 1, 5);
+        float newAlpha = (70 + alphaStep * currentCount) / 255;
 
-        if (currentCount == maxCount)
-        {
-            Color32 myNewColor = transform.Find("Background").GetComponent<Image>().color;
-            myNewColor.a = 255;
-            transform.Find("Background").GetComponent<Image>().color = myNewColor;
-        }
+        Color myNewColor = backgroundSprite.color;
+        myNewColor.a = newAlpha;
+        backgroundSprite.color = myNewColor;
 
         talentPointTextOwn.text = currentCount.ToString() + " / " + maxCount.ToString();
     }
 
-    public virtual void ActiveTalentEffect()
+    public virtual void ActivateTalentEffect()
     {
         //GetComponent<MasterEventTriggerTalent>().GetTalentInfo();
     }
@@ -117,10 +98,5 @@ public class Talent : MonoBehaviour
     public virtual void RemoveActiveTalentEffectAfterPointCountReduced()
     {
         //GetComponent<MasterEventTriggerTalent>().GetTalentInfo();
-    }
-
-    public virtual void FindMyPredecessor()
-    {
-
     }
 }

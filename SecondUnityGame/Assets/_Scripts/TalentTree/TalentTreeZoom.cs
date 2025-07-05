@@ -96,7 +96,7 @@ public class TalentTreeZoom : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
 
     void ComputeMousePosition()
     {
-        Debug.Log("ComputingMouse");
+        //Debug.Log("ComputingMouse");
         Vector2 screen_pos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
         Vector2 anchorPos = screen_pos - new Vector2(myRect.position.x, myRect.position.y);
         anchorPos = new Vector2(anchorPos.x / myRect.lossyScale.x, anchorPos.y / myRect.lossyScale.y);
@@ -104,10 +104,10 @@ public class TalentTreeZoom : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
         myTextMesh.text = anchorPos.ToString();
         myTextMeshRect.text = (myRect.rect.xMax).ToString() + "/" +  (myRect.rect.yMax).ToString();
 
-        Debug.Log("Checking if Mouse in Rect");
+        //Debug.Log("Checking if Mouse in Rect");
         if (Mathf.Abs(anchorPos.x) < (myRect.rect.xMax - myRect.rect.xMin) / 2 && Mathf.Abs(anchorPos.y) < (myRect.rect.yMax - myRect.rect.yMin) / 2)
         { 
-            Debug.Log("Mouse in Rect");
+            //Debug.Log("Mouse in Rect");
             Vector2 normalizedPoint = Rect.PointToNormalized(myRect.rect, anchorPos);
             SetPivot(normalizedPoint);
         }
