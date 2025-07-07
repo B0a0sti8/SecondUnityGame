@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -10,6 +11,8 @@ public class LevelGameManager : MonoBehaviour
     public bool isBossLevel; // Bosslevels cann not be won by collecting knowledge
 
     public static LevelGameManager instance;
+    public List<GameObject> allEnemiesInLevel = new List<GameObject>();
+    public int enemiesPerTurn = 2;
 
     private void Awake()
     {

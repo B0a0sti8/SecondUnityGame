@@ -3175,6 +3175,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Talent
       objectReference: {fileID: 0}
+    - target: {fileID: 8057782241140437709, guid: aa337c83906641444b64d754531a4df5, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8057782241140437709, guid: aa337c83906641444b64d754531a4df5, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -4199157404803829479, guid: a4c6a493228f05a4e8cc65da37253be7, type: 3}
     m_RemovedComponents:
     - {fileID: 3043543735992061078, guid: aa337c83906641444b64d754531a4df5, type: 3}
     m_RemovedGameObjects: []

@@ -8923,7 +8923,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 875255335}
   - {fileID: 961084066}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9505,7 +9504,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 875255336}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TurnAndEnemyManager, Assembly-CSharp
         m_MethodName: EndPlayerTurn
         m_Mode: 1
@@ -17307,59 +17306,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5779777503296041470, guid: 14dade0d8ca15dc46b65c1bd441ba935, type: 3}
   m_PrefabInstance: {fileID: 871320034}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &875255334
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 875255335}
-  - component: {fileID: 875255336}
-  m_Layer: 0
-  m_Name: TurnAndEnemyManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &875255335
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 875255334}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 444759700}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &875255336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 875255334}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3d66ef8bd1c5bf4eb7254ce46f92c14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isPlayerTurn: 1
-  turnIndicatorText: {fileID: 238069071}
-  levelObject: {fileID: 240023865}
-  allEnemySlots: []
-  allEnemiesInLevel:
-  - {fileID: 943251746979475688, guid: a7db92cd306beaa41afcdba2f5dd4a54, type: 3}
-  isLevelFinished: 0
-  allEnemySlotsWithTokens: []
-  allPlayerSlotsWithTokens: []
 --- !u!1001 &877719882
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18902,6 +18848,9 @@ MonoBehaviour:
   levelFinishedObject: {fileID: 949887195}
   neededKnowledgeAmount: 3
   isBossLevel: 0
+  allEnemiesInLevel:
+  - {fileID: 943251746979475688, guid: a7db92cd306beaa41afcdba2f5dd4a54, type: 3}
+  enemiesPerTurn: 2
 --- !u!1 &973296406
 GameObject:
   m_ObjectHideFlags: 0
@@ -42595,7 +42544,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7648349440069393941, guid: 3da24f3f133cf2048a6ca89718a870ef, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -38,7 +38,7 @@ public class Talent : MonoBehaviour
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(OnTalentButtonClick);
         talentImageObj = transform.Find("TalentImage").GetComponent<Image>();
-        talentImageObj.sprite = talentIcon;
+        //talentImageObj.sprite = talentIcon;
         backgroundSprite = transform.Find("Background").GetComponent<Image>();
         talentPointTextOwn = transform.Find("Counter").Find("Text").GetComponent<TextMeshProUGUI>();
         myTalentTree = transform.parent.parent.parent.parent.GetComponent<TalentTree>();

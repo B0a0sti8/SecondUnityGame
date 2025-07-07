@@ -1,6 +1,9 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using System;
 
 public class TurnAndEnemyManager : MonoBehaviour
 {
@@ -8,10 +11,7 @@ public class TurnAndEnemyManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI turnIndicatorText;
     float enemyTurnTimer_Debug = 1f;
 
-    [SerializeField] GameObject levelObject;
-    public List<GameObject> allEnemySlots = new List<GameObject>();
-
-    [SerializeField] List<GameObject> allEnemiesInLevel = new List<GameObject>();
+    public event EventHandler OnPlayerTurnStart;
 
     public bool isLevelFinished = false;
 
@@ -23,6 +23,10 @@ public class TurnAndEnemyManager : MonoBehaviour
 
     public List<GameObject> allEnemySlotsWithTokens;
     public List<GameObject> allPlayerSlotsWithTokens;
+    [SerializeField] List<GameObject> allEnemiesInLevel = new List<GameObject>();
+
+    [SerializeField] GameObject levelObject;
+    public List<GameObject> allEnemySlots = new List<GameObject>();
 
     public static TurnAndEnemyManager instance;
 
@@ -33,17 +37,45 @@ public class TurnAndEnemyManager : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < levelObject.transform.Find("EnemySlots").childCount; i++)
-        {
-            allEnemySlots.Add(levelObject.transform.Find("EnemySlots").GetChild(i).gameObject);
-        }
+
+        if (SceneManager.GetActiveScene().name == "WorldMap") gameObject.SetActive(false);
+        else gameObject.SetActive(true);
+        SceneManager.sceneLoaded += InitRefs;
+        InitRefs(SceneManager.GetActiveScene(), LoadSceneMode.Additive);
+
         timeBetweenEnemies = 0.5f;
         timeBetweenEnemiesElapsed = 0f;
         enemyActionCounter = 0;
         enemySpawnCounter = 0;
-        enemySpawnAmountPerTurn = 2;
+    }
 
-        allEnemySlotsWithTokens = new List<GameObject>();
+    private void InitRefs(Scene scene, LoadSceneMode loadSceneMode)
+    {
+        if (SceneManager.GetActiveScene().name == "WorldMap") gameObject.SetActive(false);
+        else
+        {
+            gameObject.SetActive(true);
+            allEnemySlots.Clear();
+            levelObject = GameObject.Find("Level");
+
+            if (levelObject != null)
+            {
+                for (int i = 0; i < levelObject.transform.Find("EnemySlots").childCount; i++)
+                {
+                    allEnemySlots.Add(levelObject.transform.Find("EnemySlots").GetChild(i).gameObject);
+                }
+            }
+
+            Debug.Log(LevelGameManager.instance);
+            enemySpawnAmountPerTurn = LevelGameManager.instance.enemiesPerTurn;
+            allEnemiesInLevel = LevelGameManager.instance.allEnemiesInLevel;
+            allEnemySlotsWithTokens = new List<GameObject>();
+
+            Button endPlayerTurnButton = MainCanvasSingleton.instance.transform.Find("Buttons").Find("EndPlayerTurnButton").GetComponent<Button>();
+            endPlayerTurnButton?.onClick.AddListener(() => EndPlayerTurn());
+
+            turnIndicatorText = MainCanvasSingleton.instance.transform.Find("StatsAndRessources").Find("TurnIndicator").GetComponent<TextMeshProUGUI>();
+        } 
     }
 
     // Update is called once per frame
@@ -149,8 +181,8 @@ public class TurnAndEnemyManager : MonoBehaviour
 
     void StartPlayerTurn()
     {
+        OnPlayerTurnStart.Invoke(this, EventArgs.Empty);
         CardManager.instance.DrawNextCardFromDeck();
-
 
         foreach (GameObject playerToken in allPlayerSlotsWithTokens)
         {
@@ -189,13 +221,13 @@ public class TurnAndEnemyManager : MonoBehaviour
         }
 
         if (emptySlots.Count == 0) return null;
-        else return emptySlots[Random.Range(0, emptySlots.Count)];
+        else return emptySlots[UnityEngine.Random.Range(0, emptySlots.Count)];
     }
 
     void SpawnRandomEnemyInRandomSlot()
     {
         GameObject mySlot = FindEmptyEnemySlot();
-        GameObject myToken = allEnemiesInLevel[Random.Range(0, allEnemiesInLevel.Count)];
+        GameObject myToken = allEnemiesInLevel[UnityEngine.Random.Range(0, allEnemiesInLevel.Count)];
 
         if (mySlot != null && myToken != null)
         {
