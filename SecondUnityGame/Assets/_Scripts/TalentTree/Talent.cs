@@ -50,6 +50,7 @@ public class Talent : MonoBehaviour
         if (currentCount < maxCount)
         {
             currentCount++;
+            Debug.Log("Activating Talent");
             ActivateTalentEffect();
             isAlloc = true;
         }

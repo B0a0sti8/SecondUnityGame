@@ -12,12 +12,16 @@ public class Talent1_BasicResourceGeneration : Talent
     public override void ActivateTalentEffect()
     {
         base.ActivateTalentEffect();
-        TurnAndEnemyManager.instance.OnPlayerTurnStart += GenerateWoodAndStone;
+        //TurnAndEnemyManager.instance.OnPlayerTurnStart += GenerateWoodAndStone;
+        TurnAndEnemyManager.instance.OnPlayerTurnStart += TalentTreeManager.instance.GenerateWoodAndStone;
+        Debug.Log("Adding listener");
     }
 
-    private void GenerateWoodAndStone(object sender, EventArgs e)
+    public override void RemoveActiveTalentEffect()
     {
-        RessourceManager.instance.AddOrRemoveResources(1, 1, 0, 0, null);
-        Debug.Log("Trigger");
+        base.RemoveActiveTalentEffect();
+        //TurnAndEnemyManager.instance.OnPlayerTurnStart += GenerateWoodAndStone;
+        TurnAndEnemyManager.instance.OnPlayerTurnStart -= TalentTreeManager.instance.GenerateWoodAndStone;
+        Debug.Log("Removing listener");
     }
 }

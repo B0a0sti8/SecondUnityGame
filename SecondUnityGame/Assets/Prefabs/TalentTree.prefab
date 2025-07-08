@@ -2939,16 +2939,54 @@ PrefabInstance:
       propertyPath: m_Name
       value: Talent (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8057782241140437709, guid: aa337c83906641444b64d754531a4df5, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8057782241140437709, guid: aa337c83906641444b64d754531a4df5, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -8628953820825788003, guid: 5f7ffaa5ff2705a4c941c7de700e9621, type: 3}
+    m_RemovedComponents:
+    - {fileID: 3043543735992061078, guid: aa337c83906641444b64d754531a4df5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4511090131604294537, guid: aa337c83906641444b64d754531a4df5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3093916517216189843}
   m_SourcePrefab: {fileID: 100100000, guid: aa337c83906641444b64d754531a4df5, type: 3}
 --- !u!224 &6551804673702291726 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4511090131604294536, guid: aa337c83906641444b64d754531a4df5, type: 3}
   m_PrefabInstance: {fileID: 7239029739440022150}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6551804673702291727 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4511090131604294537, guid: aa337c83906641444b64d754531a4df5, type: 3}
+  m_PrefabInstance: {fileID: 7239029739440022150}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3093916517216189843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6551804673702291727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 468b1fe556578de4a963e707f4387fe9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  talentName: 
+  talentDescription: 
+  talentIcon: {fileID: 0}
+  maxCount: 1
+  pointCost: 1
+  currentCount: 0
+  myPredecessorTalents: []
+  myDescendantConnections: []
+  isUnlockedByDefault: 1
 --- !u!1001 &7494545101245184347
 PrefabInstance:
   m_ObjectHideFlags: 0

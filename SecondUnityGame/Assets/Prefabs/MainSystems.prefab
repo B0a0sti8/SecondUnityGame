@@ -700,7 +700,7 @@ GameObject:
   - component: {fileID: 177898118801905844}
   - component: {fileID: 7373312640418691755}
   m_Layer: 0
-  m_Name: SkillTreeManager
+  m_Name: TalentTreeManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1077,12 +1077,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPlayerTurn: 1
   turnIndicatorText: {fileID: 0}
-  levelObject: {fileID: 0}
-  allEnemySlots: []
-  allEnemiesInLevel: []
   isLevelFinished: 0
   allEnemySlotsWithTokens: []
   allPlayerSlotsWithTokens: []
+  allEnemiesInLevel: []
+  levelObject: {fileID: 0}
+  allEnemySlots: []
 --- !u!1001 &2176197583557882838
 PrefabInstance:
   m_ObjectHideFlags: 0

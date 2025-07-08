@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -6,8 +7,9 @@ public class TalentTreeManager : MonoBehaviour
 {
     public Transform skillTreeObject;
     public bool isInWorldScene = false;
-
     public static TalentTreeManager instance;
+
+    //public bool talent1_BasicResourceGenerationActive;
 
     private void Awake()
     {
@@ -39,13 +41,14 @@ public class TalentTreeManager : MonoBehaviour
 
     public void OpenCloseSkillTree()
     {
-        if (skillTreeObject.gameObject.activeSelf)
-        {
-            skillTreeObject.gameObject.SetActive(false);
-        }
-        else
-        {
-            skillTreeObject.gameObject.SetActive(true);
-        }
+        if (skillTreeObject.gameObject.activeSelf) skillTreeObject.gameObject.SetActive(false);
+        else skillTreeObject.gameObject.SetActive(true);
     }
+
+    public void GenerateWoodAndStone(object sender, EventArgs e)
+    {
+        RessourceManager.instance.AddOrRemoveResources(1, 1, 0, 0, null);
+        Debug.Log("Trigger");
+    }
+
 }

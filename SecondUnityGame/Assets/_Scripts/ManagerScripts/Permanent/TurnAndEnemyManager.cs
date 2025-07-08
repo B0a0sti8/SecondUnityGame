@@ -35,9 +35,14 @@ public class TurnAndEnemyManager : MonoBehaviour
         instance = this;
     }
 
+    public void DebuggingEventTrig(object sender, EventArgs e)
+    {
+        Debug.Log("Event was triggered");
+    }
+
     private void Start()
     {
-
+        OnPlayerTurnStart += DebuggingEventTrig;
         if (SceneManager.GetActiveScene().name == "WorldMap") gameObject.SetActive(false);
         else gameObject.SetActive(true);
         SceneManager.sceneLoaded += InitRefs;
@@ -181,7 +186,7 @@ public class TurnAndEnemyManager : MonoBehaviour
 
     void StartPlayerTurn()
     {
-        OnPlayerTurnStart.Invoke(this, EventArgs.Empty);
+        OnPlayerTurnStart?.Invoke(this, EventArgs.Empty);
         CardManager.instance.DrawNextCardFromDeck();
 
         foreach (GameObject playerToken in allPlayerSlotsWithTokens)
