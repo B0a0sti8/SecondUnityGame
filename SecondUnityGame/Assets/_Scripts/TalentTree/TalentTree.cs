@@ -11,7 +11,7 @@ public class TalentTree : MonoBehaviour
 
     [SerializeField] List<Talent> talents, unlockedByDefault;
 
-    List<int> talentCountForLoading;
+    Dictionary<string, int> talentPointCount = new Dictionary<string, int>();
 
     [SerializeField] TextMeshProUGUI talentPointText;
     Transform talentTreeContent;
@@ -31,6 +31,7 @@ public class TalentTree : MonoBehaviour
         if (remainingTPoints > talent.pointCost && talent.TryAllocateTalent())
         {
             remainingTPoints -= talent.pointCost;
+            talentPointCount[talent.talentName] += 1;
             CheckUnlockTalent();
         }
         UpdateTalentPointText();
@@ -97,6 +98,9 @@ public class TalentTree : MonoBehaviour
 
         foreach (Talent talent in unlockedByDefault) talent.Unlock();
 
+        talentPointCount.Clear();
+        foreach (Talent talent in unlockedByDefault) talentPointCount.Add(talent.name, 0);
+
         UpdateTalentPointText();
     }
 
@@ -107,6 +111,13 @@ public class TalentTree : MonoBehaviour
         {
             if (tal.isUnlockedByDefault) unlockedByDefault.Add(tal);
         }
+    }
+
+    public Dictionary<string,int> GetSkillPointsInTalents()
+    {
+        talentPointCount.Clear();
+        foreach (Talent ta in talents) talentPointCount.Add(ta.talentName, ta.currentCount);
+        return talentPointCount;
     }
 
     public List<Talent> GetTalentsForSaving()

@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Druideskill_26_0: -1650969555227626711
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
