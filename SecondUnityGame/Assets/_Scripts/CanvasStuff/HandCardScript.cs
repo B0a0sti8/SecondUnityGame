@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class HandCardScript : MonoBehaviour
 {
-    List<GameObject> myHandCards;
+    public List<GameObject> myHandCards;
     int maximumHandCards = 10;
     [SerializeField] GameObject mySimpleCardPrefab;
 
@@ -25,7 +25,7 @@ public class HandCardScript : MonoBehaviour
         ScaleUIBasedOnCardCount();
     }
 
-    private void FetchAllCards()
+    public void FetchAllCards()
     {
         myHandCards.Clear();
         for (int i = 0; i < transform.childCount; i++)
@@ -100,11 +100,6 @@ public class HandCardScript : MonoBehaviour
 
         myHandCards.Remove(oldCard);
         ScaleUIBasedOnCardCount();
-    }
-
-    public void DiscardRandomCard()
-    {
-        if (transform.childCount != 0) DiscardCard(transform.GetChild(0).gameObject);
     }
 
     public void RemoveRandomCard()

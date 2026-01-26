@@ -42,6 +42,7 @@ public class SceneLoadManager : MonoBehaviour
         else
         {
             CardManager.instance.CloseSceneDeInitRefs();
+            TurnAndEnemyManager.instance.AtTheEndOfLevel();
         }
 
         SceneManager.LoadScene(myScene.ToString());

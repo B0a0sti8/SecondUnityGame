@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
+using System.Collections;
 
 public class TurnAndEnemyManager : MonoBehaviour
 {
@@ -80,7 +81,14 @@ public class TurnAndEnemyManager : MonoBehaviour
             endPlayerTurnButton?.onClick.AddListener(() => EndPlayerTurn());
 
             turnIndicatorText = MainCanvasSingleton.instance.transform.Find("StatsAndRessources").Find("TurnIndicator").GetComponent<TextMeshProUGUI>();
+
+            StartPlayerTurn();
         } 
+    }
+
+    public void AtTheEndOfLevel()
+    {
+        isPlayerTurn = true;
     }
 
     // Update is called once per frame
@@ -187,12 +195,21 @@ public class TurnAndEnemyManager : MonoBehaviour
     void StartPlayerTurn()
     {
         OnPlayerTurnStart?.Invoke(this, EventArgs.Empty);
-        CardManager.instance.DrawNextCardFromDeck();
+
+        CardManager.instance.DiscardHand();
+        StartCoroutine(DrawCardsWithDelay(1f));
+
 
         foreach (GameObject playerToken in allPlayerSlotsWithTokens)
         {
             playerToken.GetComponent<PlayerToken>().TriggerPassiveAbilities();
         }
+    }
+
+    IEnumerator DrawCardsWithDelay(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        CardManager.instance.DrawMultipleCards(5);
     }
 
     void PlayEnemyTurn(GameObject enemyTokenSlot)

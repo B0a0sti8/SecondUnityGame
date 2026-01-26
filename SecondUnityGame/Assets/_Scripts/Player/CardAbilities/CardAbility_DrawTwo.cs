@@ -17,8 +17,7 @@ public class CardAbility_DrawTwo : PlayerTokenAbilityPrefab
 
     public override void ApplyAbilityEffect()
     {
-        CardManager.instance.DrawNextCardFromDeck();
-        CardManager.instance.DrawNextCardFromDeck();
+        CardManager.instance.DrawMultipleCards(2);
 
         base.ApplyAbilityEffect();
     }

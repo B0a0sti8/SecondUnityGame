@@ -46,6 +46,7 @@ public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public bool isMovingSomewhere = false;
     public bool isDiscarded = false;
     public Vector3 targetPosition;
+    bool isMarked = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -126,12 +127,14 @@ public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         if (isMovingSomewhereDuration > 0 && isMovingSomewhere)
         {
+            GetComponent<Image>().raycastTarget = false;
             Vector3 newPos = (targetPosition - transform.position) * (Time.deltaTime / isMovingSomewhereDuration);
             transform.position += newPos;
             isMovingSomewhereDuration -= Time.deltaTime;
         }
         else if (isMovingSomewhere)
         {
+            GetComponent<Image>().raycastTarget = true;
             transform.position = targetPosition;
             isMovingSomewhere = false;
             if (isDiscarded)
@@ -143,6 +146,7 @@ public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         if (isDissolving)
         {
+            GetComponent<Image>().raycastTarget = false;
             dissolveDuration -= Time.deltaTime;
             if (dissolveDuration >= 0)
             {
@@ -158,19 +162,21 @@ public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (transform.parent.name== "HandCards")
+        if (transform.parent.name== "HandCards" && !isMarked)
         {
             transform.localScale *= 1.15f;
             transform.localPosition += new Vector3(0f, 20.0f, 0f);
+            isMarked = true;
         }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (transform.parent.name == "HandCards")
+        if (transform.parent.name == "HandCards" && isMarked)
         {
-            transform.localScale /= 1.15f;
+            transform.localScale = new Vector3(1f,1f,1f);
             transform.localPosition -= new Vector3(0f, 20.0f, 0f);
+            isMarked = false;
         }
     }
 }

@@ -18,12 +18,6 @@ public class ListOfAllCards : MonoBehaviour
         //allCardsList = new List<DefaultCardScriptable>();
     }
 
-    private void Start()
-    {
-
-    }
-
-
     public DefaultCardScriptable FindCardByName(string myCardName)
     {
         foreach (DefaultCardScriptable card in allCardsList)

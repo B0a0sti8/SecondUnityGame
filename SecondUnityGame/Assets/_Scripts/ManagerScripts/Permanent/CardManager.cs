@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class CardManager : MonoBehaviour
 {
@@ -44,7 +45,6 @@ public class CardManager : MonoBehaviour
 
     private void Start()
     {
-        //InitRefs(SceneManager.GetActiveScene(), LoadSceneMode.Additive);
 
     }
 
@@ -73,7 +73,7 @@ public class CardManager : MonoBehaviour
             addCardButton?.GetComponent<Button>().onClick.AddListener(() => AddSimpleCardToHandForDebugging());
             removeCardButton?.GetComponent<Button>().onClick.AddListener(() => HandCardScript.instance.RemoveRandomCard());
             drawCardFromDeckButton?.GetComponent<Button>().onClick.AddListener(() => DrawNextCardFromDeck());
-            discardCardButton?.GetComponent<Button>().onClick.AddListener(() => HandCardScript.instance.DiscardRandomCard());
+            discardCardButton?.GetComponent<Button>().onClick.AddListener(() => DiscardRandomCard());
             closeDeckAndDiscardViewWindowButton?.GetComponent<Button>().onClick.AddListener(() => ShowAndHideDiscardPile());
 
             deck1Image.gameObject.GetComponent<Button>().onClick.AddListener(() => ShowAndHideDeck());
@@ -105,7 +105,7 @@ public class CardManager : MonoBehaviour
         addCardButton?.GetComponent<Button>().onClick.RemoveListener(() => AddSimpleCardToHandForDebugging());
         removeCardButton?.GetComponent<Button>().onClick.RemoveListener(() => HandCardScript.instance.RemoveRandomCard());
         drawCardFromDeckButton?.GetComponent<Button>().onClick.RemoveListener(() => DrawNextCardFromDeck());
-        discardCardButton?.GetComponent<Button>().onClick.RemoveListener(() => HandCardScript.instance.DiscardRandomCard());
+        discardCardButton?.GetComponent<Button>().onClick.RemoveListener(() => DiscardRandomCard());
         closeDeckAndDiscardViewWindowButton?.GetComponent<Button>().onClick.RemoveListener(() => ShowAndHideDiscardPile());
 
         discardPile.Clear();
@@ -156,6 +156,49 @@ public class CardManager : MonoBehaviour
         newHandCard.GetComponent<MainCardScript>().myCardToken = cardScript;
         bool hasAddedCard = HandCardScript.instance.AddCard(newHandCard);
         if (hasAddedCard) RemoveCardFromDeck(0);
+    }
+
+    public void DrawMultipleCards(int noOfCards)
+    {
+        DrawNextCardFromDeck();
+        for (int i = 1; i < noOfCards; i++)
+        {
+            StartCoroutine(DrawNextCardDelay(i*0.2f));
+        }
+    }
+
+    IEnumerator DrawNextCardDelay(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        DrawNextCardFromDeck();
+    }
+
+    public void DiscardRandomCard()
+    {
+        if (HandCardScript.instance.transform.childCount != 0) HandCardScript.instance.DiscardCard(transform.GetChild(0).gameObject);
+    }
+
+    public void DiscardSpecificCard(GameObject oldCard)
+    {
+        HandCardScript.instance.DiscardCard(oldCard);
+    }
+
+    public void DiscardHand()
+    {
+        HandCardScript.instance.FetchAllCards();
+        if (HandCardScript.instance.myHandCards.Count == 0) return;
+
+        DiscardSpecificCard(HandCardScript.instance.myHandCards.Last());
+        for (int i = HandCardScript.instance.myHandCards.Count - 1; i >= 0; i--)
+        {
+            StartCoroutine(DiscardNextCardDelay(0.3f*i, HandCardScript.instance.myHandCards[i]));
+        }
+    }
+
+    IEnumerator DiscardNextCardDelay(float waitTime, GameObject card)
+    {
+        yield return new WaitForSeconds(waitTime);
+        DiscardSpecificCard(card);
     }
 
     public void AddCardToDiscardPile(DefaultCardScriptable cardScript)
