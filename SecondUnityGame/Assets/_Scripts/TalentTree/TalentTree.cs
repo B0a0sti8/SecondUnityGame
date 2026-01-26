@@ -11,7 +11,7 @@ public class TalentTree : MonoBehaviour
 
     [SerializeField] List<Talent> talents, unlockedByDefault;
 
-    Dictionary<string, int> talentPointCount = new Dictionary<string, int>();
+    public Dictionary<string, int> talentPointCount = new Dictionary<string, int>();
 
     [SerializeField] TextMeshProUGUI talentPointText;
     Transform talentTreeContent;
@@ -24,6 +24,10 @@ public class TalentTree : MonoBehaviour
 
         FetchAllTalents();
         ResetTalents();
+        if (TalentTreeManager.instance != null) talentPointCount = TalentTreeManager.instance.talentPointCount;
+        AutoSkillWhenLoading();
+        CheckUnlockTalent();
+        UpdateTalentPointText();
     }
 
     public void TryUseTalent(Talent talent)
@@ -32,6 +36,19 @@ public class TalentTree : MonoBehaviour
         {
             remainingTPoints -= talent.pointCost;
             talentPointCount[talent.talentName] += 1;
+
+            CheckUnlockTalent();
+        }
+        UpdateTalentPointText();
+    }
+
+    public void TryUnspecTalent(Talent talent)
+    {
+        if (talent.TryUnallocateTalent())
+        {
+            remainingTPoints += talent.pointCost;
+            talentPointCount[talent.talentName] -= 1;
+
             CheckUnlockTalent();
         }
         UpdateTalentPointText();
@@ -48,6 +65,7 @@ public class TalentTree : MonoBehaviour
                 if (predTal.currentCount == 0) shouldUnlock = false;
             }
             if (shouldUnlock) tal.Unlock();
+            else tal.Lock();
 
             // Mark all connections whose talent has been skilled at least once.
             foreach (GameObject con in tal.myDescendantConnections)
@@ -100,8 +118,10 @@ public class TalentTree : MonoBehaviour
 
         talentPointCount.Clear();
         foreach (Talent talent in unlockedByDefault) talentPointCount.Add(talent.name, 0);
-
+        
         UpdateTalentPointText();
+
+        GetSkillPointsInTalents();
     }
 
     void GetUnlockedByDefaultTalents()
@@ -126,25 +146,36 @@ public class TalentTree : MonoBehaviour
         return talents;
     }
 
-    public void AutoSkillWhenLoading(List<int> loadedTalentCount)
+    public void AutoSkillWhenLoading()
     {
-        Debug.Log(loadedTalentCount.Count);
+        Debug.Log(talentPointCount.Count);
         Debug.Log(talents.Count);
 
-        bool isWindowActive = transform.Find("TalentTreeWindow").gameObject.activeSelf;
-        if (!isWindowActive) transform.Find("TalentTreeWindow").gameObject.SetActive(true);
+        //bool isWindowActive = transform.Find("TalentTreeWindow").gameObject.activeSelf;
+       // if (!isWindowActive) transform.Find("TalentTreeWindow").gameObject.SetActive(true);
 
-        for (int i = 0; i < talents.Count-1; i++)
+        Dictionary<string, int>.KeyCollection keys = talentPointCount.Keys;
+
+        foreach (string talName in keys)
         {
-            int myCurCount = loadedTalentCount[i];
-            if (myCurCount == 0) continue;
+            if (talentPointCount[talName] == 0) continue;
 
-            for (int k = 0; k < myCurCount; k++)
+            foreach (Talent tal in talents)
             {
-                TryUseTalent(talents[i]);
+                if (tal.talentName == talName)
+                {
+                    for (int i = 0; i < talentPointCount[talName]; i++)
+                    {
+                        tal.currentCount++;
+                        tal.ActivateTalentEffect();
+                        tal.UpdatePointCounterAndBackground();
+                        remainingTPoints -= tal.pointCost;
+                    }
+
+                    break;
+                }
             }
         }
-
-        transform.Find("TalentTreeWindow").gameObject.SetActive(isWindowActive);
+       // transform.Find("TalentTreeWindow").gameObject.SetActive(isWindowActive);
     }
 }

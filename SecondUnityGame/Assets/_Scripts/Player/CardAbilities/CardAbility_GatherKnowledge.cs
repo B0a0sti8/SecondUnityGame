@@ -21,7 +21,7 @@ public class CardAbility_GatherKnowledge : PlayerTokenAbilityPrefab
 
     public override void ApplyAbilityEffect()
     {
-        RessourceManager.instance.AddKnowledge(1);
+        ResourceManager.instance.AddKnowledge(1);
         base.ApplyAbilityEffect();
     }
 }

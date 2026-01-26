@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Talent : MonoBehaviour
+public class Talent : MonoBehaviour, IPointerClickHandler
 {
     public string talentName;
     public string talentDescription = "";
@@ -14,6 +15,7 @@ public class Talent : MonoBehaviour
     public int currentCount = 0;
 
     public List<Talent> myPredecessorTalents = new List<Talent>();
+    public List<Talent> myDescendantTalents = new List<Talent>();
     public List<GameObject> myDescendantConnections = new List<GameObject>();
     public bool isUnlockedByDefault = false;
 
@@ -25,11 +27,7 @@ public class Talent : MonoBehaviour
     protected virtual void Start()
     {
         InitRefs();
-    }
-
-    void OnTalentButtonClick()
-    {
-        myTalentTree.TryUseTalent(this);
+        foreach (Talent ta in myPredecessorTalents) ta.myDescendantTalents.Add(this);
     }
 
     public virtual void InitRefs()
@@ -44,6 +42,19 @@ public class Talent : MonoBehaviour
         myTalentTree = transform.parent.parent.parent.parent.GetComponent<TalentTree>();
     }
 
+    void OnTalentButtonClick()
+    {
+        myTalentTree.TryUseTalent(this);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            myTalentTree.TryUnspecTalent(this);
+        }
+    }
+
     public bool TryAllocateTalent()
     {
         bool isAlloc = false;
@@ -56,6 +67,32 @@ public class Talent : MonoBehaviour
         }
         UpdatePointCounterAndBackground();
         return isAlloc;
+    }
+
+    public bool TryUnallocateTalent()
+    {
+        bool isReduced = false;
+
+        if (currentCount > 1) isReduced = true;
+        else if (currentCount == 1 && myDescendantConnections.Count == 0) isReduced = true;
+        else if (currentCount == 1 )
+        {
+            int currentDescendantCount = 0;
+            foreach (Talent ta in myDescendantTalents) currentDescendantCount += ta.currentCount;
+
+            if (currentDescendantCount == 0) isReduced = true;
+        }
+
+        if (isReduced)
+        {
+            RemoveActiveTalentEffect();
+            Debug.Log("Unskill");
+            currentCount--;
+            RemoveActiveTalentEffectAfterPointCountReduced();
+        }
+
+        UpdatePointCounterAndBackground();
+        return isReduced;
     }
 
     public void Lock()
@@ -79,6 +116,8 @@ public class Talent : MonoBehaviour
         float alphaStep = (255 - 70) * 1 / Mathf.Clamp(maxCount, 1, 5);
         float newAlpha = (70 + alphaStep * currentCount) / 255;
 
+        if (maxCount == 0) newAlpha = 1;
+
         Color myNewColor = backgroundSprite.color;
         myNewColor.a = newAlpha;
         backgroundSprite.color = myNewColor;
@@ -100,4 +139,6 @@ public class Talent : MonoBehaviour
     {
         //GetComponent<MasterEventTriggerTalent>().GetTalentInfo();
     }
+
+
 }

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class RessourceManager : MonoBehaviour
+public class ResourceManager : MonoBehaviour
 {
     GameObject healthBar;
     GameObject manaBar;
@@ -16,7 +16,7 @@ public class RessourceManager : MonoBehaviour
 
     public int permanentKnowledge;
 
-    public static RessourceManager instance;
+    public static ResourceManager instance;
 
     Transform myLevelVisuals;
     [SerializeField] GameObject resourcePopUpObject;
@@ -60,10 +60,12 @@ public class RessourceManager : MonoBehaviour
             currentPlayerLife = maxPlayerLife;
             currentPlayerMana = maxPlayerMana;
 
-            woodAmount = 20;
-            stoneAmount = 20;
-            foodAmount = 20;
-            reagentsAmount = 20;
+            woodAmount = 6;
+            stoneAmount = 6;
+            foodAmount = 6;
+            reagentsAmount = 6;
+
+            TalentTreeManager.instance.Talent4_StartingResources();
 
             UpdateResourceUI();
         }

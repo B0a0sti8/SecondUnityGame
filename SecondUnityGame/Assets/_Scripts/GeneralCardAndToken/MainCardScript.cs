@@ -1,8 +1,9 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MainCardScript : MonoBehaviour
+public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public bool createsPlayerToken;
     public DefaultCardScriptable myCardToken;
@@ -27,7 +28,6 @@ public class MainCardScript : MonoBehaviour
     public int foodCost;
     public int reagentCost;
 
-
     float manaCost;
 
     Image myCardImage;
@@ -42,6 +42,10 @@ public class MainCardScript : MonoBehaviour
 
     float dissolveDuration = 1f;
     public bool isDissolving = false;
+    public float isMovingSomewhereDuration = 0f;
+    public bool isMovingSomewhere = false;
+    public bool isDiscarded = false;
+    public Vector3 targetPosition;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -120,6 +124,23 @@ public class MainCardScript : MonoBehaviour
 
     private void Update()
     {
+        if (isMovingSomewhereDuration > 0 && isMovingSomewhere)
+        {
+            Vector3 newPos = (targetPosition - transform.position) * (Time.deltaTime / isMovingSomewhereDuration);
+            transform.position += newPos;
+            isMovingSomewhereDuration -= Time.deltaTime;
+        }
+        else if (isMovingSomewhere)
+        {
+            transform.position = targetPosition;
+            isMovingSomewhere = false;
+            if (isDiscarded)
+            {
+                CardManager.instance.AddCardToDiscardPile(myCardToken);
+                Destroy(gameObject);
+            }
+        }
+
         if (isDissolving)
         {
             dissolveDuration -= Time.deltaTime;
@@ -132,6 +153,24 @@ public class MainCardScript : MonoBehaviour
         if (dissolveDuration < 0)
         {
             Destroy(gameObject);
+        }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (transform.parent.name== "HandCards")
+        {
+            transform.localScale *= 1.15f;
+            transform.localPosition += new Vector3(0f, 20.0f, 0f);
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (transform.parent.name == "HandCards")
+        {
+            transform.localScale /= 1.15f;
+            transform.localPosition -= new Vector3(0f, 20.0f, 0f);
         }
     }
 }

@@ -61,7 +61,7 @@ public class BattleManager : MonoBehaviour
 
     public void DealDamageToPlayer(GameObject source, float damageAmount)
     {
-        RessourceManager.instance.TakeDamageOrHealing_Player((int)damageAmount);
+        ResourceManager.instance.TakeDamageOrHealing_Player((int)damageAmount);
     }
 
     // Hier kommen die Buffs

@@ -34,34 +34,18 @@ public class CardManager : MonoBehaviour
         SceneManager.sceneLoaded += InitRefs;
         if (SceneManager.GetActiveScene().name == "WorldMap") gameObject.SetActive(false);
         else gameObject.SetActive(true);
-    }
-
-    private void Start()
-    {
-        InitRefs(SceneManager.GetActiveScene(), LoadSceneMode.Additive);
-
-        Transform addCardButton = MainCanvasSingleton.instance.transform.Find("Buttons").Find("AddCardToHandButton");
-        Transform removeCardButton = MainCanvasSingleton.instance.transform.Find("Buttons").Find("RemoveHandCard");
-
-        addCardButton?.GetComponent<Button>().onClick.AddListener(() => AddSimpleCardToHandForDebugging());
-        removeCardButton?.GetComponent<Button>().onClick.AddListener(() => HandCardScript.instance.RemoveRandomCard());
-
-        deckAndDiscardPileViewer.SetActive(false);
-        for (int i = 0; i < deckAndDiscardPileViewer.transform.Find("Content").childCount; i++)
-        {
-            deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).gameObject.SetActive(false);
-        }
-
-        if (ListOfAllCards.instance != null) LoadDeck();
 
         deckBackImages.Add(1, deckBackImage1);
         deckBackImages.Add(2, deckBackImage2);
         deckBackImages.Add(3, deckBackImage3);
         deckBackImages.Add(4, deckBackImage4);
         deckBackImages.Add(5, deckBackImage5);
+    }
 
-        UpdateDeckUI();
-        UpdateDiscardPileUI();
+    private void Start()
+    {
+        //InitRefs(SceneManager.GetActiveScene(), LoadSceneMode.Additive);
+
     }
 
     public void InitRefs(Scene scene, LoadSceneMode mode)
@@ -79,9 +63,53 @@ public class CardManager : MonoBehaviour
             discardPileImage = mCan.Find("CardCanvas").Find("UsedCards").Find("DiscardPile").GetComponent<RawImage>();
 
             gameObject.SetActive(true);
+
+            Transform addCardButton = MainCanvasSingleton.instance.transform.Find("Buttons").Find("AddCardToHandButton");
+            Transform removeCardButton = MainCanvasSingleton.instance.transform.Find("Buttons").Find("RemoveHandCard");
+            Transform drawCardFromDeckButton = MainCanvasSingleton.instance.transform.Find("Buttons").Find("DrawCardFromDeck");
+            Transform discardCardButton = MainCanvasSingleton.instance.transform.Find("Buttons").Find("DiscardCard");
+            Transform closeDeckAndDiscardViewWindowButton = MainCanvasSingleton.instance.transform.Find("CardCanvas").Find("DeckAndPileView").Find("Scroll").Find("Button");
+
+            addCardButton?.GetComponent<Button>().onClick.AddListener(() => AddSimpleCardToHandForDebugging());
+            removeCardButton?.GetComponent<Button>().onClick.AddListener(() => HandCardScript.instance.RemoveRandomCard());
+            drawCardFromDeckButton?.GetComponent<Button>().onClick.AddListener(() => DrawNextCardFromDeck());
+            discardCardButton?.GetComponent<Button>().onClick.AddListener(() => HandCardScript.instance.DiscardRandomCard());
+            closeDeckAndDiscardViewWindowButton?.GetComponent<Button>().onClick.AddListener(() => ShowAndHideDiscardPile());
+
             deck1Image.gameObject.GetComponent<Button>().onClick.AddListener(() => ShowAndHideDeck());
             discardPileImage.gameObject.GetComponent<Button>().onClick.AddListener(() => ShowAndHideDiscardPile());
+
+
+
+            deckAndDiscardPileViewer.SetActive(false);
+            for (int i = 0; i < deckAndDiscardPileViewer.transform.Find("Content").childCount; i++)
+            {
+                deckAndDiscardPileViewer.transform.Find("Content").GetChild(i).gameObject.SetActive(false);
+            }
+
+            if (ListOfAllCards.instance != null) LoadDeck();
+
+            UpdateDeckUI();
+            UpdateDiscardPileUI();
         }
+    }
+
+    public void CloseSceneDeInitRefs()
+    {
+        Transform addCardButton = MainCanvasSingleton.instance.transform.Find("Buttons").Find("AddCardToHandButton");
+        Transform removeCardButton = MainCanvasSingleton.instance.transform.Find("Buttons").Find("RemoveHandCard");
+        Transform drawCardFromDeckButton = MainCanvasSingleton.instance.transform.Find("Buttons").Find("DrawCardFromDeck");
+        Transform discardCardButton = MainCanvasSingleton.instance.transform.Find("Buttons").Find("DiscardCard");
+        Transform closeDeckAndDiscardViewWindowButton = MainCanvasSingleton.instance.transform.Find("CardCanvas").Find("DeckAndPileView").Find("Scroll").Find("Button");
+
+        addCardButton?.GetComponent<Button>().onClick.RemoveListener(() => AddSimpleCardToHandForDebugging());
+        removeCardButton?.GetComponent<Button>().onClick.RemoveListener(() => HandCardScript.instance.RemoveRandomCard());
+        drawCardFromDeckButton?.GetComponent<Button>().onClick.RemoveListener(() => DrawNextCardFromDeck());
+        discardCardButton?.GetComponent<Button>().onClick.RemoveListener(() => HandCardScript.instance.DiscardRandomCard());
+        closeDeckAndDiscardViewWindowButton?.GetComponent<Button>().onClick.RemoveListener(() => ShowAndHideDiscardPile());
+
+        discardPile.Clear();
+        UpdateDiscardPileUI();
     }
 
     private void OnDestroy()
@@ -104,7 +132,7 @@ public class CardManager : MonoBehaviour
     {
         GameObject newCard = mySimpleCardPrefab;
         newCard.GetComponent<MainCardScript>().myCardToken = ListOfAllCards.instance.allCardsList[Random.Range(0, ListOfAllCards.instance.allCardsList.Count)];//listOfAllCards[Random.Range(0, listOfAllCards.Count)];
-        HandCardScript.instance.AddCard(newCard);
+        HandCardScript.instance.AddCard(newCard, false);
     }
 
     public void AddCardToDeckForDebugging()
@@ -120,6 +148,7 @@ public class CardManager : MonoBehaviour
 
     public void DrawNextCardFromDeck()
     {
+        Debug.Log("Drawing Card From Deck");
         if (cardDeck1.Count == 0) return;
 
         DefaultCardScriptable cardScript = cardDeck1[0];
@@ -161,6 +190,7 @@ public class CardManager : MonoBehaviour
 
     public void ShowAndHideDiscardPile()
     {
+        Debug.Log("Showing Discard Pile");
         if (!deckAndDiscardPileViewer.activeSelf)
         {
             deckAndDiscardPileViewer.SetActive(true);
@@ -266,7 +296,7 @@ public class CardManager : MonoBehaviour
             discardPileImage.texture = deckBackImages[Mathf.Clamp(discardPile.Count, 0, 5)];
 
 
-            if (discardPile.Count >= 2)
+            if (discardPile.Count >= 1)
             {
                 discardPileImage.gameObject.SetActive(true);
             }

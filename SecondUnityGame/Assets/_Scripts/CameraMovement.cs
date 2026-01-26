@@ -29,7 +29,7 @@ public class CameraMovement : MonoBehaviour
         edgeScrollSize = 50;
 
         targetFieldOfView = 60f;
-        foVmin = 20f; foVmax = 70f;
+        foVmin = 20f; foVmax = 80f;
         InitStuff(SceneManager.GetActiveScene(), LoadSceneMode.Additive);
         SceneManager.sceneLoaded += InitStuff;
     }

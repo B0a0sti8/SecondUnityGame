@@ -1,19 +1,18 @@
-using System;
 using UnityEngine;
 
-public class Talent1_BasicResourceGeneration : Talent
+public class Talent8_UnitBaseDamage : Talent
 {
     protected override void Start()
     {
-        talentName = "Basic Resource Generation";
-        talentDescription = "Gain one wood and one stone each turn. ";
+        talentName = "Unit Base Damage";
+        talentDescription = "Increases the base damage and healing of all your units by 1 per level. ";
     }
 
     public override void ActivateTalentEffect()
     {
         base.ActivateTalentEffect();
         //TurnAndEnemyManager.instance.OnPlayerTurnStart += GenerateWoodAndStone;
-        TurnAndEnemyManager.instance.OnPlayerTurnStart += TalentTreeManager.instance.GenerateWoodAndStone;
+        TurnAndEnemyManager.instance.OnPlayerTurnStart += TalentTreeManager.instance.Talent7_BasicRessourceGeneration;
         Debug.Log("Adding listener");
     }
 
@@ -21,7 +20,7 @@ public class Talent1_BasicResourceGeneration : Talent
     {
         base.RemoveActiveTalentEffect();
         //TurnAndEnemyManager.instance.OnPlayerTurnStart += GenerateWoodAndStone;
-        TurnAndEnemyManager.instance.OnPlayerTurnStart -= TalentTreeManager.instance.GenerateWoodAndStone;
+        TurnAndEnemyManager.instance.OnPlayerTurnStart -= TalentTreeManager.instance.Talent7_BasicRessourceGeneration;
         Debug.Log("Removing listener");
     }
 }

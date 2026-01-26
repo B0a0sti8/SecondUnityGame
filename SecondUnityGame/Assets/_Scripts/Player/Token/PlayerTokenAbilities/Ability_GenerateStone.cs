@@ -22,6 +22,6 @@ public class Ability_GenerateStone : PlayerTokenAbilityPrefab
     public override void ApplyPassiveTriggerEffect()
     {
         base.ApplyPassiveTriggerEffect();
-        RessourceManager.instance.AddOrRemoveResources(0, 2, 0, 0, transform.parent.gameObject);
+        ResourceManager.instance.AddOrRemoveResources(0, 2, 0, 0, transform.parent.gameObject);
     }
 }

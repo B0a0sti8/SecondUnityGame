@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -53,16 +54,31 @@ public class HandCardScript : MonoBehaviour
         }
     }
 
-    public bool AddCard(GameObject newCard)
+    public bool AddCard(GameObject newCard, bool isDrawnFromDeck = true)
     {
         FetchAllCards();
         if (myHandCards.Count >= maximumHandCards) return false;
         else
         {
-            GameObject myNewCard = Instantiate(newCard, transform);
-            myHandCards.Add(myNewCard);
+            if (isDrawnFromDeck)
+            {
+                GameObject myNewCard = Instantiate(newCard, transform);
+                myHandCards.Add(myNewCard);
+                ScaleUIBasedOnCardCount();
 
-            ScaleUIBasedOnCardCount();
+                myNewCard.GetComponent<MainCardScript>().targetPosition = myNewCard.transform.position;
+                myNewCard.transform.position = transform.parent.Find("Decks").Find("Deck1").position;
+                myNewCard.GetComponent<MainCardScript>().isMovingSomewhereDuration = 0.05f;
+                myNewCard.GetComponent<MainCardScript>().isMovingSomewhere = true;
+            }
+            else
+            {
+                GameObject myNewCard = Instantiate(newCard, transform);
+                myHandCards.Add(myNewCard);
+
+                ScaleUIBasedOnCardCount();
+            }
+
             return true;
         }
     }
@@ -72,6 +88,23 @@ public class HandCardScript : MonoBehaviour
         FetchAllCards();
         myHandCards.Remove(oldCard);
         ScaleUIBasedOnCardCount();
+    }
+
+    public void DiscardCard(GameObject oldCard)
+    {
+        FetchAllCards();
+        oldCard.GetComponent<MainCardScript>().targetPosition = transform.parent.Find("UsedCards").Find("DiscardPile").position;
+        oldCard.GetComponent<MainCardScript>().isMovingSomewhereDuration = 0.05f;
+        oldCard.GetComponent<MainCardScript>().isMovingSomewhere = true;
+        oldCard.GetComponent<MainCardScript>().isDiscarded = true;
+
+        myHandCards.Remove(oldCard);
+        ScaleUIBasedOnCardCount();
+    }
+
+    public void DiscardRandomCard()
+    {
+        if (transform.childCount != 0) DiscardCard(transform.GetChild(0).gameObject);
     }
 
     public void RemoveRandomCard()

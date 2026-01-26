@@ -22,6 +22,6 @@ public class Ability_GenerateFood : PlayerTokenAbilityPrefab
     public override void ApplyPassiveTriggerEffect()
     {
         base.ApplyPassiveTriggerEffect();
-        RessourceManager.instance.AddOrRemoveResources(0, 0, 2, 0, transform.parent.gameObject);
+        ResourceManager.instance.AddOrRemoveResources(0, 0, 2, 0, transform.parent.gameObject);
     }
 }

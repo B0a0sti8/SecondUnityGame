@@ -25,7 +25,7 @@ public class LevelGameManager : MonoBehaviour
         levelFinishedObject.transform.Find("Frame").Find("Info").GetComponent<TextMeshProUGUI>().text = "We achieved all our goals. Let's return to base camp.";
         ShowLevelFinishedScreen();
 
-        RessourceManager.instance.ManagePermanentKnowledge(neededKnowledgeAmount);
+        ResourceManager.instance.ManagePermanentKnowledge(neededKnowledgeAmount);
         GameProgressManager.instance.AddCompletedLevel(SceneManager.GetActiveScene().name);
 
         HandleFinishedLevel();

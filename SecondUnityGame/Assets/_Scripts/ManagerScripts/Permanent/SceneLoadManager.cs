@@ -34,6 +34,16 @@ public class SceneLoadManager : MonoBehaviour
 
     public void LoadNewScene(MyScene myScene)
     {
+        if (SceneManager.GetActiveScene().name == "WorldMap")
+        {
+            TalentTreeManager.instance.talentPointCount = GameObject.Find("MainCanvas").transform.Find("TalentTree").GetComponent<TalentTree>().talentPointCount;
+            TurnAndEnemyManager.instance.isLevelFinished = false;
+        }
+        else
+        {
+            CardManager.instance.CloseSceneDeInitRefs();
+        }
+
         SceneManager.LoadScene(myScene.ToString());
     }
 

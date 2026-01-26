@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -8,6 +9,8 @@ public class TalentTreeManager : MonoBehaviour
     public Transform skillTreeObject;
     public bool isInWorldScene = false;
     public static TalentTreeManager instance;
+
+    public Dictionary<string, int> talentPointCount = new Dictionary<string, int>();
 
     //public bool talent1_BasicResourceGenerationActive;
 
@@ -22,17 +25,12 @@ public class TalentTreeManager : MonoBehaviour
         {
             isInWorldScene = true;
             skillTreeObject = MainCanvasSingleton.instance.transform.Find("TalentTree");
-            //MainCanvasSingleton.instance.transform.Find("TaskBar").Find("SkillTree").Find("SkillTreeButton").GetComponent<Button>().onClick.AddListener(() => OpenCloseSkillTree());
             MainCanvasSingleton.instance.transform.Find("TalentTree").Find("AdditionalContent").Find("ExitButton").GetComponent<Button>().onClick.AddListener(() => OpenCloseSkillTree());
             skillTreeObject.gameObject.SetActive(false);
         }
-        else
-        {
-            isInWorldScene = false;
-        }
+        else isInWorldScene = false;
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         InitStuff(SceneManager.GetActiveScene(), LoadSceneMode.Additive);
@@ -45,10 +43,42 @@ public class TalentTreeManager : MonoBehaviour
         else skillTreeObject.gameObject.SetActive(true);
     }
 
-    public void GenerateWoodAndStone(object sender, EventArgs e)
+    // Ab hier: Talent-Funktionen. Können je nach Talent sehr unterschiedlich ausfallen. Bennenung nach Talentnamen im Tree
+
+    public void Talent4_StartingResources()
     {
-        RessourceManager.instance.AddOrRemoveResources(1, 1, 0, 0, null);
+        if (!talentPointCount.ContainsKey("Starting Resources")) return;
+
+        int talPoi = talentPointCount["Starting Resources"];
+        if (talPoi == 0) return;
+
+        ResourceManager.instance.AddOrRemoveResources(talPoi, talPoi, 0, 0, null);
+
+        if (talPoi == 3) ResourceManager.instance.AddOrRemoveResources(0, 0, 1, 1, null);
+    }
+
+    public void Talent7_BasicRessourceGeneration(object sender, EventArgs e)
+    {
+        int talPoi = talentPointCount["Basic Resource Generation"];
+
+        for (int i = 0; i < talPoi; i++)
+        {
+            int res = UnityEngine.Random.Range(0, 4);
+
+            if (res == 0) ResourceManager.instance.AddOrRemoveResources(1, 0, 0, 0, null);
+            if (res == 1) ResourceManager.instance.AddOrRemoveResources(0, 1, 0, 0, null);
+            if (res == 2) ResourceManager.instance.AddOrRemoveResources(0, 0, 1, 0, null);
+            if (res == 3) ResourceManager.instance.AddOrRemoveResources(0, 0, 0, 1, null);
+        }
         Debug.Log("Trigger");
     }
 
+    public float Talent8_UnitBaseDamage()
+    {
+        if (!talentPointCount.ContainsKey("Unit Base Damage")) return 0f;
+
+        int talPoi = talentPointCount["Unit Base Damage"];
+        float damageHealMod = talPoi * 1f;
+        return damageHealMod;
+    }
 }

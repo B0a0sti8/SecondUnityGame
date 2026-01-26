@@ -46,7 +46,7 @@ public class SaveLoadManager : MonoBehaviour
     private void SaveSkillTreeData(SaveData data)
     {
         data.MySkillTreeData = new SkillTreeData();
-        data.MySkillTreeData.permanentKnowledgeAmount = RessourceManager.instance.permanentKnowledge;
+        data.MySkillTreeData.permanentKnowledgeAmount = ResourceManager.instance.permanentKnowledge;
     }
 
     private void SaveCardData(SaveData data)
@@ -106,7 +106,7 @@ public class SaveLoadManager : MonoBehaviour
 
     private void LoadSkillTreeData(SaveData data)
     {
-        RessourceManager.instance.permanentKnowledge = data.MySkillTreeData.permanentKnowledgeAmount;
+        ResourceManager.instance.permanentKnowledge = data.MySkillTreeData.permanentKnowledgeAmount;
     }
 
     private void LoadCardData(SaveData data)

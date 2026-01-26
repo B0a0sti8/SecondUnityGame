@@ -226,12 +226,15 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
         if (raycastResults.Count > 0 && raycastResults[0].gameObject.tag == "Card")
         {
-            myGrabbedItem = raycastResults[0].gameObject;
-            originPosition = myGrabbedItem.transform.position;
-            originRotation = myGrabbedItem.transform.eulerAngles;
-            myGrabbedItem.transform.eulerAngles = new Vector3(0, 0, 0);
+            if (raycastResults[0].gameObject.transform.parent.name == "HandCards")
+            {
+                myGrabbedItem = raycastResults[0].gameObject;
+                originPosition = myGrabbedItem.transform.position;
+                originRotation = myGrabbedItem.transform.eulerAngles;
+                myGrabbedItem.transform.eulerAngles = new Vector3(0, 0, 0);
 
-            return; // Wenn Karte gefunden, brauchst du gar nicht weiterschauen.
+                return; // Wenn Karte gefunden, brauchst du gar nicht weiterschauen.
+            }
         }
 
         // Dieser Abschnitt schaut, ob er ein Token-Feld erwischt.
@@ -275,7 +278,7 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
         // Hier müssen noch Ressourcen und sontige Voraussetzungen geklärt werden.
 
-        if(!RessourceManager.instance.HasResources(myCard.woodCost, myCard.stoneCost, myCard.foodCost, myCard.reagentCost))
+        if(!ResourceManager.instance.HasResources(myCard.woodCost, myCard.stoneCost, myCard.foodCost, myCard.reagentCost))
         {
             // Hier noch einfügen dass man Karten bei Resourcen-Mangel auch durch Mana casten kann.
             Debug.Log("Can't pay for card");
@@ -323,7 +326,7 @@ public class MouseClickAndGrabManager : MonoBehaviour
     void HandlePlayedCard()
     {
         MainCardScript myC = pendingCard.GetComponent<MainCardScript>();
-        RessourceManager.instance.AddOrRemoveResources(-myC.woodCost, -myC.stoneCost, -myC.foodCost, -myC.reagentCost);
+        ResourceManager.instance.AddOrRemoveResources(-myC.woodCost, -myC.stoneCost, -myC.foodCost, -myC.reagentCost);
         CardManager.instance.AddCardToDiscardPile(pendingCard.GetComponent<MainCardScript>().myCardToken);
         HandCardScript.instance.RemoveCard(pendingCard);
         pendingCard.GetComponent<MainCardScript>().DestroyCard();

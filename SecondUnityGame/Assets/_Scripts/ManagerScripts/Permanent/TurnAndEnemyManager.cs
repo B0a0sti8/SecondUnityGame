@@ -214,7 +214,6 @@ public class TurnAndEnemyManager : MonoBehaviour
         }
     }
 
-
     GameObject FindEmptyEnemySlot()
     {
         List<GameObject> emptySlots = new List<GameObject>();

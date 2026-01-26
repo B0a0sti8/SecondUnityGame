@@ -24,8 +24,6 @@ public class PlayerToken : DefaultToken
         transform.Find("Canvas").Find("EnergyBar").gameObject.SetActive(false);
         if (myToken.cardTypeString == "Building") healthBar.transform.parent.gameObject.SetActive(false);
 
-
-
         listOfAllAbilities = ListOfAllPlayerTokenAbilities.instance.gameObject.transform;
 
         foreach (string ab in myToken.tokenAbilities)
@@ -52,9 +50,18 @@ public class PlayerToken : DefaultToken
 
         myToken = newToken;
         UpdatePlayerToken();
+        InitTokenBaseStats();
 
         currentLife = maxLife.GetValue();
         currentEnergy = (int)Mathf.Round(maxEnergy.GetValue());
+
+        TurnAndEnemyManager.instance.FindEnemyTokens();
+
+        foreach (GameObject enemy in TurnAndEnemyManager.instance.allEnemySlotsWithTokens)
+        {
+            enemy.GetComponentInChildren<EnemyToken>()?.SearchTargetsAndShowWarning();
+        }
+        
     }
 
     public override void UpdateHealthbar()
@@ -79,16 +86,22 @@ public class PlayerToken : DefaultToken
     void UpdatePlayerToken()
     {
         transform.Find("Picture").GetComponent<SpriteRenderer>().sprite = myToken.tokenSprite;
-        maxLife.baseValue = myToken.maxLife;
-        maxEnergy.baseValue = myToken.maxEnergy;
-        dmgHealVal.baseValue = myToken.baseDmgHealValue;
+
+    }
+
+    void InitTokenBaseStats()
+    {
+        // Hier müssen die Modifier vom Talenttree und Kartenupgrades aufgerechnet werden.
+        maxLife.baseValue = myToken.maxLife + GetModifiersFromTalenttree("maxLife");
+        maxEnergy.baseValue = myToken.maxEnergy + GetModifiersFromTalenttree("maxEnergy");
+        dmgHealVal.baseValue = myToken.baseDmgHealValue + GetModifiersFromTalenttree("dmgHealVal");
 
         if (myToken.baseRecDmgHealValue == 0) receiveDmgHealVal.baseValue = 1;
         else receiveDmgHealVal.baseValue = myToken.baseRecDmgHealValue;
 
         attackRange = myToken.attackRange;
     }
-
+     
     public void TriggerPassiveAbilities()
     {
         for (int i = 0; i < myPassiveTriggerAbilities.Count; i++)
@@ -101,5 +114,26 @@ public class PlayerToken : DefaultToken
     {
         yield return new WaitForSeconds(waitingTime);
         ability.GetComponent<PlayerTokenAbilityPrefab>().ApplyPassiveTriggerEffect();
+    }
+
+    float GetModifiersFromTalenttree(string Stattype)
+    {
+        // Hier muss basierend auf dem Token-Typ nachgefragt werden welche Modifier zutreffen
+
+        float amount = 0;
+        if (Stattype == "maxLife")
+        {
+
+        }
+        else if (Stattype == "maxEnergy")
+        {
+
+        }
+        else if (Stattype == "dmgHealVal")
+        {
+            amount += TalentTreeManager.instance.Talent8_UnitBaseDamage();  // Gilt für alle Einheiten
+        }
+
+        return amount;
     }
 }
