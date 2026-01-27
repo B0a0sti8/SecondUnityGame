@@ -97,7 +97,6 @@ public class HandCardScript : MonoBehaviour
         oldCard.GetComponent<MainCardScript>().isMovingSomewhereDuration = 0.05f;
         oldCard.GetComponent<MainCardScript>().isMovingSomewhere = true;
         oldCard.GetComponent<MainCardScript>().isDiscarded = true;
-
         myHandCards.Remove(oldCard);
         ScaleUIBasedOnCardCount();
     }

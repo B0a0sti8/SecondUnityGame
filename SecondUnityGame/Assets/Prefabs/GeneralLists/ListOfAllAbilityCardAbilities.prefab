@@ -61,6 +61,67 @@ MonoBehaviour:
   abilityName: Lightning Strike
   abilityDescription: Targets Enemies and strikes them with lightning
   abilityIcon: {fileID: -861939439238418533, guid: 60bd98d191e25d84caa26910b0ab8543, type: 3}
+--- !u!1 &1988797187230597928
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1536722695084772078}
+  - component: {fileID: 4169514755592304765}
+  m_Layer: 0
+  m_Name: Extra Food
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1536722695084772078
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1988797187230597928}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7388408656258330211}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4169514755592304765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1988797187230597928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c26c6dd009de37242af7e1c59932b53e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardAbility_ExtraFood
+  isAbilityCard: 0
+  myBuff: {fileID: 0}
+  energyCost: 0
+  range: 0
+  abilityCheckPoints: 0
+  abilityCheckPointsMax: 0
+  skillEffectModifier: 0
+  isPassiveTriggerAbility: 0
+  myTargetType: 0
+  potentialTargets: []
+  currentTargets: []
+  multTargetShapeSprite: {fileID: 0}
+  multiTargetShape: {fileID: 0}
+  activeMultiTargetShape: {fileID: 0}
+  abilityName: 
+  abilityDescription: 
+  abilityIcon: {fileID: 0}
 --- !u!1 &3049368158844865235
 GameObject:
   m_ObjectHideFlags: 0
@@ -97,6 +158,10 @@ Transform:
   - {fileID: 8796141683416033045}
   - {fileID: 4307454146502204098}
   - {fileID: 5665853461336839167}
+  - {fileID: 2781481110978906190}
+  - {fileID: 7597246435081170599}
+  - {fileID: 1536722695084772078}
+  - {fileID: 780699769084312997}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2667273140635192299
@@ -111,6 +176,128 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d4dd3abbf8cf544a919a6f837a67812, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &3765628010293444292
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7597246435081170599}
+  - component: {fileID: 1928327508862115841}
+  m_Layer: 0
+  m_Name: Extra Stone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7597246435081170599
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3765628010293444292}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7388408656258330211}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1928327508862115841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3765628010293444292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf7184b0d87d064c8e77e6799dda4d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardAbility_ExtraStone
+  isAbilityCard: 0
+  myBuff: {fileID: 0}
+  energyCost: 0
+  range: 0
+  abilityCheckPoints: 0
+  abilityCheckPointsMax: 0
+  skillEffectModifier: 0
+  isPassiveTriggerAbility: 0
+  myTargetType: 0
+  potentialTargets: []
+  currentTargets: []
+  multTargetShapeSprite: {fileID: 0}
+  multiTargetShape: {fileID: 0}
+  activeMultiTargetShape: {fileID: 0}
+  abilityName: 
+  abilityDescription: 
+  abilityIcon: {fileID: 0}
+--- !u!1 &4079531020450972860
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2781481110978906190}
+  - component: {fileID: 2988458411989983395}
+  m_Layer: 0
+  m_Name: Extra Wood
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2781481110978906190
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4079531020450972860}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7388408656258330211}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2988458411989983395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4079531020450972860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc30163d539808949bf2c614c33b7bd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardAbility_ExtraWood
+  isAbilityCard: 0
+  myBuff: {fileID: 0}
+  energyCost: 0
+  range: 0
+  abilityCheckPoints: 0
+  abilityCheckPointsMax: 0
+  skillEffectModifier: 0
+  isPassiveTriggerAbility: 0
+  myTargetType: 0
+  potentialTargets: []
+  currentTargets: []
+  multTargetShapeSprite: {fileID: 0}
+  multiTargetShape: {fileID: 0}
+  activeMultiTargetShape: {fileID: 0}
+  abilityName: 
+  abilityDescription: 
+  abilityIcon: {fileID: 0}
 --- !u!1 &5726726623077483895
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,6 +481,67 @@ MonoBehaviour:
   abilityName: 
   abilityDescription: 
   abilityIcon: {fileID: -2094980008601213415, guid: e24f5d612565eab4e9bb541d96293fb7, type: 3}
+--- !u!1 &8204088245083869404
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 780699769084312997}
+  - component: {fileID: 7921108779584297487}
+  m_Layer: 0
+  m_Name: Extra Reagents
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &780699769084312997
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8204088245083869404}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7388408656258330211}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7921108779584297487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8204088245083869404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411a44fabe13a7e478a099b3d65c5d64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardAbility_ExtraReagents
+  isAbilityCard: 0
+  myBuff: {fileID: 0}
+  energyCost: 0
+  range: 0
+  abilityCheckPoints: 0
+  abilityCheckPointsMax: 0
+  skillEffectModifier: 0
+  isPassiveTriggerAbility: 0
+  myTargetType: 0
+  potentialTargets: []
+  currentTargets: []
+  multTargetShapeSprite: {fileID: 0}
+  multiTargetShape: {fileID: 0}
+  activeMultiTargetShape: {fileID: 0}
+  abilityName: 
+  abilityDescription: 
+  abilityIcon: {fileID: 0}
 --- !u!1 &8797588540434293679
 GameObject:
   m_ObjectHideFlags: 0

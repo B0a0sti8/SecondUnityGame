@@ -175,7 +175,10 @@ public class CardManager : MonoBehaviour
 
     public void DiscardRandomCard()
     {
-        if (HandCardScript.instance.transform.childCount != 0) HandCardScript.instance.DiscardCard(transform.GetChild(0).gameObject);
+        if (HandCardScript.instance.transform.childCount != 0)
+        {
+            HandCardScript.instance.DiscardCard(HandCardScript.instance.transform.GetChild(0).gameObject);
+        }
     }
 
     public void DiscardSpecificCard(GameObject oldCard)
