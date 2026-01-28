@@ -34,7 +34,7 @@ public class HandCardScript : MonoBehaviour
         }
     }
 
-    private void ScaleUIBasedOnCardCount()
+    public void ScaleUIBasedOnCardCount()
     {
         if (myHandCards.Count % 2 == 0)     // Wenn Kartenanzahl gerade
         {

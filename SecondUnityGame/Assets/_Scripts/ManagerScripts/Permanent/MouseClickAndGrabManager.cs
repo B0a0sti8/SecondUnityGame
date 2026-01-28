@@ -414,4 +414,29 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
         isCardPending = false;
     }
+
+    public bool SetGrabbedItem(GameObject newItem)
+    {
+        if (myGrabbedItem == null)
+        {
+            myGrabbedItem = newItem;
+            return true;
+        }
+
+        else return false;
+    }
+
+    public void ClearGrabbedItem()
+    {
+        myGrabbedItem = null;
+    }
+
+    public bool TryGrabCardExtern()
+    {
+        if (!isPlayingAbility && !isCardPending && myGrabbedItem == null)
+        {
+            return true;
+        }
+        else return false;
+    }
 }

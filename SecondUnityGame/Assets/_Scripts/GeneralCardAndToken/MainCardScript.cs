@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IEndDragHandler, IBeginDragHandler
 {
     public bool createsPlayerToken;
     public DefaultCardScriptable myCardToken;
@@ -46,6 +46,7 @@ public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public bool isMovingSomewhere = false;
     public bool isDiscarded = false;
     public Vector3 targetPosition;
+    bool isReleasedFromDrag = false;
     bool isMarked = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -175,8 +176,33 @@ public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         if (transform.parent.name == "HandCards" && isMarked)
         {
             transform.localScale = new Vector3(1f,1f,1f);
-            transform.localPosition -= new Vector3(0f, 20.0f, 0f);
+
+            if (isReleasedFromDrag) isReleasedFromDrag = false;
+            else transform.localPosition -= new Vector3(0f, 20.0f, 0f);
+
             isMarked = false;
         }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        MouseClickAndGrabManager.instance.ClearGrabbedItem();
+        HandCardScript.instance.ScaleUIBasedOnCardCount();
+        isReleasedFromDrag = true;
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (MouseClickAndGrabManager.instance.TryGrabCardExtern())
+        {
+            MouseClickAndGrabManager.instance.SetGrabbedItem(gameObject);
+            transform.position = Input.mousePosition;
+            Debug.Log("Dragging");
+        }
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        //isReleasedFromDrag = true;
     }
 }
