@@ -5245,19 +5245,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 263443812}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 167539270}
-        m_TargetAssemblyTypeName: HandCardScript, Assembly-CSharp
-        m_MethodName: RemoveRandomCard
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &263443812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9519,6 +9507,7 @@ GameObject:
   - component: {fileID: 449055916}
   - component: {fileID: 449055915}
   - component: {fileID: 449055914}
+  - component: {fileID: 449055917}
   m_Layer: 5
   m_Name: PreviewSlot
   m_TagString: Untagged
@@ -9586,6 +9575,29 @@ RectTransform:
   m_AnchoredPosition: {x: -256.47534, y: -412.12}
   m_SizeDelta: {x: 362.842, y: -848.265}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!223 &449055917
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 449055913}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1 &449277609 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1572549451560340193, guid: 83b197af1d34218429482a246605537f, type: 3}
@@ -31301,9 +31313,9 @@ RectTransform:
   m_Children:
   - {fileID: 1070050285}
   - {fileID: 1264264230}
-  - {fileID: 167539271}
   - {fileID: 1832858816}
   - {fileID: 848756746}
+  - {fileID: 167539271}
   m_Father: {fileID: 2070120100}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -44112,8 +44124,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 449055916}
   - {fileID: 1563179088}
+  - {fileID: 449055916}
   - {fileID: 1123522294}
   - {fileID: 1081024722}
   - {fileID: 949887196}

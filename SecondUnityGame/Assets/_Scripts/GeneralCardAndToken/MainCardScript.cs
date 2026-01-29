@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Linq;
 
 public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IEndDragHandler, IBeginDragHandler
 {
@@ -47,6 +48,7 @@ public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public bool isDiscarded = false;
     public Vector3 targetPosition;
     bool isReleasedFromDrag = false;
+    bool isDragging = false;
     bool isMarked = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -180,29 +182,64 @@ public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             if (isReleasedFromDrag) isReleasedFromDrag = false;
             else transform.localPosition -= new Vector3(0f, 20.0f, 0f);
 
+            HandCardScript.instance.ScaleUIBasedOnCardCount();
             isMarked = false;
         }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        MouseClickAndGrabManager.instance.ClearGrabbedItem();
-        HandCardScript.instance.ScaleUIBasedOnCardCount();
-        isReleasedFromDrag = true;
+        if (!TurnAndEnemyManager.instance.isPlayerTurn) return;
+        Debug.Log("End Drag 1");
+        if (isDragging)
+        {
+            Debug.Log("End Drag 2");
+
+            if (transform.localPosition.y > 240f)
+            {
+                MouseClickAndGrabManager.instance.TryPlayCard();
+            }
+            else
+            {
+                MouseClickAndGrabManager.instance.ClearGrabbedItem();
+                HandCardScript.instance.ScaleUIBasedOnCardCount();
+            }
+            isReleasedFromDrag = true;
+            isDragging = false;
+
+            //if (MouseClickAndGrabManager.instance.GetGrabbedItem() == gameObject)
+            //{
+            //    MouseClickAndGrabManager.instance.ClearGrabbedItem();
+            //}
+        }
+
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (MouseClickAndGrabManager.instance.TryGrabCardExtern())
-        {
-            MouseClickAndGrabManager.instance.SetGrabbedItem(gameObject);
-            transform.position = Input.mousePosition;
-            Debug.Log("Dragging");
-        }
+        //if (!TurnAndEnemyManager.instance.isPlayerTurn) return;
+        //if (MouseClickAndGrabManager.instance.TryGrabCardExtern(gameObject))
+        //{
+        //    MouseClickAndGrabManager.instance.SetGrabbedItem(gameObject);
+        //    transform.position = Input.mousePosition;
+        //    Debug.Log("Drag");
+        //}
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        //isReleasedFromDrag = true;
+        if (!TurnAndEnemyManager.instance.isPlayerTurn) return;
+        if (MouseClickAndGrabManager.instance.TryGrabCardExtern(gameObject))
+        {
+            Debug.Log("Is dragging?");
+            MouseClickAndGrabManager.instance.SetGrabbedItem(gameObject);
+            transform.localEulerAngles = new Vector3(0, 0, 0);
+            isDragging = true;
+        }
+    }
+
+    public void MarkForDiscard()
+    {
+        GetComponent<Image>().raycastTarget = false;
     }
 }

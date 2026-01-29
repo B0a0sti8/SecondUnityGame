@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using System.Linq;
 
 public class HandCardScript : MonoBehaviour
 {
@@ -36,6 +37,14 @@ public class HandCardScript : MonoBehaviour
 
     public void ScaleUIBasedOnCardCount()
     {
+        // Korrigiere die Reihenfolge in der Hierarchy basierend auf der Position der Karten
+        var sortedHandcards = myHandCards.OrderBy(t => t.transform.position.x).ToList();
+        for (int i = 0; i < sortedHandcards.Count; i++)
+        {
+            sortedHandcards[i].transform.SetSiblingIndex(i);
+        }
+
+        // Schiebe die Karten an die richtigen Positionen
         if (myHandCards.Count % 2 == 0)     // Wenn Kartenanzahl gerade
         {
             for (int i = 0; i < myHandCards.Count; i++)
@@ -83,7 +92,7 @@ public class HandCardScript : MonoBehaviour
         }
     }
 
-    public void RemoveCard(GameObject oldCard)
+    public void RemoveCard(GameObject oldCard, bool isRandomRemove = false)
     {
         FetchAllCards();
         myHandCards.Remove(oldCard);
@@ -105,7 +114,7 @@ public class HandCardScript : MonoBehaviour
     {
         if (transform.childCount != 0)
         {
-            RemoveCard(transform.GetChild(0).gameObject);
+            RemoveCard(transform.GetChild(0).gameObject, true);
             Destroy(transform.GetChild(0).gameObject);
         }
     }

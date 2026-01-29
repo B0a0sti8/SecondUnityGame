@@ -79,8 +79,6 @@ public class CardManager : MonoBehaviour
             deck1Image.gameObject.GetComponent<Button>().onClick.AddListener(() => ShowAndHideDeck());
             discardPileImage.gameObject.GetComponent<Button>().onClick.AddListener(() => ShowAndHideDiscardPile());
 
-
-
             deckAndDiscardPileViewer.SetActive(false);
             for (int i = 0; i < deckAndDiscardPileViewer.transform.Find("Content").childCount; i++)
             {
@@ -163,7 +161,7 @@ public class CardManager : MonoBehaviour
         DrawNextCardFromDeck();
         for (int i = 1; i < noOfCards; i++)
         {
-            StartCoroutine(DrawNextCardDelay(i*0.2f));
+            StartCoroutine(DrawNextCardDelay(i*0.13f));
         }
     }
 
@@ -178,12 +176,14 @@ public class CardManager : MonoBehaviour
         if (HandCardScript.instance.transform.childCount != 0)
         {
             HandCardScript.instance.DiscardCard(HandCardScript.instance.transform.GetChild(0).gameObject);
+            HandCardScript.instance.transform.GetChild(0).GetComponent<MainCardScript>().MarkForDiscard();
         }
     }
 
     public void DiscardSpecificCard(GameObject oldCard)
     {
         HandCardScript.instance.DiscardCard(oldCard);
+        oldCard.GetComponent<MainCardScript>().MarkForDiscard();
     }
 
     public void DiscardHand()
@@ -191,10 +191,12 @@ public class CardManager : MonoBehaviour
         HandCardScript.instance.FetchAllCards();
         if (HandCardScript.instance.myHandCards.Count == 0) return;
 
+        HandCardScript.instance.myHandCards.ForEach(t => t.GetComponent<MainCardScript>().MarkForDiscard());
+
         DiscardSpecificCard(HandCardScript.instance.myHandCards.Last());
         for (int i = HandCardScript.instance.myHandCards.Count - 1; i >= 0; i--)
         {
-            StartCoroutine(DiscardNextCardDelay(0.3f*i, HandCardScript.instance.myHandCards[i]));
+            StartCoroutine(DiscardNextCardDelay(0.13f*i, HandCardScript.instance.myHandCards[i]));
         }
     }
 

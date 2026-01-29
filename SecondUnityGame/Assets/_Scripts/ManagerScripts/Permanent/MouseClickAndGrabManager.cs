@@ -15,6 +15,7 @@ public class MouseClickAndGrabManager : MonoBehaviour
     GameObject myGrabbedItem;
     private Vector3 originPosition;
     private Vector3 originRotation;
+    private int originSiblingIndex;
     private Transform originalParent;
 
     GameObject pendingCard;
@@ -59,6 +60,15 @@ public class MouseClickAndGrabManager : MonoBehaviour
 
     void Update()
     {
+        // Wenn man eine Karte löscht, die eigentlich discarded wird, kommt es vor das ein Objekt "missing" ist. Dann wird es einfach auf "null" gesetzt, was der Code später erkennt.
+        if (myGrabbedItem == null && !ReferenceEquals(myGrabbedItem, null)) myGrabbedItem = null;
+        if (pendingCard == null && !ReferenceEquals(pendingCard, null))
+        {
+            pendingCard = null;
+            isCardPending = false;
+            isPlayingAbility = false;
+        }         
+
         if (!TurnAndEnemyManager.instance.isPlayerTurn) return;
 
         // Wenn momentan eine Fähigkeit aktiv ist, können keine Karten gespielt werden oder ähnliches.
@@ -80,7 +90,7 @@ public class MouseClickAndGrabManager : MonoBehaviour
                 }
             }
             // Bei Linksklick versuchen nächste Fähigkeiten-Stufe zu spielen (z.B. Ziel anvisieren)
-            else if (Input.GetMouseButtonDown(0))
+            else if (Input.GetMouseButtonDown(0) && CheckForCardOrToken() == null)
             {
                 if (currentAbility.abilityCheckPoints < currentAbility.abilityCheckPointsMax) currentAbility.UseAbility();
                 else
@@ -231,6 +241,8 @@ public class MouseClickAndGrabManager : MonoBehaviour
                 myGrabbedItem = raycastResults[0].gameObject;
                 originPosition = myGrabbedItem.transform.position;
                 originRotation = myGrabbedItem.transform.eulerAngles;
+                originSiblingIndex = myGrabbedItem.transform.GetSiblingIndex();
+                myGrabbedItem.transform.SetAsLastSibling();
                 myGrabbedItem.transform.eulerAngles = new Vector3(0, 0, 0);
 
                 return; // Wenn Karte gefunden, brauchst du gar nicht weiterschauen.
@@ -255,12 +267,40 @@ public class MouseClickAndGrabManager : MonoBehaviour
         }
     }
 
+    GameObject CheckForCardOrToken()
+    {
+        var pointerEventData = new PointerEventData(EventSystem.current);
+        pointerEventData.position = Input.mousePosition;
+        var raycastResults = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerEventData, raycastResults);
+
+        if (raycastResults.Count > 0 && raycastResults[0].gameObject.tag == "Card")
+        {
+            if (raycastResults[0].gameObject.transform.parent.name == "HandCards")
+            {
+                return raycastResults[0].gameObject;
+            }
+        }
+
+        // Dieser Abschnitt schaut, ob er ein Token-Feld erwischt.
+        Vector3 myWorldposition = mainCam.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D rayHit = Physics2D.Raycast((Vector2)myWorldposition, new Vector3(0, 0, 1));
+
+        if (rayHit && rayHit.transform.gameObject.tag == "PlayerUnitSlot" && rayHit.transform.Find("PlayerToken") != null)
+        {
+            return rayHit.transform.Find("PlayerToken").gameObject;
+        }
+
+        return null;
+    }
+
     void RemoveGrabbedObject()
     {
         if (myGrabbedItem.gameObject.tag == "Card")
         {
             myGrabbedItem.transform.position = originPosition;
             myGrabbedItem.transform.eulerAngles = originRotation;
+            myGrabbedItem.transform.SetSiblingIndex(originSiblingIndex);
         }
         else
         {
@@ -270,10 +310,13 @@ public class MouseClickAndGrabManager : MonoBehaviour
         }
 
         myGrabbedItem = null;
+
+        HandCardScript.instance.ScaleUIBasedOnCardCount();
     }
 
-    void TryPlayCard()
+    public void TryPlayCard()
     {
+        Debug.Log("Try play card");
         MainCardScript myCard = myGrabbedItem.GetComponent<MainCardScript>();
 
         // Hier müssen noch Ressourcen und sontige Voraussetzungen geklärt werden.
@@ -286,7 +329,9 @@ public class MouseClickAndGrabManager : MonoBehaviour
         }
 
         pendingCard = myCard.gameObject;
+        Debug.Log(pendingCard);
         pendingCard.transform.position = new Vector2(1800, 500);
+        Debug.Log(pendingCard.transform.position);
         pendingCard.transform.SetParent(HandCardScript.instance.transform.parent);
 
         pendingCardOriginPosition = originPosition;
@@ -426,14 +471,19 @@ public class MouseClickAndGrabManager : MonoBehaviour
         else return false;
     }
 
+    public GameObject GetGrabbedItem()
+    {
+        return myGrabbedItem;
+    }
+
     public void ClearGrabbedItem()
     {
         myGrabbedItem = null;
     }
 
-    public bool TryGrabCardExtern()
+    public bool TryGrabCardExtern(GameObject newCard)
     {
-        if (!isPlayingAbility && !isCardPending && myGrabbedItem == null)
+        if (!isPlayingAbility && !isCardPending && (myGrabbedItem == null || myGrabbedItem == newCard))
         {
             return true;
         }
