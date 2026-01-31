@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Linq;
 
-public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IEndDragHandler, IBeginDragHandler
+public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IEndDragHandler, IBeginDragHandler
 {
     public bool createsPlayerToken;
     public DefaultCardScriptable myCardToken;
@@ -190,11 +190,10 @@ public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public void OnEndDrag(PointerEventData eventData)
     {
         if (!TurnAndEnemyManager.instance.isPlayerTurn) return;
-        Debug.Log("End Drag 1");
+        if (transform.parent.name != "HandCards") return;
+
         if (isDragging)
         {
-            Debug.Log("End Drag 2");
-
             if (transform.localPosition.y > 240f)
             {
                 MouseClickAndGrabManager.instance.TryPlayCard();
@@ -206,32 +205,16 @@ public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             }
             isReleasedFromDrag = true;
             isDragging = false;
-
-            //if (MouseClickAndGrabManager.instance.GetGrabbedItem() == gameObject)
-            //{
-            //    MouseClickAndGrabManager.instance.ClearGrabbedItem();
-            //}
         }
-
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        //if (!TurnAndEnemyManager.instance.isPlayerTurn) return;
-        //if (MouseClickAndGrabManager.instance.TryGrabCardExtern(gameObject))
-        //{
-        //    MouseClickAndGrabManager.instance.SetGrabbedItem(gameObject);
-        //    transform.position = Input.mousePosition;
-        //    Debug.Log("Drag");
-        //}
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (!TurnAndEnemyManager.instance.isPlayerTurn) return;
+        if (transform.parent.name != "HandCards") return;
+
         if (MouseClickAndGrabManager.instance.TryGrabCardExtern(gameObject))
         {
-            Debug.Log("Is dragging?");
             MouseClickAndGrabManager.instance.SetGrabbedItem(gameObject);
             transform.localEulerAngles = new Vector3(0, 0, 0);
             isDragging = true;

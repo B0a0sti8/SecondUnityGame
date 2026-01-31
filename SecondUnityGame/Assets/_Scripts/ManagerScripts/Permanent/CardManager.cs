@@ -68,12 +68,14 @@ public class CardManager : MonoBehaviour
             Transform removeCardButton = MainCanvasSingleton.instance.transform.Find("Buttons").Find("RemoveHandCard");
             Transform drawCardFromDeckButton = MainCanvasSingleton.instance.transform.Find("Buttons").Find("DrawCardFromDeck");
             Transform discardCardButton = MainCanvasSingleton.instance.transform.Find("Buttons").Find("DiscardCard");
+            Transform scryCardButton = MainCanvasSingleton.instance.transform.Find("Buttons").Find("ScryCards");
             Transform closeDeckAndDiscardViewWindowButton = MainCanvasSingleton.instance.transform.Find("CardCanvas").Find("DeckAndPileView").Find("Scroll").Find("Button");
 
             addCardButton?.GetComponent<Button>().onClick.AddListener(() => AddSimpleCardToHandForDebugging());
             removeCardButton?.GetComponent<Button>().onClick.AddListener(() => HandCardScript.instance.RemoveRandomCard());
             drawCardFromDeckButton?.GetComponent<Button>().onClick.AddListener(() => DrawNextCardFromDeck());
             discardCardButton?.GetComponent<Button>().onClick.AddListener(() => DiscardRandomCard());
+            scryCardButton?.GetComponent<Button>().onClick.AddListener(() => ScryCardsTest());
             closeDeckAndDiscardViewWindowButton?.GetComponent<Button>().onClick.AddListener(() => ShowAndHideDiscardPile());
 
             deck1Image.gameObject.GetComponent<Button>().onClick.AddListener(() => ShowAndHideDeck());
@@ -98,12 +100,14 @@ public class CardManager : MonoBehaviour
         Transform removeCardButton = MainCanvasSingleton.instance.transform.Find("Buttons").Find("RemoveHandCard");
         Transform drawCardFromDeckButton = MainCanvasSingleton.instance.transform.Find("Buttons").Find("DrawCardFromDeck");
         Transform discardCardButton = MainCanvasSingleton.instance.transform.Find("Buttons").Find("DiscardCard");
+        Transform scryCardButton = MainCanvasSingleton.instance.transform.Find("Buttons").Find("ScryCards");
         Transform closeDeckAndDiscardViewWindowButton = MainCanvasSingleton.instance.transform.Find("CardCanvas").Find("DeckAndPileView").Find("Scroll").Find("Button");
 
         addCardButton?.GetComponent<Button>().onClick.RemoveListener(() => AddSimpleCardToHandForDebugging());
         removeCardButton?.GetComponent<Button>().onClick.RemoveListener(() => HandCardScript.instance.RemoveRandomCard());
         drawCardFromDeckButton?.GetComponent<Button>().onClick.RemoveListener(() => DrawNextCardFromDeck());
         discardCardButton?.GetComponent<Button>().onClick.RemoveListener(() => DiscardRandomCard());
+        scryCardButton?.GetComponent<Button>().onClick.RemoveListener(() => ScryCardsTest());
         closeDeckAndDiscardViewWindowButton?.GetComponent<Button>().onClick.RemoveListener(() => ShowAndHideDiscardPile());
 
         discardPile.Clear();
@@ -193,10 +197,10 @@ public class CardManager : MonoBehaviour
 
         HandCardScript.instance.myHandCards.ForEach(t => t.GetComponent<MainCardScript>().MarkForDiscard());
 
-        DiscardSpecificCard(HandCardScript.instance.myHandCards.Last());
-        for (int i = HandCardScript.instance.myHandCards.Count - 1; i >= 0; i--)
+        //DiscardSpecificCard(HandCardScript.instance.myHandCards.Last());
+        for (int i = HandCardScript.instance.myHandCards.Count-1; i >= 0; i--)
         {
-            StartCoroutine(DiscardNextCardDelay(0.13f*i, HandCardScript.instance.myHandCards[i]));
+            StartCoroutine(DiscardNextCardDelay(0.15f*i, HandCardScript.instance.myHandCards[i]));
         }
     }
 
@@ -358,5 +362,18 @@ public class CardManager : MonoBehaviour
             Debug.Log("Spacebar pressed...");
             AddSimpleCardToHandForDebugging();
         }
+    }
+
+
+    public void ScryCards(int numberOfCards)
+    {
+        Debug.Log("Scrying");
+        MainCanvasSingleton.instance.transform.Find("CardCanvas").Find("ScryView").GetComponent<ScryViewScript>().OpenScryView();
+        //ScryViewScript.instance.OpenScryView();
+    }
+
+    public void ScryCardsTest()
+    {
+        ScryCards(5);
     }
 }

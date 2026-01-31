@@ -10,7 +10,7 @@ public class HandCardScript : MonoBehaviour
 {
     public List<GameObject> myHandCards;
     int maximumHandCards = 10;
-    [SerializeField] GameObject mySimpleCardPrefab;
+    //[SerializeField] GameObject mySimpleCardPrefab;
 
     public static HandCardScript instance;
 
@@ -37,12 +37,15 @@ public class HandCardScript : MonoBehaviour
 
     public void ScaleUIBasedOnCardCount()
     {
+        FetchAllCards();
         // Korrigiere die Reihenfolge in der Hierarchy basierend auf der Position der Karten
         var sortedHandcards = myHandCards.OrderBy(t => t.transform.position.x).ToList();
         for (int i = 0; i < sortedHandcards.Count; i++)
         {
             sortedHandcards[i].transform.SetSiblingIndex(i);
         }
+
+        FetchAllCards();
 
         // Schiebe die Karten an die richtigen Positionen
         if (myHandCards.Count % 2 == 0)     // Wenn Kartenanzahl gerade
@@ -101,9 +104,11 @@ public class HandCardScript : MonoBehaviour
 
     public void DiscardCard(GameObject oldCard)
     {
+        Debug.Log("Discarding");
         FetchAllCards();
-        oldCard.GetComponent<MainCardScript>().targetPosition = transform.parent.Find("UsedCards").Find("DiscardPile").position;
-        oldCard.GetComponent<MainCardScript>().isMovingSomewhereDuration = 0.05f;
+        Vector3 tarPos = transform.parent.Find("UsedCards").Find("DiscardPile").position;
+        oldCard.GetComponent<MainCardScript>().targetPosition = tarPos;
+        oldCard.GetComponent<MainCardScript>().isMovingSomewhereDuration = 0.10f;
         oldCard.GetComponent<MainCardScript>().isMovingSomewhere = true;
         oldCard.GetComponent<MainCardScript>().isDiscarded = true;
         myHandCards.Remove(oldCard);
