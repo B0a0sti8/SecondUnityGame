@@ -16,7 +16,9 @@ public class CardManager : MonoBehaviour
     GameObject lastDiscardedCard;
     List<DefaultCardScriptable> discardPile = new List<DefaultCardScriptable>();
 
-    [SerializeField] List<DefaultCardScriptable> cardDeck1;
+    DefaultCardScriptable woodCard, stoneCard, foodCard, reagentsCard;
+
+    [SerializeField] public List<DefaultCardScriptable> cardDeck1;
 
     //Dictionary<int, GameObject> handCards;
 
@@ -91,6 +93,17 @@ public class CardManager : MonoBehaviour
 
             UpdateDeckUI();
             UpdateDiscardPileUI();
+
+            foreach (DefaultCardScriptable carScr in ListOfAllCards.instance.allCardsList)
+            {
+                if (carScr.name == "AbilityCard_ExtraWood") woodCard = carScr;
+                else if (carScr.name == "AbilityCard_ExtraStone") stoneCard = carScr;
+                else if (carScr.name == "AbilityCard_ExtraFood") foodCard = carScr;
+                else if (carScr.name == "AbilityCard_ExtraReagents") reagentsCard = carScr;
+            }
+
+            AddCardsToDeckOnLevelStart();
+
         }
     }
 
@@ -146,6 +159,31 @@ public class CardManager : MonoBehaviour
     {
         cardDeck1.Add(cardScript);
         UpdateDeckUI();
+    }
+
+    public void AddCardsToDeckOnLevelStart()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            int randVal = Random.Range(0, 4);
+            switch (randVal)
+            {
+                case 0:
+                    AddCardToDeck(woodCard);
+                    break;
+                case 1:
+                    AddCardToDeck(stoneCard);
+                    break;
+                case 2:
+                    AddCardToDeck(foodCard);
+                    break;
+                case 3:
+                    AddCardToDeck(reagentsCard);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     public void DrawNextCardFromDeck()
@@ -368,12 +406,16 @@ public class CardManager : MonoBehaviour
     public void ScryCards(int numberOfCards)
     {
         Debug.Log("Scrying");
-        MainCanvasSingleton.instance.transform.Find("CardCanvas").Find("ScryView").GetComponent<ScryViewScript>().OpenScryView();
+        MainCanvasSingleton.instance.transform.Find("CardCanvas").Find("ScryView").GetComponent<ScryViewScript>().OpenScryView(numberOfCards);
         //ScryViewScript.instance.OpenScryView();
     }
 
     public void ScryCardsTest()
     {
-        ScryCards(5);
+        if (MainCanvasSingleton.instance.transform.Find("CardCanvas").Find("ScryView").gameObject.activeInHierarchy)
+        {
+            MainCanvasSingleton.instance.transform.Find("CardCanvas").Find("ScryView").GetComponent<ScryViewScript>().CloseScryView();
+        }
+        else ScryCards(5);
     }
 }

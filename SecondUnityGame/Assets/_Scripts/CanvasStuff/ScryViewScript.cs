@@ -6,6 +6,7 @@ public class ScryViewScript : MonoBehaviour
 {
     public List<GameObject> myScryCards;
     public static ScryViewScript instance;
+    [SerializeField] GameObject simpleCardPrefab;
 
     private void Awake()
     {
@@ -15,9 +16,9 @@ public class ScryViewScript : MonoBehaviour
     public void FetchAllCards()
     {
         myScryCards.Clear();
-        for (int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < transform.Find("Cards").childCount; i++)
         {
-            myScryCards.Add(transform.GetChild(i).gameObject);
+            myScryCards.Add(transform.Find("Cards").GetChild(i).gameObject);
         }
     }
 
@@ -40,26 +41,40 @@ public class ScryViewScript : MonoBehaviour
         {
             for (int i = 0; i < myScryCards.Count; i++)
             {
-                myScryCards[i].transform.localPosition = new Vector2(((myScryCards.Count / 2 - i) * -100) + 50, 0);
+                myScryCards[i].transform.localPosition = new Vector2(((myScryCards.Count / 2 - i) * -50) + 25, 0);
             }
         }
         else                                // Wenn Kartenanzahl ungerade
         {
             for (int i = 0; i < myScryCards.Count; i++)
             {
-                myScryCards[i].transform.localPosition = new Vector2((((myScryCards.Count) / 2 - i) * -100), 0);
+                myScryCards[i].transform.localPosition = new Vector2((((myScryCards.Count) / 2 - i) * -50), 0);
             }
         }
     }
 
-    public void OpenScryView()
+    public void OpenScryView(int maxScryAmount)
     {
+        FetchAllCards();
+        for (int i = myScryCards.Count - 1; i >= 0; i--) Destroy(myScryCards[i]);
+
+        int scryAmount = Mathf.Min(maxScryAmount, CardManager.instance.cardDeck1.Count);
+        Debug.Log("Scry Amount = " + scryAmount);
+        for (int i = 0; i < scryAmount; i++)
+        {
+            GameObject newSimpleCard = GameObject.Instantiate(simpleCardPrefab, transform.Find("Cards"));
+            newSimpleCard.GetComponent<MainCardScript>().myCardToken = CardManager.instance.cardDeck1[i];
+            newSimpleCard.GetComponent<MainCardScript>().UpdateCardUI();
+        }
         gameObject.SetActive(true);
         Debug.Log("Scry 1");
         ScaleUIBasedOnCardCount();
     }
+
     public void CloseScryView()
     {
+        FetchAllCards();
         gameObject.SetActive(false);
+        for (int i = myScryCards.Count - 1; i >= 0; i--) Destroy(myScryCards[i]);
     }
 }
