@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Linq;
 
-public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IEndDragHandler, IBeginDragHandler
+public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IEndDragHandler, IBeginDragHandler, IDragHandler
 {
     public bool createsPlayerToken;
     public DefaultCardScriptable myCardToken;
@@ -48,7 +48,6 @@ public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public bool isDiscarded = false;
     public Vector3 targetPosition;
     bool isReleasedFromDrag = false;
-    bool isDragging = false;
     bool isMarked = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -165,7 +164,7 @@ public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (transform.parent.name== "HandCards" && !isMarked)
+        if ((transform.parent.name == "HandCards" || transform.parent.name == "ScryCardsTop" || transform.parent.name == "ScryCardsBottom") && !isMarked)
         {
             transform.localScale *= 1.15f;
             transform.localPosition += new Vector3(0f, 20.0f, 0f);
@@ -175,7 +174,7 @@ public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (transform.parent.name == "HandCards" && isMarked)
+        if ((transform.parent.name == "HandCards" || transform.parent.name == "ScryCardsTop" || transform.parent.name == "ScryCardsBottom") && isMarked)
         {
             transform.localScale = new Vector3(1f,1f,1f);
 
@@ -183,6 +182,7 @@ public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             else transform.localPosition -= new Vector3(0f, 20.0f, 0f);
 
             HandCardScript.instance.ScaleUIBasedOnCardCount();
+            ScryViewScript.instance.ScaleUIBasedOnCardCount();
             isMarked = false;
         }
     }
@@ -190,9 +190,8 @@ public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public void OnEndDrag(PointerEventData eventData)
     {
         if (!TurnAndEnemyManager.instance.isPlayerTurn) return;
-        if (transform.parent.name != "HandCards") return;
 
-        if (isDragging)
+        if (transform.parent.name == "HandCards")
         {
             if (transform.localPosition.y > 240f)
             {
@@ -204,25 +203,37 @@ public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
                 HandCardScript.instance.ScaleUIBasedOnCardCount();
             }
             isReleasedFromDrag = true;
-            isDragging = false;
+        }
+        else if (transform.parent.name == "ScryCardsTop" || transform.parent.name == "ScryCardsBottom")
+        {
+            ScryViewScript.instance.ScaleUIBasedOnCardCount();
         }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (!TurnAndEnemyManager.instance.isPlayerTurn) return;
-        if (transform.parent.name != "HandCards") return;
 
-        if (MouseClickAndGrabManager.instance.TryGrabCardExtern(gameObject))
+        if (transform.parent.name == "HandCards") 
         {
-            MouseClickAndGrabManager.instance.SetGrabbedItem(gameObject);
-            transform.localEulerAngles = new Vector3(0, 0, 0);
-            isDragging = true;
+            if (MouseClickAndGrabManager.instance.TryGrabCardExtern(gameObject))
+            {
+                MouseClickAndGrabManager.instance.SetGrabbedItem(gameObject);
+                transform.localEulerAngles = new Vector3(0, 0, 0);
+            }
         }
     }
 
     public void MarkForDiscard()
     {
         GetComponent<Image>().raycastTarget = false;
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (transform.parent.name == "ScryCardsTop" || transform.parent.name == "ScryCardsBottom")
+        {
+            ScryViewScript.instance?.MoveCard(gameObject);
+        }
     }
 }

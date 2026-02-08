@@ -149,7 +149,10 @@ public class MouseClickAndGrabManager : MonoBehaviour
         // Wenn ein item gegriffen ist, wird zwischen Karte und Token unterschieden. Und das Item entsprechend bewegt.
         if (myGrabbedItem != null)
         {
-            if (myGrabbedItem.gameObject.tag == "Card") myGrabbedItem.transform.position = Input.mousePosition;
+            if (myGrabbedItem.gameObject.tag == "Card")
+            {
+                myGrabbedItem.transform.position = Input.mousePosition;
+            }
             else myGrabbedItem.transform.position = (Vector2)mainCam.ScreenToWorldPoint(Input.mousePosition);
         }
     }
@@ -329,9 +332,7 @@ public class MouseClickAndGrabManager : MonoBehaviour
         }
 
         pendingCard = myCard.gameObject;
-        Debug.Log(pendingCard);
         pendingCard.transform.position = new Vector2(1800, 500);
-        Debug.Log(pendingCard.transform.position);
         pendingCard.transform.SetParent(HandCardScript.instance.transform.parent);
 
         pendingCardOriginPosition = originPosition;
@@ -489,4 +490,6 @@ public class MouseClickAndGrabManager : MonoBehaviour
         }
         else return false;
     }
+
+
 }
