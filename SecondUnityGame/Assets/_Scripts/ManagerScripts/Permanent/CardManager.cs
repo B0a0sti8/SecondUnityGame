@@ -161,6 +161,12 @@ public class CardManager : MonoBehaviour
         UpdateDeckUI();
     }
 
+    public void AddCardToDeck(DefaultCardScriptable cardScript, int position)
+    {
+        cardDeck1.Insert(0, cardScript);
+        UpdateDeckUI();
+    }
+
     public void AddCardsToDeckOnLevelStart()
     {
         for (int i = 0; i < 10; i++)

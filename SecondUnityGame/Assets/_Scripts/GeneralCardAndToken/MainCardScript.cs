@@ -9,6 +9,8 @@ public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public bool createsPlayerToken;
     public DefaultCardScriptable myCardToken;
 
+    Canvas myCardCanvas;
+
     string cardName;
     Sprite cardPicture;
     public Sprite tokenPicture;
@@ -58,6 +60,8 @@ public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         transform.Find("Content").Find("Picture").GetComponent<Image>().material = myMat;
         transform.Find("Content").GetComponent<Image>().material = myMat;
         transform.GetComponent<Image>().material = myMat;
+        myCardCanvas = GetComponent<Canvas>();
+        myCardCanvas.overrideSorting = false;
 
         FetchFields();
         LoadDataFromScriptableObject();
@@ -168,6 +172,9 @@ public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         {
             transform.localScale *= 1.15f;
             transform.localPosition += new Vector3(0f, 20.0f, 0f);
+            myCardCanvas.overrideSorting = true;
+            myCardCanvas.sortingOrder = 50;
+
             isMarked = true;
         }
     }
@@ -182,7 +189,10 @@ public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             else transform.localPosition -= new Vector3(0f, 20.0f, 0f);
 
             HandCardScript.instance.ScaleUIBasedOnCardCount();
-            ScryViewScript.instance.ScaleUIBasedOnCardCount();
+            ScryViewScript.instance?.ScaleUIBasedOnCardCount();
+
+            myCardCanvas.overrideSorting = false;
+
             isMarked = false;
         }
     }

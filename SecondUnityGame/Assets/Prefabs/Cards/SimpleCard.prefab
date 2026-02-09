@@ -178,6 +178,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -314,6 +315,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -600,6 +602,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -643,8 +646,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5779777503296041470}
   - component: {fileID: 3131089520929098279}
+  - component: {fileID: -6954652271010159857}
   - component: {fileID: 112481393720431157}
   - component: {fileID: 3536459736174722704}
+  - component: {fileID: 3160663274745405382}
   m_Layer: 5
   m_Name: SimpleCard
   m_TagString: Card
@@ -680,6 +685,29 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6940576492133116372}
   m_CullTransparentMesh: 1
+--- !u!223 &-6954652271010159857
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6940576492133116372}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!114 &112481393720431157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -723,7 +751,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   createsPlayerToken: 1
-  myCardToken: {fileID: 0}
+  myCardToken: {fileID: 11400000, guid: 9138c3d3750a95049b453b908042dcd5, type: 2}
   tokenPicture: {fileID: -739385909, guid: cdd3d7cb81987f14f801a63dc5fcae63, type: 3}
   woodCost: 0
   stoneCost: 0
@@ -731,6 +759,27 @@ MonoBehaviour:
   reagentCost: 0
   myMat: {fileID: 0}
   isDissolving: 0
+  isMovingSomewhereDuration: 0
+  isMovingSomewhere: 0
+  isDiscarded: 0
+  targetPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &3160663274745405382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6940576492133116372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &8582857612988528848
 GameObject:
   m_ObjectHideFlags: 0
@@ -834,6 +883,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0

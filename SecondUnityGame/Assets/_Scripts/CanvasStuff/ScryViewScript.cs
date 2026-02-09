@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ScryViewScript : MonoBehaviour
 {
     public List<GameObject> myScryCardsTop, myScryCardsBottom;
     public static ScryViewScript instance;
     [SerializeField] GameObject simpleCardPrefab;
-    Transform scryCardTopElement, scryCardBottomElement; 
+    Transform scryCardTopElement, scryCardBottomElement;
+    Button closeScryWindowButton;
 
     RectTransform scryBoundRect, canvasRect;
     bool setScalingNextFrame;
@@ -15,11 +17,15 @@ public class ScryViewScript : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        scryBoundRect = MainCanvasSingleton.instance.transform.Find("CardCanvas").Find("ScryView").GetComponent<RectTransform>();
-        canvasRect = MainCanvasSingleton.instance.GetComponent<RectTransform>();
+
+        scryBoundRect = GetComponent<RectTransform>();
+        canvasRect = transform.parent.parent.GetComponent<RectTransform>();
         scryCardTopElement = transform.Find("ScryCardsTop");
         scryCardBottomElement = transform.Find("ScryCardsBottom");
+        closeScryWindowButton = transform.Find("DoneButton").GetComponent<Button>();
+        closeScryWindowButton.onClick.AddListener(() => CloseScryView());
     }
+
 
     private void Update()
     {
@@ -68,14 +74,14 @@ public class ScryViewScript : MonoBehaviour
         {
             for (int i = 0; i < myScryCardsTop.Count; i++)
             {
-                myScryCardsTop[i].transform.localPosition = new Vector2(((myScryCardsTop.Count / 2 - i) * -50) + 25, 0);
+                myScryCardsTop[i].transform.localPosition = new Vector2(((myScryCardsTop.Count / 2 - i) * -100) + 50, 0);
             }
         }
         else                                // Wenn Kartenanzahl ungerade
         {
             for (int i = 0; i < myScryCardsTop.Count; i++)
             {
-                myScryCardsTop[i].transform.localPosition = new Vector2((((myScryCardsTop.Count) / 2 - i) * -50), 0);
+                myScryCardsTop[i].transform.localPosition = new Vector2((((myScryCardsTop.Count) / 2 - i) * -100), 0);
             }
         }
 
@@ -84,14 +90,14 @@ public class ScryViewScript : MonoBehaviour
         {
             for (int i = 0; i < myScryCardsBottom.Count; i++)
             {
-                myScryCardsBottom[i].transform.localPosition = new Vector2(((myScryCardsBottom.Count / 2 - i) * -50) + 25, 0);
+                myScryCardsBottom[i].transform.localPosition = new Vector2(((myScryCardsBottom.Count / 2 - i) * -100) + 50, 0);
             }
         }
         else                                // Wenn Kartenanzahl ungerade
         {
             for (int i = 0; i < myScryCardsBottom.Count; i++)
             {
-                myScryCardsBottom[i].transform.localPosition = new Vector2((((myScryCardsBottom.Count) / 2 - i) * -50), 0);
+                myScryCardsBottom[i].transform.localPosition = new Vector2((((myScryCardsBottom.Count) / 2 - i) * -100), 0);
             }
         }
 
@@ -111,12 +117,16 @@ public class ScryViewScript : MonoBehaviour
             newSimpleCard.GetComponent<MainCardScript>().UpdateCardUI();
         }
         gameObject.SetActive(true);
+        ScaleUIBasedOnCardCount();
         setScalingNextFrame = true;
     }
 
     public void CloseScryView()
     {
         FetchAllCards();
+
+        FinishScrying();
+
         gameObject.SetActive(false);
         for (int i = myScryCardsTop.Count - 1; i >= 0; i--) Destroy(myScryCardsTop[i]);
         for (int i = myScryCardsBottom.Count - 1; i >= 0; i--) Destroy(myScryCardsBottom[i]);
@@ -138,5 +148,15 @@ public class ScryViewScript : MonoBehaviour
         float x = Mathf.Clamp(canvasPos.x, min.x, max.x);
         float y = Mathf.Clamp(canvasPos.y, min.y, max.y);
         return new Vector2(x, y);
+    }
+
+    void FinishScrying()
+    {
+        FetchAllCards();
+        myScryCardsTop.ForEach(t => CardManager.instance.RemoveCardFromDeck(t.GetComponent<MainCardScript>().myCardToken));
+        myScryCardsBottom.ForEach(t => CardManager.instance.RemoveCardFromDeck(t.GetComponent<MainCardScript>().myCardToken));
+
+        myScryCardsBottom.ForEach(t => CardManager.instance.AddCardToDeck(t.GetComponent<MainCardScript>().myCardToken));
+        myScryCardsTop.ForEach(t => CardManager.instance.AddCardToDeck(t.GetComponent<MainCardScript>().myCardToken, 0));
     }
 }
