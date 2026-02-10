@@ -162,6 +162,8 @@ Transform:
   - {fileID: 7597246435081170599}
   - {fileID: 1536722695084772078}
   - {fileID: 780699769084312997}
+  - {fileID: 9193549704284303595}
+  - {fileID: 8487971079325929607}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2667273140635192299
@@ -237,6 +239,67 @@ MonoBehaviour:
   abilityName: 
   abilityDescription: 
   abilityIcon: {fileID: 0}
+--- !u!1 &3947060944023901543
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8487971079325929607}
+  - component: {fileID: 3788955496738336854}
+  m_Layer: 0
+  m_Name: Scry
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8487971079325929607
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3947060944023901543}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7388408656258330211}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3788955496738336854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3947060944023901543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0152fba34e002c94581d6bb8bb1deb11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardAbility_Scry
+  isAbilityCard: 0
+  myBuff: {fileID: 0}
+  energyCost: 0
+  range: 0
+  abilityCheckPoints: 0
+  abilityCheckPointsMax: 0
+  skillEffectModifier: 0
+  isPassiveTriggerAbility: 0
+  myTargetType: 0
+  potentialTargets: []
+  currentTargets: []
+  multTargetShapeSprite: {fileID: 0}
+  multiTargetShape: {fileID: 0}
+  activeMultiTargetShape: {fileID: 0}
+  abilityName: 
+  abilityDescription: 
+  abilityIcon: {fileID: 0}
 --- !u!1 &4079531020450972860
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,6 +344,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc30163d539808949bf2c614c33b7bd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardAbility_ExtraWood
+  isAbilityCard: 0
+  myBuff: {fileID: 0}
+  energyCost: 0
+  range: 0
+  abilityCheckPoints: 0
+  abilityCheckPointsMax: 0
+  skillEffectModifier: 0
+  isPassiveTriggerAbility: 0
+  myTargetType: 0
+  potentialTargets: []
+  currentTargets: []
+  multTargetShapeSprite: {fileID: 0}
+  multiTargetShape: {fileID: 0}
+  activeMultiTargetShape: {fileID: 0}
+  abilityName: 
+  abilityDescription: 
+  abilityIcon: {fileID: 0}
+--- !u!1 &4901092296044846345
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9193549704284303595}
+  - component: {fileID: 7896425075435599143}
+  m_Layer: 0
+  m_Name: Blank
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9193549704284303595
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4901092296044846345}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7388408656258330211}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7896425075435599143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4901092296044846345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37a7be52640a17f41a8a8c9939313f76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardAbility_Blank
   isAbilityCard: 0
   myBuff: {fileID: 0}
   energyCost: 0

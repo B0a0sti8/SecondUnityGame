@@ -16,7 +16,7 @@ public class CardManager : MonoBehaviour
     GameObject lastDiscardedCard;
     List<DefaultCardScriptable> discardPile = new List<DefaultCardScriptable>();
 
-    DefaultCardScriptable woodCard, stoneCard, foodCard, reagentsCard;
+    DefaultCardScriptable woodCard, stoneCard, foodCard, reagentsCard, blankCard;
 
     [SerializeField] public List<DefaultCardScriptable> cardDeck1;
 
@@ -100,6 +100,7 @@ public class CardManager : MonoBehaviour
                 else if (carScr.name == "AbilityCard_ExtraStone") stoneCard = carScr;
                 else if (carScr.name == "AbilityCard_ExtraFood") foodCard = carScr;
                 else if (carScr.name == "AbilityCard_ExtraReagents") reagentsCard = carScr;
+                else if (carScr.name == "AbilityCard_Blank") blankCard = carScr;
             }
 
             AddCardsToDeckOnLevelStart();
@@ -171,7 +172,7 @@ public class CardManager : MonoBehaviour
     {
         for (int i = 0; i < 10; i++)
         {
-            int randVal = Random.Range(0, 4);
+            int randVal = Random.Range(0, 6);
             switch (randVal)
             {
                 case 0:
@@ -185,6 +186,12 @@ public class CardManager : MonoBehaviour
                     break;
                 case 3:
                     AddCardToDeck(reagentsCard);
+                    break;
+                case 4:
+                    AddCardToDeck(blankCard);
+                    break;
+                case 5:
+                    AddCardToDeck(blankCard);
                     break;
                 default:
                     break;
