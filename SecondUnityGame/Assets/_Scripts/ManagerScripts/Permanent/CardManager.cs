@@ -155,6 +155,13 @@ public class CardManager : MonoBehaviour
         HandCardScript.instance.AddCard(newCard, false);
     }
 
+    public void AddCardToHand(DefaultCardScriptable cardScript)
+    {
+        GameObject newCard = mySimpleCardPrefab;
+        newCard.GetComponent<MainCardScript>().myCardToken = cardScript;
+        HandCardScript.instance.AddCard(newCard, false);
+    }
+
     public void AddCardToDeckForDebugging()
     {
         AddCardToDeck(listOfAllCards[Random.Range(0, listOfAllCards.Count)]);
@@ -444,10 +451,20 @@ public class CardManager : MonoBehaviour
 
     public void CloseCardSelectionMenue(string type, GameObject card)
     {
+        if (card.GetComponent<MainCardScript>() == null) return;
+
         switch (type)
         {
             case "Discard":
                 DiscardSpecificCard(card);
+                break;
+            case "Duplicate":
+                DefaultCardScriptable newCardScr = card.GetComponent<MainCardScript>().myCardToken;
+                AddCardToHand(newCardScr);
+                break;
+            case "Reduce Cost":
+                card.GetComponent<MainCardScript>().isCostReduced = true;
+                card.GetComponent<MainCardScript>().UpdateCardUI();
                 break;
             default:
                 break;

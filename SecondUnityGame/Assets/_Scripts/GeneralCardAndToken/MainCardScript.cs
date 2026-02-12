@@ -32,6 +32,7 @@ public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public int reagentCost;
 
     float manaCost;
+    public bool isCostReduced = false;
 
     Image myCardImage;
     Image myCardTypeImage;
@@ -116,12 +117,24 @@ public class MainCardScript : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         //maxCardLife = myPlayerTokenScriptable.maxLife;
         //maxCardEnergy = myPlayerTokenScriptable.maxEnergy;
 
-        woodCost = myCardToken.woodCost;
-        stoneCost = myCardToken.stoneCost;
-        foodCost = myCardToken.foodCost;
-        reagentCost = myCardToken.reagentCost;
+        if (!isCostReduced)
+        {
+            woodCost = myCardToken.woodCost;
+            stoneCost = myCardToken.stoneCost;
+            foodCost = myCardToken.foodCost;
+            reagentCost = myCardToken.reagentCost;
 
-        manaCost = myCardToken.manaCost;
+            manaCost = myCardToken.manaCost;
+        }
+        else
+        {
+            woodCost = 0;
+            stoneCost = 0;
+            foodCost = 0;
+            reagentCost = 0;
+
+            manaCost = 0;
+        }
     }
 
     public void DestroyCard()
