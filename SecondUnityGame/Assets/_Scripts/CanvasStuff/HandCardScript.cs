@@ -107,6 +107,7 @@ public class HandCardScript : MonoBehaviour
         Debug.Log("Discarding");
         FetchAllCards();
         Vector3 tarPos = transform.parent.Find("UsedCards").Find("DiscardPile").position;
+        oldCard.transform.SetParent(MainCanvasSingleton.instance.transform.Find("CardCanvas").Find("Other").Find("DiscardDummyParent"));
         oldCard.GetComponent<MainCardScript>().targetPosition = tarPos;
         oldCard.GetComponent<MainCardScript>().isMovingSomewhereDuration = 0.10f;
         oldCard.GetComponent<MainCardScript>().isMovingSomewhere = true;

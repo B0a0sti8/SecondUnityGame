@@ -19,14 +19,18 @@ public class MouseClickAndGrabManager : MonoBehaviour
     private Transform originalParent;
 
     GameObject pendingCard;
+    bool isCardPending;
     Vector3 pendingCardOriginPosition;
     Vector3 pendingCardOriginRotation;
-    private bool isCardPending;
 
     bool isPlayingAbility = false;
     PlayerTokenAbilityPrefab currentAbility;
 
+    bool isSelectingCardActive = false;
+    string selectionType = "";
+
     [SerializeField] GameObject tokenSelectionMenue;
+    GameObject cardSelectionWindow;
 
     private void Awake()
     {
@@ -50,6 +54,7 @@ public class MouseClickAndGrabManager : MonoBehaviour
         {
             gameObject.SetActive(true);
             tokenSelectionMenue = GameObject.Find("Level").transform.Find("CombatVisuals").Find("Canvas").Find("TokenMenue").gameObject;
+            cardSelectionWindow = MainCanvasSingleton.instance.transform.Find("CardCanvas").Find("Other").Find("SelectCardWindow").gameObject;
         }
     }
 
@@ -70,6 +75,24 @@ public class MouseClickAndGrabManager : MonoBehaviour
         }         
 
         if (!TurnAndEnemyManager.instance.isPlayerTurn) return;
+
+        // Manche Effekte fordern, dass eine Karte ausgewählt wird. (Discard, verdoppeln usw.) Wenn dies aktiv ist, kann nichts anderes gemacht werden.
+        if (isSelectingCardActive)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                Debug.Log("Selecting Card active and leftclick");
+                GameObject cardInQuestion = CheckForCardOrToken();
+                if (cardInQuestion?.tag == "Card")
+                {
+                    isSelectingCardActive = false;
+                    cardSelectionWindow.SetActive(false);
+                    CardManager.instance.CloseCardSelectionMenue(selectionType, cardInQuestion);
+                    Debug.Log("Hab eine Karte !");
+                }
+            }
+            return;
+        }
 
         // Wenn momentan eine Fähigkeit aktiv ist, können keine Karten gespielt werden oder ähnliches.
         if (isPlayingAbility)
@@ -491,5 +514,9 @@ public class MouseClickAndGrabManager : MonoBehaviour
         else return false;
     }
 
-
+    public void OpenCardSelectionWindow(string type)
+    {
+        isSelectingCardActive = true;
+        selectionType = type;
+    }
 }

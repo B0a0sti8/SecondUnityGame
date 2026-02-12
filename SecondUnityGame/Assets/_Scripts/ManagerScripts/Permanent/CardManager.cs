@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using TMPro;
 
 public class CardManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class CardManager : MonoBehaviour
     // Card Management Stuff
     public GameObject previewCard;
     GameObject deckAndDiscardPileViewer;
+    GameObject cardSelectionWindow;
 
     GameObject lastDiscardedCard;
     List<DefaultCardScriptable> discardPile = new List<DefaultCardScriptable>();
@@ -63,6 +65,8 @@ public class CardManager : MonoBehaviour
 
             deck1Image = mCan.Find("CardCanvas").Find("Decks").Find("Deck1").GetComponent<RawImage>();
             discardPileImage = mCan.Find("CardCanvas").Find("UsedCards").Find("DiscardPile").GetComponent<RawImage>();
+
+            cardSelectionWindow = MainCanvasSingleton.instance.transform.Find("CardCanvas").Find("Other").Find("SelectCardWindow").gameObject;
 
             gameObject.SetActive(true);
 
@@ -230,15 +234,15 @@ public class CardManager : MonoBehaviour
     {
         if (HandCardScript.instance.transform.childCount != 0)
         {
-            HandCardScript.instance.DiscardCard(HandCardScript.instance.transform.GetChild(0).gameObject);
             HandCardScript.instance.transform.GetChild(0).GetComponent<MainCardScript>().MarkForDiscard();
+            HandCardScript.instance.DiscardCard(HandCardScript.instance.transform.GetChild(0).gameObject);
         }
     }
 
     public void DiscardSpecificCard(GameObject oldCard)
     {
-        HandCardScript.instance.DiscardCard(oldCard);
         oldCard.GetComponent<MainCardScript>().MarkForDiscard();
+        HandCardScript.instance.DiscardCard(oldCard);
     }
 
     public void DiscardHand()
@@ -415,7 +419,6 @@ public class CardManager : MonoBehaviour
         }
     }
 
-
     public void ScryCards(int numberOfCards)
     {
         Debug.Log("Scrying");
@@ -430,5 +433,24 @@ public class CardManager : MonoBehaviour
             MainCanvasSingleton.instance.transform.Find("CardCanvas").Find("ScryView").GetComponent<ScryViewScript>().CloseScryView();
         }
         else ScryCards(5);
+    }
+
+    public void OpenCardSelectionMenue(string type)
+    {
+        cardSelectionWindow.SetActive(true);
+        MouseClickAndGrabManager.instance.OpenCardSelectionWindow(type);
+        cardSelectionWindow.transform.Find("Text (TMP)").GetComponent<TextMeshProUGUI>().text = "Select a card to " + type;
+    }
+
+    public void CloseCardSelectionMenue(string type, GameObject card)
+    {
+        switch (type)
+        {
+            case "Discard":
+                DiscardSpecificCard(card);
+                break;
+            default:
+                break;
+        }
     }
 }

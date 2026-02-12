@@ -1245,6 +1245,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5379781583555807513}
     m_Modifications:
+    - target: {fileID: 6776807571231686909, guid: f858ea2f89531b342a313ff2959a59ec, type: 3}
+      propertyPath: allCardsList.Array.size
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6776807571231686909, guid: f858ea2f89531b342a313ff2959a59ec, type: 3}
+      propertyPath: 'allCardsList.Array.data[19]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 06d53be4bc6b261499ffffccada3b25e, type: 2}
     - target: {fileID: 6873323714527480112, guid: f858ea2f89531b342a313ff2959a59ec, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
