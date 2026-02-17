@@ -104,7 +104,6 @@ public class HandCardScript : MonoBehaviour
 
     public void DiscardCard(GameObject oldCard)
     {
-        Debug.Log("Discarding");
         FetchAllCards();
         Vector3 tarPos = transform.parent.Find("UsedCards").Find("DiscardPile").position;
         oldCard.transform.SetParent(MainCanvasSingleton.instance.transform.Find("CardCanvas").Find("Other").Find("DiscardDummyParent"));

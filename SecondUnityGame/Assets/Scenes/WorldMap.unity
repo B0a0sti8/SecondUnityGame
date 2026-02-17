@@ -5900,25 +5900,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 932697671}
     m_Modifications:
-    - target: {fileID: 654629250301282269, guid: 88bc1cc94925bff46be91112168b0182, type: 3}
-      propertyPath: maxCount
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6127119715121716168, guid: 88bc1cc94925bff46be91112168b0182, type: 3}
-      propertyPath: maxCount
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6127119715121716168, guid: 88bc1cc94925bff46be91112168b0182, type: 3}
-      propertyPath: isUnlockedByDefault
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6577634990366667000, guid: 88bc1cc94925bff46be91112168b0182, type: 3}
       propertyPath: m_Name
       value: TalentTree
-      objectReference: {fileID: 0}
-    - target: {fileID: 6577634990366667000, guid: 88bc1cc94925bff46be91112168b0182, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7597735601388653448, guid: 88bc1cc94925bff46be91112168b0182, type: 3}
       propertyPath: m_Pivot.x
