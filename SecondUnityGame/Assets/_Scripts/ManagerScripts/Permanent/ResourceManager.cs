@@ -55,8 +55,8 @@ public class ResourceManager : MonoBehaviour
 
             myLevelVisuals = GameObject.Find("Level").transform.Find("CombatVisuals").Find("Canvas");
 
-            maxPlayerMana = 100;
-            maxPlayerLife = 100;
+            maxPlayerMana = 20;
+            maxPlayerLife = 20;
             currentPlayerLife = maxPlayerLife;
             currentPlayerMana = maxPlayerMana;
 
@@ -68,6 +68,8 @@ public class ResourceManager : MonoBehaviour
             TalentTreeManager.instance.Talent4_StartingResources();
 
             UpdateResourceUI();
+            UpdateHealthBar();
+            UpdateManaBar();
         }
     }
 

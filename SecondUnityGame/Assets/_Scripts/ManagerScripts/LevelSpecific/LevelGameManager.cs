@@ -14,6 +14,8 @@ public class LevelGameManager : MonoBehaviour
     public List<GameObject> allEnemiesInLevel = new List<GameObject>();
     public int enemiesPerTurn = 2;
 
+    public List<LoreStoryNoteScriptable> listOfUnlockableKnowledgeElements = new List<LoreStoryNoteScriptable>();
+
     private void Awake()
     {
         instance = this;
@@ -27,6 +29,8 @@ public class LevelGameManager : MonoBehaviour
 
         ResourceManager.instance.ManagePermanentKnowledge(neededKnowledgeAmount);
         GameProgressManager.instance.AddCompletedLevel(SceneManager.GetActiveScene().name);
+
+        listOfUnlockableKnowledgeElements.ForEach(t => GameProgressManager.instance.AddCollectedLoreElement(t));
 
         HandleFinishedLevel();
     }

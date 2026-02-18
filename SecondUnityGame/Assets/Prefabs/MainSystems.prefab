@@ -44,6 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d3975abf96159c4291c8f5c5a3effc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  listOfLoreElementsForSetup:
+  - {fileID: 11400000, guid: c67a46e05781586478424cd3dd34c996, type: 2}
+  - {fileID: 11400000, guid: 57071a09ff34c664189b0508c8f39c5e, type: 2}
+  - {fileID: 11400000, guid: 79f498ea9fbcb014284d52920064745c, type: 2}
+  - {fileID: 11400000, guid: 37d5f32dad88c404fb332be9eac9e45a, type: 2}
 --- !u!1 &1954185992038377919
 GameObject:
   m_ObjectHideFlags: 0

@@ -20462,6 +20462,8 @@ MonoBehaviour:
   allEnemiesInLevel:
   - {fileID: 943251746979475688, guid: a7db92cd306beaa41afcdba2f5dd4a54, type: 3}
   enemiesPerTurn: 2
+  listOfUnlockableKnowledgeElements:
+  - {fileID: 11400000, guid: 37d5f32dad88c404fb332be9eac9e45a, type: 2}
 --- !u!1 &973296406
 GameObject:
   m_ObjectHideFlags: 0

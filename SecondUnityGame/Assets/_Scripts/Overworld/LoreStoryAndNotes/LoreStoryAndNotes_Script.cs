@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class LoreStoryAndNotes_Script : MonoBehaviour
 {
@@ -9,7 +10,8 @@ public class LoreStoryAndNotes_Script : MonoBehaviour
     List<Transform> myLoreElementPlaceholders = new List<Transform>();
     List<LoreStoryNoteScriptable> listOfCollectedLoreElements = new List<LoreStoryNoteScriptable>();
     List<LoreStoryNoteScriptable> currentlyShownLoreElements = new List<LoreStoryNoteScriptable>();
-    int currentPageCount;
+    int currentPageCount = 1;
+    int maxPageCount;
 
     private void Start()
     {
@@ -24,6 +26,12 @@ public class LoreStoryAndNotes_Script : MonoBehaviour
 
         Button myExitButton = transform.Find("ExitButton").GetComponent<Button>();
         myExitButton.onClick.AddListener(() => OpenClose());
+
+
+        Button myNextPageButton = transform.Find("NextPageButton").GetComponent<Button>();
+        myNextPageButton.onClick.AddListener(() => GoToNextPage());
+        Button myPreviousPageButton = transform.Find("PreviousPageButton").GetComponent<Button>();
+        myPreviousPageButton.onClick.AddListener(() => GoToPreviousPage());
     }
 
     private void GetElementSlots()
@@ -45,28 +53,38 @@ public class LoreStoryAndNotes_Script : MonoBehaviour
     {
         GetElementSlots(); 
         listOfCollectedLoreElements = GameProgressManager.instance.GetListOfCollectedLore();
+        maxPageCount = listOfCollectedLoreElements.Count / 8;
+        maxPageCount = 10;
         GetCurrentlyShownElements(currentPageCount);
 
         for (int i = myLoreElementPlaceholders.Count - 1; i >= 0; i--)
         {
-            if (myLoreElementPlaceholders[i] != null && myLoreElementPlaceholders[i].GetComponentInChildren<LoreStoryNote_Script>() != null)
+            if (myLoreElementPlaceholders[i] != null)
             {
-                Destroy(myLoreElementPlaceholders[i].GetComponentInChildren<LoreStoryNote_Script>().gameObject);
+                myLoreElementPlaceholders[i].Find("LoreStoryNote").gameObject.SetActive(false);
+                myLoreElementPlaceholders[i].Find("EmptySlot").Find("PageMarker").GetComponent<TextMeshProUGUI>().text = ((currentPageCount - 1) * 8 + i + 1).ToString();
             }
+        }
 
-            GameObject newLoreElem = Instantiate(myLoreElementPrefab, myLoreElementPlaceholders[i]);
-            newLoreElem.transform.position = myLoreElementPlaceholders[i].position;
-            newLoreElem.GetComponent<LoreStoryNote_Script>().myPageCounter = (currentPageCount - 1) * 8 + i + 1;
-            newLoreElem.GetComponent<LoreStoryNote_Script>().UpdateUI();
+        //Debug.Log("Zeige so viele Elemente an: " + currentlyShownLoreElements.Count);
+
+        for (int i = 0; i < currentlyShownLoreElements.Count; i++)
+        {
+            myLoreElementPlaceholders[i].Find("LoreStoryNote").gameObject.SetActive(true);
+            myLoreElementPlaceholders[i].Find("LoreStoryNote").GetComponent<LoreStoryNote_Script>().myLoreStoryNoteScriptable = currentlyShownLoreElements[i];
+            myLoreElementPlaceholders[i].Find("LoreStoryNote").GetComponent<LoreStoryNote_Script>().myPageCounter = (currentPageCount - 1) * 8 + i + 1;
+
+            myLoreElementPlaceholders[i].Find("LoreStoryNote").GetComponent<LoreStoryNote_Script>().UpdateUI();
         }
     }
 
     private void GetCurrentlyShownElements(int pageNumber) 
     {
-        if ((pageNumber - 1 < listOfCollectedLoreElements.Count / 8) && (listOfCollectedLoreElements.Count != 0))
+        currentlyShownLoreElements.Clear();
+        if ((pageNumber - 1 <= listOfCollectedLoreElements.Count / 8) && (listOfCollectedLoreElements.Count != 0))
         {
             int firstElement = (pageNumber - 1) * 8;
-            int lastElement = Mathf.Min(listOfCollectedLoreElements.Count - 1, (pageNumber - 1) * 8 + 8);
+            int lastElement = Mathf.Min(listOfCollectedLoreElements.Count, (pageNumber - 1) * 8 + 8);
             currentlyShownLoreElements = listOfCollectedLoreElements.GetRange(firstElement, lastElement - firstElement);
         }
     }
@@ -80,6 +98,34 @@ public class LoreStoryAndNotes_Script : MonoBehaviour
         else
         {
             gameObject.SetActive(true);
+            UpdateCollectedLoreElements();
+        }
+    }
+
+    public void GoToNextPage()
+    {
+        if (currentPageCount >= maxPageCount)
+        {
+            currentPageCount = maxPageCount;
+            return;
+        }
+        else
+        {
+            currentPageCount++;
+            UpdateCollectedLoreElements();
+        }
+    }
+
+    public void GoToPreviousPage()
+    {
+        if (currentPageCount <= 1) 
+        {
+            currentPageCount = 1;
+            return;
+        }
+        else
+        {
+            currentPageCount--;
             UpdateCollectedLoreElements();
         }
     }

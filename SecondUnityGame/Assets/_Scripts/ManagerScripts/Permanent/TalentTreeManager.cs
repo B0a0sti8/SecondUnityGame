@@ -25,7 +25,7 @@ public class TalentTreeManager : MonoBehaviour
         {
             isInWorldScene = true;
             skillTreeObject = MainCanvasSingleton.instance.transform.Find("TalentTree");
-            MainCanvasSingleton.instance.transform.Find("TalentTree").Find("AdditionalContent").Find("ExitButton").GetComponent<Button>().onClick.AddListener(() => OpenCloseSkillTree());
+            MainCanvasSingleton.instance.transform.Find("TalentTree").Find("ExitButton").GetComponent<Button>().onClick.AddListener(() => OpenCloseSkillTree());
             skillTreeObject.gameObject.SetActive(false);
         }
         else isInWorldScene = false;

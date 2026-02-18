@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class SceneLoadManager : MonoBehaviour
 {
+    Transform levelOptions;
+
     public enum MyScene
     {
         TestingGrounds,
@@ -22,14 +24,19 @@ public class SceneLoadManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name != "WorldMap")
         {
             Button myFinishBut = MainCanvasSingleton.instance.transform.Find("LevelFinishedScreen").Find("Frame").Find("FinishButton").GetComponent<Button>();
-            myFinishBut.onClick.AddListener(() => LoadWorldMapScene());
+            //myFinishBut.onClick.AddListener(() => LoadWorldMapScene());
+            myFinishBut.onClick.AddListener(() => LoadNewScene(MyScene.WorldMap));
         }
         else
         {
-            Transform myRegs = GameObject.Find("MainCanvas").transform.Find("WorldMap").Find("Regions");
-            myRegs.Find("Region1").GetComponent<Button>().onClick.AddListener(() => LoadRegion1_Stage1());
-        }
+            levelOptions = MainCanvasSingleton.instance.transform.Find("WorldMap").Find("LevelOptionMenue");
 
+            Transform myRegs = GameObject.Find("MainCanvas").transform.Find("WorldMap").Find("Regions");
+            //myRegs.Find("Region1").GetComponent<Button>().onClick.AddListener(() => LoadRegion1_Stage1());
+            //myRegs.Find("Region1").GetComponent<Button>().onClick.AddListener(() => LoadNewScene(MyScene.Region1_Stage1));
+            myRegs.Find("Region1").GetComponent<Button>().onClick.RemoveAllListeners();
+            myRegs.Find("Region1").GetComponent<Button>().onClick.AddListener(() => PrepareLevelMenue(MyScene.Region1_Stage1, myRegs.Find("Region1").position));
+        }
     }
 
     public void LoadNewScene(MyScene myScene)
@@ -48,17 +55,25 @@ public class SceneLoadManager : MonoBehaviour
         SceneManager.LoadScene(myScene.ToString());
     }
 
-    public void LoadTestingGroundsScene()
+    private void PrepareLevelMenue(MyScene myPrepScene, Vector3 posi)
     {
-        LoadNewScene(MyScene.TestingGrounds);
+        levelOptions.gameObject.SetActive(true);
+        levelOptions.GetComponent<LevelOptionMenueScript>().UpdateUI(myPrepScene);
+        levelOptions.position = posi;
+        levelOptions.Find("StartButton").GetComponent<Button>().onClick.AddListener(() => LoadNewScene(myPrepScene));
     }
 
-    public void LoadWorldMapScene()
-    {
-        LoadNewScene(MyScene.WorldMap);
-    }
-    public void LoadRegion1_Stage1()
-    {
-        LoadNewScene(MyScene.Region1_Stage1);
-    }
+    //public void LoadTestingGroundsScene()
+    //{
+    //    LoadNewScene(MyScene.TestingGrounds);
+    //}
+
+    //public void LoadWorldMapScene()
+    //{
+    //    LoadNewScene(MyScene.WorldMap);
+    //}
+    //public void LoadRegion1_Stage1()
+    //{
+    //    LoadNewScene(MyScene.Region1_Stage1);
+    //}
 }
