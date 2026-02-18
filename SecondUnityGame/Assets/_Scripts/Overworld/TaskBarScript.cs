@@ -11,6 +11,7 @@ public class TaskBarScript : MonoBehaviour
 
         transform.Find("DeckBuilding").Find("DeckBuilderButton").GetComponent<Button>().onClick.AddListener(() => OpenCloseDeckBuilder());
         transform.Find("TalentTree").Find("TalentTreeButton").GetComponent<Button>().onClick.AddListener(() => OpenCloseSkillTree());
+        transform.Find("LoreStoryAndNotes").Find("LoreStoryAndNotesButton").GetComponent<Button>().onClick.AddListener(() => OpenCloseNotebook());
     }
 
 
@@ -26,17 +27,28 @@ public class TaskBarScript : MonoBehaviour
 
     public void OpenCloseDeckBuilder()
     {
-        if (mainCan.Find("DeckBuilding").gameObject.activeSelf) DeckbuildingManager.instance.OpenClose();
+        if (mainCan.Find("DeckBuilding").gameObject.activeSelf) mainCan.Find("DeckBuilding").GetComponent<DeckbuildingManager>().OpenClose();
         else
         {
             CloseAllWindows();
-            DeckbuildingManager.instance.OpenClose();
+            mainCan.Find("DeckBuilding").GetComponent<DeckbuildingManager>().OpenClose();
+        }
+    }
+
+    public void OpenCloseNotebook()
+    {
+        if (mainCan.Find("LoreStoryAndNotes").gameObject.activeSelf) mainCan.Find("LoreStoryAndNotes").GetComponent<LoreStoryAndNotes_Script>().OpenClose();
+        else
+        {
+            CloseAllWindows();
+            mainCan.Find("LoreStoryAndNotes").GetComponent<LoreStoryAndNotes_Script>().OpenClose();
         }
     }
 
     public void CloseAllWindows()
     {
-        if (mainCan.Find("DeckBuilding").gameObject.activeSelf) DeckbuildingManager.instance.OpenClose();
+        if (mainCan.Find("DeckBuilding").gameObject.activeSelf) mainCan.Find("DeckBuilding").GetComponent<DeckbuildingManager>().OpenClose();
         if (mainCan.Find("TalentTree").gameObject.activeSelf) TalentTreeManager.instance.OpenCloseSkillTree();
+        if (mainCan.Find("LoreStoryAndNotes").gameObject.activeSelf) mainCan.Find("LoreStoryAndNotes").GetComponent<LoreStoryAndNotes_Script>().OpenClose();
     }
 }

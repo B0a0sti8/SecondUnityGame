@@ -6,11 +6,13 @@ public class GameProgressManager : MonoBehaviour
     public static GameProgressManager instance;
 
     List<string> listOfCompletedLevels;
+    List<LoreStoryNoteScriptable> listOfCollectedLoreElements;
 
     private void Awake()
     {
         instance = this;
         listOfCompletedLevels = new List<string>();
+        listOfCollectedLoreElements = new List<LoreStoryNoteScriptable>();
     }
 
     public void LoadListOfCompletedLevels(List<string> newList)
@@ -26,5 +28,10 @@ public class GameProgressManager : MonoBehaviour
     public List<string> GetListOfCompletedLevels()
     {
         return listOfCompletedLevels;
+    }
+
+    public List<LoreStoryNoteScriptable> GetListOfCollectedLore()
+    {
+        return listOfCollectedLoreElements;
     }
 }
